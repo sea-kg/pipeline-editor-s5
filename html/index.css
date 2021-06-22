@@ -1,0 +1,164 @@
+body {
+    background: #666;
+    height: 100%;
+}
+
+.pipeline-editor-container {
+    padding: 20px;
+    border: 1px solid rgba(159,240,5,0.5);
+    height: calc(100% - 180px);
+    background: #999;
+    z-index: 100;
+}
+
+.pipeline-editor-panel-buttons {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.pipeline-editor-canvas-container {
+    border: 1px solid rgba(159,240,5,0.5);
+    width: 100px;
+    height: 100px;
+    overflow: scroll;
+}
+
+.pipeline-editor-tabs {
+    display: block;
+    z-index: 1000;
+    position: relative;
+}
+
+.pipeline-editor-tab {
+    display: inline-block;
+    background: #aa66aa;
+    padding: 10px;
+    border-top: 1px solid rgba(159,240,5,0.5);
+    border-left: 1px solid rgba(159,240,5,0.5);
+    border-right: 1px solid rgba(159,240,5,0.5);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    vertical-align: bottom;
+    cursor: pointer;
+}
+
+.pipeline-editor-tab.active {
+    margin-bottom: -1px;
+    background: #999;
+}
+
+.json-content {
+    width: 100%;
+    height: calc(100% - 10px);
+}
+
+.pipeline-editor-btn {
+    display: inline-block;
+    background: #aa66aa;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid rgba(159,240,5,0.5);
+    color: yellow;
+    cursor: pointer;
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.pipeline-editor-btn:hover {
+    background: #6666aa;
+}
+
+
+.pipeline-editor-table {
+    display: table;
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+}
+
+.pipeline-editor-table-row {
+    display: table-row;
+}
+
+.pipeline-editor-table-cell {
+    display: table-cell;
+    vertical-align: top;
+
+}
+
+.pipeline-editor-table-cell.functions {
+    width: 65px;
+    max-width: 65px;
+    height: auto;
+}
+
+.pipeline-editor-table-cell.editor {
+    width: 100%;
+    max-width: 100px;
+    height: 100px;
+    max-height: 100px;
+}
+
+.pipeline-editor-table-cell.properties {
+    width: 180px;
+    max-width: 180px;
+}
+
+.pipeline-editor-table-cell.properties input {
+    width: 150px;
+    max-width: 150px;
+}
+
+.pipeline-editor-table-cell.properties input:read-only {
+    background-color: #AAA;
+}
+
+.pipeline-editor-functions-btn {
+    display: block;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.pipeline-editor-functions-btn:hover {
+    transform: scale(1.1);
+    background-color: rgba(159,240,5,0.5);
+}
+
+
+.pipeline-editor-functions-btn.add-block {
+    background-image: url("./images/add-block.svg");
+}
+
+
+.pipeline-editor-functions-btn.scale-minus {
+    background-image: url("./images/scale-minus.svg");
+}
+
+.pipeline-editor-functions-btn.scale-reset {
+    background-image: url("./images/scale-reset.svg");
+}
+
+.pipeline-editor-functions-btn.scale-plus {
+    background-image: url("./images/scale-plus.svg");
+}
+
+.pipeline-editor-functions-btn.connect-blocks {
+    background-image: url("./images/connect-blocks.svg");
+}
+
+.pipeline-editor-functions-btn.draw-grid-enable {
+    background-image: url("./images/draw-grid-enable.svg");
+}
+
+.pipeline-editor-functions-btn.draw-grid-disable {
+    background-image: url("./images/draw-grid-disable.svg");
+}

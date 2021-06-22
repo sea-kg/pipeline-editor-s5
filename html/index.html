@@ -1,0 +1,94 @@
+<html>
+    <head>
+        <title>PiplineEditor by sea5kg</title>
+        <meta charset="utf-8"/>
+        <meta name="Keywords" content="sea5kg, pipline, editor, piplineeditor"/>
+        <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+        <link href='./index.css?ver=1' rel='stylesheet' type='text/css'/>
+    </head>
+<body>
+<br>
+<div class="pipeline-editor-tabs">
+    <div
+        class="pipeline-editor-tab active"
+        id="tab_ui_editor"
+        tab_content_id="tab_content_ui_editor"
+        onclick="switch_ui_to_tab(this, switch_to_tab_ui_editor);"
+    >
+        UI Editor
+    </div>
+    <div
+        class="pipeline-editor-tab"
+        id="tab_json"
+        tab_content_id="tab_content_json"
+        onclick="switch_ui_to_tab(this, switch_to_tab_json);"
+    >
+        JSON
+    </div>
+    <div
+        class="pipeline-editor-tab"
+        id="tab_export"
+        tab_content_id="tab_content_export"
+        onclick="switch_ui_to_tab(this, switch_to_tab_export)"
+    >
+        Export
+    </div>
+    <div
+        class="pipeline-editor-tab"
+        id="tab_settings"
+        tab_content_id="tab_content_settings"
+        onclick="switch_ui_to_tab(this, switch_to_tab_settings)"
+    >
+        Settings
+    </div>
+</div>
+
+<div class="pipeline-editor-container" id="tab_content_ui_editor">
+    <div class="pipeline-editor-panel-buttons">
+        <i>You can move diagram down on scroll button</i>
+    </div>
+    
+    <div class="pipeline-editor-table">
+        <div class="pipeline-editor-table-row">
+            <div class="pipeline-editor-table-cell functions" id="container_functions">
+                <div class="pipeline-editor-functions-btn add-block" onclick="add_block()"></div>
+                <div class="pipeline-editor-functions-btn connect-blocks" onclick="connect_blocks()"></div>
+                <div class="pipeline-editor-functions-btn draw-grid-enable" onclick="switch_draw_grid(this)"></div>
+                <div class="pipeline-editor-functions-btn scale-plus" onclick="render.scale_plus(0.1)"></div>
+                <div class="pipeline-editor-functions-btn scale-reset" onclick="render.scale_reset()"></div>
+                <div class="pipeline-editor-functions-btn scale-minus" onclick="render.scale_minus(0.1)"></div>
+            </div>
+            <div class="pipeline-editor-table-cell editor">
+                <div class="pipeline-editor-canvas-container" id="canvas_container">
+                    <canvas id="pipeline_diagram_canvas"></canvas>
+                </div>        
+            </div>
+            <div class="pipeline-editor-table-cell properties" id="container_properties">
+                ID: <input readonly id="prop_block_id"></input>
+                Name: <input id="prop_name" readonly value=""></input>
+                Description: <input id="prop_description" readonly value=""></input>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pipeline-editor-container" id="tab_content_json" style="display: none;">
+    <textarea class="json-content" id="json_content">11111</textarea>
+</div>
+
+<div class="pipeline-editor-container" id="tab_content_settings" style="display: none;">
+    TODO Autosave
+</div>
+
+<div class="pipeline-editor-container" id="tab_content_export" style="display: none;">
+    <h3>Export</h3>
+    <div class="pipeline-editor-btn" onclick="save_as_image()">Save as image</div>
+    <div class="pipeline-editor-btn" onclick="save_to_localstorage()">Save to localstorage</div>
+</div>
+
+<script src="./data_pl_sample.js?ver=1"></script>
+<script src="./render-pipeline.js?ver=1"></script>
+<script src="./index.js?ver=1"></script>
+
+</body>
+</html>
