@@ -95,7 +95,7 @@ class RenderPipelineEditor {
         }
 
         if (this.onchoosedelement) {
-            this.onchoosedelement(this.selectedBlock['block-id-undermouse'])
+            this.onchoosedelement(this.selectedBlock['block-id-undermouse']);
         }
         if (this.selectedBlockIdEditing != this.selectedBlock['block-id-undermouse']) {
             this.selectedBlockIdEditing = this.selectedBlock['block-id-undermouse'];

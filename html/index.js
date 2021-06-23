@@ -2,9 +2,9 @@
 
 function export_to_json() {
     var _data_pl = {};
-    for (i in data_pl) {
+    for (var i in data_pl) {
         _data_pl[i] = {}
-        for (n in data_pl[i]) {
+        for (var n in data_pl[i]) {
             if (n.startsWith("hidden_")) {
                 _data_pl[i][n] = undefined;        
             } else {
@@ -95,7 +95,7 @@ function random_makeid(length) {
 function add_block() {
     var added = false;
     while (!added) {
-        var new_id = random_makeid(7)
+        var new_id = random_makeid(7);
         if (!data_pl[new_id]) {
             data_pl[new_id] = {
                 "name": "edit me",
@@ -119,18 +119,18 @@ function connect_blocks() {
 function resize_canvas() {
     console.log(window.innerWidth);
 
-    var canvas_cont = document.getElementById('canvas_container')
+    var canvas_cont = document.getElementById('canvas_container');
 
     var left_panel = 60;
     var right_panel = 150;
     var paddings = 120;
 
-    new_width = (window.innerWidth - left_panel - right_panel - paddings) + 'px';
+    var new_width = (window.innerWidth - left_panel - right_panel - paddings) + 'px';
     canvas_cont.style['max-width'] = new_width;
     canvas_cont.style['width'] = new_width;
     
 
-    new_height = (window.innerHeight - 300) + 'px';
+    var new_height = (window.innerHeight - 300) + 'px';
     canvas_cont.style['max-height'] = new_height;
     canvas_cont.style['height'] = new_height;
 }
