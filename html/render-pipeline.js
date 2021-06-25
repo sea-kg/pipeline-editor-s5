@@ -1,3 +1,15 @@
+
+function JWwfsRY_random_makeid() {
+    var length = 7;
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
 class RenderPipelineNode {
     constructor(nodeid) {
         this.nodeid = nodeid;
@@ -7,9 +19,11 @@ class RenderPipelineNode {
         this.description_width = 0;
         this.max_card_width = 0;
         this.incoming = {};
-        this.cell_x = 0;
-        this.cell_y = 0;
+        // this.IQrRW7r_cell_x = 0;
+        // this.IQrRW7r_cell_y = 0;
+        this.update_cell_xy(0,0)
         this.need_update_meansure = true;
+        this.dtbqA0E_nodes_in_same_cells = []
     }
 
     to_json() {
@@ -17,17 +31,33 @@ class RenderPipelineNode {
             "name": this.name,
             "description": this.description,
             "incoming": this.incoming,
-            "cell_x": this.cell_x,
-            "cell_y": this.cell_y
+            "cell_x": this.IQrRW7r_cell_x,
+            "cell_y": this.IQrRW7r_cell_y
         }
+    }
+
+    update_cell_xy(pos_x, pos_y) {
+        if (
+            this.IQrRW7r_cell_x != pos_x
+            || this.IQrRW7r_cell_y != pos_y
+        ) {
+            this.IQrRW7r_cell_x = pos_x;
+            this.IQrRW7r_cell_y = pos_y;
+            this.IQrRW7r_hash_cell_xy = "x" + pos_x + "-y" + pos_y;
+            return true;
+        }
+        return false;
+    }
+
+    get_hash_cell_xy() {
+        return this.IQrRW7r_hash_cell_xy;
     }
 
     copy_from_json(_json) {
         this.set_name(_json['name'])
         this.set_description(_json['description'])
         this.incoming = _json['incoming']
-        this.cell_x = _json["cell_x"]
-        this.cell_y = _json["cell_y"]
+        this.update_cell_xy(_json["cell_x"], _json["cell_y"])
     }
 
     set_name(name) {
@@ -56,8 +86,25 @@ class RenderPipelineNode {
         }
         return this.max_card_width;
     }
-}
 
+    nodes_in_same_cells_reset() {
+        this.dtbqA0E_nodes_in_same_cells = []
+    }
+
+    nodes_in_same_cells_add(node_id) {
+        this.dtbqA0E_nodes_in_same_cells.push(node_id)
+    }
+
+    get_paralax_in_cell() {
+        if (this.dtbqA0E_nodes_in_same_cells.length == 1) {
+            return 0;
+        }
+        var diff = parseInt(this.dtbqA0E_nodes_in_same_cells.length / 2);
+        var idx = this.dtbqA0E_nodes_in_same_cells.indexOf(this.nodeid);
+        var ret = idx - diff;
+        return ret;
+    }
+}
 
 class RenderPipelineEditor {
     constructor(canvas_id, canvas_container_id) {
@@ -244,9 +291,10 @@ class RenderPipelineEditor {
             var t_y = Math.floor((y0 - this.pl_padding) / this.pl_cell_height);
 
             // console.log(y0);
-            if (this.pl_data[this.pl_highlightCard].cell_x != t_x || this.pl_data[this.pl_highlightCard].cell_y != t_y) {
+            if (this.pl_data_render[this.pl_highlightCard].update_cell_xy(t_x, t_y)) {
                 this.pl_data[this.pl_highlightCard].cell_x = t_x;
                 this.pl_data[this.pl_highlightCard].cell_y = t_y;
+                this.prepare_data_cards_one_cells()
                 this.update_pipeline_diagram();
             }
             return;
@@ -386,7 +434,7 @@ class RenderPipelineEditor {
         this.ctx.lineWidth = 1;
 
         for (var node_id in this.pl_data_render) {
-            var node = this.pl_data_render[node_id]
+            var _node = this.pl_data_render[node_id]
             // node.draw_card(this.ctx);
         }
 
@@ -394,9 +442,11 @@ class RenderPipelineEditor {
         for (var i in this.pl_data) {
             var p = this.pl_data[i];
             var _node_r = this.pl_data_render[i];
-            // console.log(p);
-            var x1 = this.pl_padding + p.cell_x * this.pl_cell_width;
-            var y1 = this.pl_padding + p.cell_y * this.pl_cell_height;
+
+            var paralax = _node_r.get_paralax_in_cell()*3;
+           
+            var x1 = this.pl_padding + p.cell_x * this.pl_cell_width + paralax;
+            var y1 = this.pl_padding + p.cell_y * this.pl_cell_height + paralax;
             this.pl_data[i].hidden_x1 = x1;
             this.pl_data[i].hidden_y1 = y1;
 
@@ -545,31 +595,18 @@ class RenderPipelineEditor {
         return _ret;
     }
 
-    random_makeid() {
-        var length = 7;
-        var result           = '';
-        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        var charactersLength = characters.length;
-        for ( var i = 0; i < length; i++ ) {
-          result += characters.charAt(Math.floor(Math.random() * charactersLength));
-       }
-       return result;
-    }
+    
 
     add_block() {
-        console.log("scrollLeft = ", this.canvas_container.scrollLeft)
         var pos_x = this.canvas_container.scrollLeft - this.pl_padding + this.pl_cell_width;
         pos_x = parseInt(pos_x / this.pl_cell_width);
-        console.log("pos_x = ", pos_x)
 
-        console.log("scrollTop = ", this.canvas_container.scrollTop)
         var pos_y = this.canvas_container.scrollTop - this.pl_padding + this.pl_cell_height
         pos_y = parseInt(pos_y / this.pl_cell_height);
-        console.log("pos_y = ", pos_y)
 
         var new_id = null;
         while (new_id == null) {
-            new_id = this.random_makeid();
+            new_id = JWwfsRY_random_makeid();
             if (this.pl_data[new_id]) {
                 new_id = null;
                 continue;
@@ -581,10 +618,11 @@ class RenderPipelineEditor {
                 "cell_x": pos_x,
                 "cell_y": pos_y
             }
+            this.pl_data[new_id] = _node_d
             var node = new RenderPipelineNode(new_id)
             node.copy_from_json(_node_d)
             this.pl_data_render[new_id] = node
-            this.pl_data[new_id] = _node_d
+            this.prepare_data_cards_one_cells()
         }
 
         this.selectedBlockIdEditing = new_id;
@@ -601,6 +639,28 @@ class RenderPipelineEditor {
             var node = new RenderPipelineNode(node_id)
             node.copy_from_json(this.pl_data[node_id])
             this.pl_data_render[node_id] = node
+        }
+        this.prepare_data_cards_one_cells()
+    }
+
+    prepare_data_cards_one_cells() {
+        // reset
+        var coord_list = {}
+        for (var nodeid in this.pl_data_render) {
+            var _node = this.pl_data_render[nodeid]
+            _node.nodes_in_same_cells_reset();
+            var _hcxy = _node.get_hash_cell_xy();
+            if (!coord_list[_hcxy]) {
+                coord_list[_hcxy] = []
+            }
+            coord_list[_hcxy].push(nodeid)
+        }
+        for (var nodeid in this.pl_data_render) {
+            var _node = this.pl_data_render[nodeid]
+            var _hcxy = _node.get_hash_cell_xy();
+            for (var nid in coord_list[_hcxy]) {
+                _node.nodes_in_same_cells_add(coord_list[_hcxy][nid]);
+            }
         }
     }
 };
