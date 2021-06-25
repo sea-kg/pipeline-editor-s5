@@ -56,6 +56,15 @@ class RenderPipelineEditor {
         this.ctx.font = this.fontSize + "px Arial";
     }
 
+    clone_object(obj) {
+        var _json = JSON.stringify(obj);
+        return JSON.parse(_json);
+    }
+
+    set_data(data) {
+        this.pl_data = this.clone_object(data);
+    }
+
     canvas_onmouseover(event) {
         // var target = event.target;
         this.movingEnable = false;
@@ -123,10 +132,10 @@ class RenderPipelineEditor {
 
     find_block_id(x0, y0) {
         var found_val = null;
-        for (var i in data_pl) {
-            var x1 = data_pl[i].hidden_x1;
+        for (var i in this.pl_data) {
+            var x1 = this.pl_data[i].hidden_x1;
             var x2 = x1 + this.pl_card_width;
-            var y1 = data_pl[i].hidden_y1;
+            var y1 = this.pl_data[i].hidden_y1;
             var y2 = y1 + this.pl_card_height;
             if (x0 > x1 && x0 < x2 && y0 > y1 && y0 < y2) {
                 found_val = i;
@@ -171,9 +180,9 @@ class RenderPipelineEditor {
             var t_y = Math.floor((y0 - this.pl_padding) / this.pl_cell_height);
 
             // console.log(y0);
-            if (data_pl[this.pl_highlightCard].cell_x != t_x || data_pl[this.pl_highlightCard].cell_y != t_y) {
-                data_pl[this.pl_highlightCard].cell_x = t_x;
-                data_pl[this.pl_highlightCard].cell_y = t_y;
+            if (this.pl_data[this.pl_highlightCard].cell_x != t_x || this.pl_data[this.pl_highlightCard].cell_y != t_y) {
+                this.pl_data[this.pl_highlightCard].cell_x = t_x;
+                this.pl_data[this.pl_highlightCard].cell_y = t_y;
                 this.update_pipeline_diagram();
             }
             return;
@@ -183,10 +192,10 @@ class RenderPipelineEditor {
         this.pl_highlightCard = null;
         // var block_id = find_block_id(x0, y0);
 
-        for (var i in data_pl) {
-            var x1 = data_pl[i].hidden_x1;
+        for (var i in this.pl_data) {
+            var x1 = this.pl_data[i].hidden_x1;
             var x2 = x1 + this.pl_card_width;
-            var y1 = data_pl[i].hidden_y1;
+            var y1 = this.pl_data[i].hidden_y1;
             var y2 = y1 + this.pl_card_height;
             var res = false;
 
@@ -196,9 +205,9 @@ class RenderPipelineEditor {
                 this.pl_highlightCard = i;
             }
 
-            if (data_pl[i]['hidden_highlight'] != res) {
+            if (this.pl_data[i]['hidden_highlight'] != res) {
                 changesExists = true;
-                data_pl[i]['hidden_highlight'] = res;
+                this.pl_data[i]['hidden_highlight'] = res;
             }
         }
         if (this.pl_highlightCard == null) {
@@ -232,15 +241,15 @@ class RenderPipelineEditor {
         var max_width = 0;
         // var pl_cell_max_x = 0;
         // var pl_cell_max_y = 0;
-        for (var i in data_pl) {
-            var tMeas = this.ctx.measureText(data_pl[i]['name']);
+        for (var i in this.pl_data) {
+            var tMeas = this.ctx.measureText(this.pl_data[i]['name']);
             max_width = Math.max(tMeas.width, max_width);
-            data_pl[i]['hidden_name_width'] = parseInt(tMeas.width);
-            tMeas = this.ctx.measureText(data_pl[i]['description']);
+            this.pl_data[i]['hidden_name_width'] = parseInt(tMeas.width);
+            tMeas = this.ctx.measureText(this.pl_data[i]['description']);
             max_width = Math.max(tMeas.width, max_width);
-            data_pl[i]['hidden_description_width'] = parseInt(tMeas.width);
-            // pl_cell_max_x = Math.max(data_pl['cell_x'])
-            // pl_cell_max_y = Math.max(data_pl['cell_y'])
+            this.pl_data[i]['hidden_description_width'] = parseInt(tMeas.width);
+            // pl_cell_max_x = Math.max(this.pl_data['cell_x'])
+            // pl_cell_max_y = Math.max(this.pl_data['cell_y'])
         }
         this.pl_card_width = parseInt(max_width) + 20;
         this.pl_cell_width = this.pl_card_width + 20;
@@ -253,10 +262,10 @@ class RenderPipelineEditor {
         var max_cell_y = -1;
         var new_max_cell_x = 0;
         var new_max_cell_y = 0;
-        for (var i in data_pl) {
-            data_pl[i]['hidden_highlight'] = false;
-            new_max_cell_x = Math.max(data_pl[i].cell_x, new_max_cell_x);
-            new_max_cell_y = Math.max(data_pl[i].cell_y, new_max_cell_y);
+        for (var i in this.pl_data) {
+            this.pl_data[i]['hidden_highlight'] = false;
+            new_max_cell_x = Math.max(this.pl_data[i].cell_x, new_max_cell_x);
+            new_max_cell_y = Math.max(this.pl_data[i].cell_y, new_max_cell_y);
         }
 
         if (new_max_cell_x != max_cell_x || new_max_cell_y != max_cell_y) {
@@ -321,13 +330,13 @@ class RenderPipelineEditor {
         this.ctx.lineWidth = 1;
 
         // cards
-        for (var i in data_pl) {
-            var p = data_pl[i];
+        for (var i in this.pl_data) {
+            var p = this.pl_data[i];
             // console.log(p);
             var x1 = this.pl_padding + p.cell_x * this.pl_cell_width;
             var y1 = this.pl_padding + p.cell_y * this.pl_cell_height;
-            data_pl[i].hidden_x1 = x1;
-            data_pl[i].hidden_y1 = y1;
+            this.pl_data[i].hidden_x1 = x1;
+            this.pl_data[i].hidden_y1 = y1;
 
             // fill
             if (this.selectedBlockIdEditing == i) {
@@ -350,8 +359,8 @@ class RenderPipelineEditor {
 
     draw_lines() {
         this.ctx.lineWidth = 1;
-        for (var i in data_pl) {
-            var p = data_pl[i];
+        for (var i in this.pl_data) {
+            var p = this.pl_data[i];
 
             if (p.incoming) {
 
@@ -363,7 +372,7 @@ class RenderPipelineEditor {
                 var max_x = 0;
                 var has_income = false;
                 for (var inc in p.incoming) {
-                    var node = data_pl[inc];
+                    var node = this.pl_data[inc];
                     if (!node) {
                         continue;
                     }
@@ -388,7 +397,7 @@ class RenderPipelineEditor {
                 max_y += this.pl_cell_height / 2 + (this.pl_cell_height - this.pl_card_height) / 2;
 
                 for (var inc in p.incoming) {
-                    var node = data_pl[inc];
+                    var node = this.pl_data[inc];
                     if (!node) {
                         continue;
                     }
@@ -452,10 +461,25 @@ class RenderPipelineEditor {
             this.conneсtingBlocks.state = 'nope';
             var bl1 = this.conneсtingBlocks.incoming_block_id;
             var bl2 = this.conneсtingBlocks.block_id;
-            data_pl[bl2]["incoming"][bl1] = "";
-            console.log(data_pl[bl2])
+            this.pl_data[bl2]["incoming"][bl1] = "";
+            console.log(this.pl_data[bl2])
             this.update_pipeline_diagram();
             
         }
+    }
+
+    export_to_json() {
+        var _ret = {};
+        for (var i in this.pl_data) {
+            _ret[i] = {}
+            for (var n in this.pl_data[i]) {
+                if (n.startsWith("hidden_")) {
+                    _ret[i][n] = undefined;        
+                } else {
+                    _ret[i][n] = this.pl_data[i][n];
+                }
+            }
+        }
+        return _ret;
     }
 };
