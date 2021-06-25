@@ -1,6 +1,69 @@
+class RenderPipelineNode {
+    constructor(nodeid) {
+        this.nodeid = nodeid;
+        this.name = "edit me";
+        this.name_width = 0;
+        this.description = "edit me";
+        this.description_width = 0;
+        this.max_card_width = 0;
+        this.incoming = {};
+        this.cell_x = 0;
+        this.cell_y = 0;
+        this.need_update_meansure = true;
+    }
+
+    to_json() {
+        return {
+            "name": this.name,
+            "description": this.description,
+            "incoming": this.incoming,
+            "cell_x": this.cell_x,
+            "cell_y": this.cell_y
+        }
+    }
+
+    copy_from_json(_json) {
+        this.set_name(_json['name'])
+        this.set_description(_json['description'])
+        this.incoming = _json['incoming']
+        this.cell_x = _json["cell_x"]
+        this.cell_y = _json["cell_y"]
+    }
+
+    set_name(name) {
+        if (this.name != name) {
+            this.name = name
+            this.need_update_meansure = true;
+        }
+    }
+
+    set_description(description) {
+        if (this.description != description) {
+            this.description = description
+            this.need_update_meansure = true;
+        }
+    }
+
+    update_meansures(_ctx) {
+        if (this.need_update_meansure) {
+            this.max_card_width = 0
+            var tMeas = _ctx.measureText(this.name);
+            this.max_card_width = Math.max(tMeas.width, this.max_card_width);
+            this.name_width = parseInt(tMeas.width);
+            tMeas = _ctx.measureText(this.description);
+            this.max_card_width = Math.max(tMeas.width, this.max_card_width);
+            this.description_width = parseInt(tMeas.width);
+        }
+        return this.max_card_width;
+    }
+}
+
+
 class RenderPipelineEditor {
     constructor(canvas_id, canvas_container_id) {
         this.fontSize = 16;
+        this.pl_max_cell_x = -1;
+        this.pl_max_cell_y = -1;
         this.pl_cell_width = 170;
         this.pl_cell_height = 86;
         this.pl_card_width = 159;
@@ -12,7 +75,7 @@ class RenderPipelineEditor {
         this.pl_scale = 1.0;
         this.pl_highlightCard = null;
         this.pl_data = {}; // TODO: original user data
-        this.pt_data_tmp = {}; // TODO: data with preprocessing like a real x,y
+        this.pt_data_render = {}; // TODO: data with preprocessing like a real x,y
         this.movingEnable = false;
         this.scrollMoving = false;
         this.scrollMovingPos = {};
@@ -32,7 +95,7 @@ class RenderPipelineEditor {
         this.canvas_container = document.getElementById(canvas_container_id);
 
         this.ctx = this.canvas.getContext("2d");
-        this.ctx.font = this.fontSize + "px Arial";
+        this.init_canvas()
 
         var self = this;
         this.canvas.onmouseover = function(event) {
@@ -63,6 +126,7 @@ class RenderPipelineEditor {
 
     set_data(data) {
         this.pl_data = this.clone_object(data);
+        this.prepare_data_render()
     }
 
     canvas_onmouseover(event) {
@@ -239,41 +303,33 @@ class RenderPipelineEditor {
 
     update_meansures() {
         var max_width = 0;
-        // var pl_cell_max_x = 0;
-        // var pl_cell_max_y = 0;
-        for (var i in this.pl_data) {
-            var tMeas = this.ctx.measureText(this.pl_data[i]['name']);
-            max_width = Math.max(tMeas.width, max_width);
-            this.pl_data[i]['hidden_name_width'] = parseInt(tMeas.width);
-            tMeas = this.ctx.measureText(this.pl_data[i]['description']);
-            max_width = Math.max(tMeas.width, max_width);
-            this.pl_data[i]['hidden_description_width'] = parseInt(tMeas.width);
-            // pl_cell_max_x = Math.max(this.pl_data['cell_x'])
-            // pl_cell_max_y = Math.max(this.pl_data['cell_y'])
+        for (var node_id in this.pl_data) {
+            var _node_orig = this.pl_data[node_id]
+            var _node_r = this.pl_data_render[node_id]
+            _node_r.set_name(_node_orig.name)
+            _node_r.set_description(_node_orig.description)
+            var card_width = _node_r.update_meansures(this.ctx)
+            max_width = Math.max(card_width, max_width)
         }
         this.pl_card_width = parseInt(max_width) + 20;
         this.pl_cell_width = this.pl_card_width + 20;
-        // this.pl_height = pl_cell_max_y * pl_cell_height;
-        // this.pl_width = pl_cell_max_x * pl_cell_width;
     }
 
     update_image_size() {
-        var max_cell_x = -1;
-        var max_cell_y = -1;
         var new_max_cell_x = 0;
         var new_max_cell_y = 0;
         for (var i in this.pl_data) {
-            this.pl_data[i]['hidden_highlight'] = false;
+            this.pl_data[i]['hidden_highlight'] = false; // reset here ?
             new_max_cell_x = Math.max(this.pl_data[i].cell_x, new_max_cell_x);
             new_max_cell_y = Math.max(this.pl_data[i].cell_y, new_max_cell_y);
         }
 
-        if (new_max_cell_x != max_cell_x || new_max_cell_y != max_cell_y) {
-            max_cell_y = new_max_cell_y;
-            max_cell_x = new_max_cell_x;
+        if (new_max_cell_x != this.pl_max_cell_x || new_max_cell_y != this.pl_max_cell_y) {
+            this.pl_max_cell_y = new_max_cell_y;
+            this.pl_max_cell_x = new_max_cell_x;
 
-            this.pl_width = (max_cell_x + 1) * this.pl_cell_width + 2 * this.pl_padding + 100;
-            this.pl_height = (max_cell_y + 1) * this.pl_cell_height + 2 * this.pl_padding + 100;
+            this.pl_width =  (this.pl_max_cell_x + 1) * this.pl_cell_width + 2 * this.pl_padding + 100;
+            this.pl_height = (this.pl_max_cell_y + 1) * this.pl_cell_height + 2 * this.pl_padding + 100;
             this.canvas.width  = this.pl_width;
             this.canvas.height = this.pl_height;
             this.canvas.style.width  = this.pl_width + 'px';
@@ -329,9 +385,15 @@ class RenderPipelineEditor {
         // ctx.fillRect(10, 10, 100, 100);
         this.ctx.lineWidth = 1;
 
+        for (var node_id in this.pl_data_render) {
+            var node = this.pl_data_render[node_id]
+            // node.draw_card(this.ctx);
+        }
+
         // cards
         for (var i in this.pl_data) {
             var p = this.pl_data[i];
+            var _node_r = this.pl_data_render[i];
             // console.log(p);
             var x1 = this.pl_padding + p.cell_x * this.pl_cell_width;
             var y1 = this.pl_padding + p.cell_y * this.pl_cell_height;
@@ -349,10 +411,10 @@ class RenderPipelineEditor {
 
             this.ctx.strokeRect(x1, y1, this.pl_card_width, this.pl_card_height);
             var d = 20;
-            var x1_name = (this.pl_card_width - p['hidden_name_width']) / 2;
+            var x1_name = (this.pl_card_width - _node_r.name_width) / 2;
             this.ctx.fillText('' + p['name'], x1 + x1_name, y1 + d);
             d += 20;
-            var x1_description = (this.pl_card_width - p['hidden_description_width']) / 2;
+            var x1_description = (this.pl_card_width - _node_r.description_width) / 2;
             this.ctx.fillText('' + p['description'], x1 + x1_description, y1 + d);
         }
     }
@@ -512,13 +574,17 @@ class RenderPipelineEditor {
                 new_id = null;
                 continue;
             }
-            this.pl_data[new_id] = {
+            const _node_d = {
                 "name": "edit me",
                 "description": "edit me",
                 "incoming": {},
                 "cell_x": pos_x,
                 "cell_y": pos_y
             }
+            var node = new RenderPipelineNode(new_id)
+            node.copy_from_json(_node_d)
+            this.pl_data_render[new_id] = node
+            this.pl_data[new_id] = _node_d
         }
 
         this.selectedBlockIdEditing = new_id;
@@ -526,6 +592,15 @@ class RenderPipelineEditor {
         this.update_pipeline_diagram();
         if (this.onchoosedelement) {
             this.onchoosedelement(new_id);
+        }
+    }
+
+    prepare_data_render() {
+        this.pl_data_render = {}
+        for(var node_id in this.pl_data) {
+            var node = new RenderPipelineNode(node_id)
+            node.copy_from_json(this.pl_data[node_id])
+            this.pl_data_render[node_id] = node
         }
     }
 };
