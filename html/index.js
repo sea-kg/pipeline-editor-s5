@@ -1,7 +1,5 @@
 
 
-
-
 function switch_ui_to_tab(_this, _callback) {
     var els = document.getElementsByClassName('pipeline-editor-tab');
     var active_id = _this.id;
@@ -73,35 +71,6 @@ function save_to_localstorage() {
     var _data = render.export_to_json();
     _data = JSON.stringify(_data, undefined, 4);
     localStorage.setItem('_data', _data);
-}
-
-function random_makeid(length) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-   }
-   return result;
-}
-
-function add_block() {
-    var added = false;
-    while (!added) {
-        var new_id = random_makeid(7);
-        if (!render.pl_data[new_id]) {
-            render.pl_data[new_id] = {
-                "name": "edit me",
-                "description": "edit me",
-                "incoming": {},
-                "cell_x": 0,
-                "cell_y": 0
-            }
-            added = true;
-        }
-    }
-    render.update_meansures();
-    render.update_pipeline_diagram();
 }
 
 function connect_blocks() {

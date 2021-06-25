@@ -482,4 +482,50 @@ class RenderPipelineEditor {
         }
         return _ret;
     }
+
+    random_makeid() {
+        var length = 7;
+        var result           = '';
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+       }
+       return result;
+    }
+
+    add_block() {
+        console.log("scrollLeft = ", this.canvas_container.scrollLeft)
+        var pos_x = this.canvas_container.scrollLeft - this.pl_padding + this.pl_cell_width;
+        pos_x = parseInt(pos_x / this.pl_cell_width);
+        console.log("pos_x = ", pos_x)
+
+        console.log("scrollTop = ", this.canvas_container.scrollTop)
+        var pos_y = this.canvas_container.scrollTop - this.pl_padding + this.pl_cell_height
+        pos_y = parseInt(pos_y / this.pl_cell_height);
+        console.log("pos_y = ", pos_y)
+
+        var new_id = null;
+        while (new_id == null) {
+            new_id = this.random_makeid();
+            if (this.pl_data[new_id]) {
+                new_id = null;
+                continue;
+            }
+            this.pl_data[new_id] = {
+                "name": "edit me",
+                "description": "edit me",
+                "incoming": {},
+                "cell_x": pos_x,
+                "cell_y": pos_y
+            }
+        }
+
+        this.selectedBlockIdEditing = new_id;
+        this.update_meansures();
+        this.update_pipeline_diagram();
+        if (this.onchoosedelement) {
+            this.onchoosedelement(new_id);
+        }
+    }
 };
