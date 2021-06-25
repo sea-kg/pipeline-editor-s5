@@ -126,7 +126,7 @@ function render_onchoosedelement(block_id) {
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    var _data = localStorage.getItem('data_pl')
+    var _data = localStorage.getItem('_data')
     if (_data) {
         _data = JSON.parse(_data);
     } else {

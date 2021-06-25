@@ -24,6 +24,7 @@ class RenderPipelineNode {
         this.update_cell_xy(0,0)
         this.need_update_meansure = true;
         this.dtbqA0E_nodes_in_same_cells = []
+        this.dtbqA0E_paralax_precalculated = 0
     }
 
     to_json() {
@@ -89,20 +90,19 @@ class RenderPipelineNode {
 
     nodes_in_same_cells_reset() {
         this.dtbqA0E_nodes_in_same_cells = []
+        this.dtbqA0E_paralax_precalculated = 0;
     }
 
     nodes_in_same_cells_add(node_id) {
         this.dtbqA0E_nodes_in_same_cells.push(node_id)
+        // paralax
+        var diff = parseInt(this.dtbqA0E_nodes_in_same_cells.length / 2);
+        var idx = this.dtbqA0E_nodes_in_same_cells.indexOf(this.nodeid);
+        this.dtbqA0E_paralax_precalculated = (idx - diff)*3;
     }
 
     get_paralax_in_cell() {
-        if (this.dtbqA0E_nodes_in_same_cells.length == 1) {
-            return 0;
-        }
-        var diff = parseInt(this.dtbqA0E_nodes_in_same_cells.length / 2);
-        var idx = this.dtbqA0E_nodes_in_same_cells.indexOf(this.nodeid);
-        var ret = idx - diff;
-        return ret;
+        return this.dtbqA0E_paralax_precalculated;
     }
 }
 
@@ -443,7 +443,7 @@ class RenderPipelineEditor {
             var p = this.pl_data[i];
             var _node_r = this.pl_data_render[i];
 
-            var paralax = _node_r.get_paralax_in_cell()*3;
+            var paralax = _node_r.get_paralax_in_cell();
            
             var x1 = this.pl_padding + p.cell_x * this.pl_cell_width + paralax;
             var y1 = this.pl_padding + p.cell_y * this.pl_cell_height + paralax;

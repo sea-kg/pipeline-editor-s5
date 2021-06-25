@@ -162,3 +162,8 @@ body {
 .pipeline-editor-functions-btn.draw-grid-disable {
     background-image: url("./images/draw-grid-disable.svg");
 }
+
+.pipeline-editor-functions-btn.save-to-storage {
+    background-image: url("./images/save-to-storage.svg");
+}
+
