@@ -41,6 +41,14 @@
     >
         Settings
     </div>
+    <div
+        class="pipeline-editor-tab"
+        id="tab_about"
+        tab_content_id="tab_content_about"
+        onclick="switch_ui_to_tab(this, switch_to_tab_about)"
+    >
+        About
+    </div>
 </div>
 
 <div class="pipeline-editor-container" id="tab_content_ui_editor">
@@ -84,6 +92,10 @@
     <h3>Export</h3>
     <div class="pipeline-editor-btn" onclick="save_as_image()">Save as image</div>
     <div class="pipeline-editor-btn" onclick="save_to_localstorage()">Save to localstorage</div>
+</div>
+
+<div class="pipeline-editor-container" id="tab_content_about" style="display: none;">
+    TODO About
 </div>
 
 <script src="./data_pl_sample.js?ver=1"></script>

@@ -69,6 +69,11 @@ function switch_to_tab_settings() {
     json_content.value = JSON.stringify(_data_pl, undefined, 4);
 }
 
+function switch_to_tab_about() {
+    var _data_pl = export_to_json();
+    json_content.value = JSON.stringify(_data_pl, undefined, 4);
+}
+
 
 function save_as_image() {
     const dataUrl = pipeline_diagram_canvas.toDataURL("png");
