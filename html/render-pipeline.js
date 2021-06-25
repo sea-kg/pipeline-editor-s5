@@ -121,7 +121,7 @@ class RenderPipelineEditor {
         this.pl_padding = 20;
         this.pl_scale = 1.0;
         this.pl_highlightCard = null;
-        this.pl_data = {}; // TODO: original user data
+        this.pl_data = {}; // original user data
         this.pt_data_render = {}; // TODO: data with preprocessing like a real x,y
         this.movingEnable = false;
         this.scrollMoving = false;
@@ -133,7 +133,8 @@ class RenderPipelineEditor {
             'block-id-undermouse': null
         };
         this.selectedBlockIdEditing = null;
-        
+
+        this.editorState = 'moving';
 
         // this.editorState = 'moving' or 'connecting-blocks' or 'removing-blocks'
 
@@ -211,6 +212,24 @@ class RenderPipelineEditor {
                 x: event.clientX,
                 y: event.clientY,
             };
+            return;
+        }
+
+        if (this.editorState == 'remove') {
+            var nodeid = this.selectedBlock['block-id-undermouse'];
+            if (nodeid) {
+                this.selectedBlockIdEditing = null;
+                delete this.pl_data[nodeid];
+                delete this.pt_data_render[nodeid];
+                this.update_pipeline_diagram();
+                this.editorState = 'moving';
+                
+                // reset selection
+                this.selectedBlockIdEditing = null;
+                if (this.onchoosedelement) {
+                    this.onchoosedelement(this.selectedBlockIdEditing);
+                }
+            }
             return;
         }
 
@@ -595,8 +614,6 @@ class RenderPipelineEditor {
         return _ret;
     }
 
-    
-
     add_block() {
         var pos_x = this.canvas_container.scrollLeft - this.pl_padding + this.pl_cell_width;
         pos_x = parseInt(pos_x / this.pl_cell_width);
@@ -631,6 +648,10 @@ class RenderPipelineEditor {
         if (this.onchoosedelement) {
             this.onchoosedelement(new_id);
         }
+    }
+
+    remove_block() {
+        this.editorState = 'remove';
     }
 
     prepare_data_render() {

@@ -167,3 +167,7 @@ body {
     background-image: url("./images/save-to-storage.svg");
 }
 
+.pipeline-editor-functions-btn.remove-block {
+    background-image: url("./images/remove-block.svg");
+}
+
