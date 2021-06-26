@@ -34,7 +34,7 @@ function switch_draw_grid(el) {
 }
 
 function switch_to_tab_ui_editor(active_id) {
-    _data = JSON.parse(json_content.value);
+    var _data = JSON.parse(json_content.value);
     render.set_data(_data)
     render.update_meansures();
     render.update_pipeline_diagram();

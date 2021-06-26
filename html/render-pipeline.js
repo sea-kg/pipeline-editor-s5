@@ -10,6 +10,55 @@ function JWwfsRY_random_makeid() {
    return result;
 }
 
+class RenderPipelineConfig {
+    constructor() {
+        this.pl_max_cell_x = -1;
+        this.pl_max_cell_y = -1;
+
+        this.GVitVNl_pl_cell_width = 170;
+        this.GVitVNl_pl_cell_height = 86;
+        this.CEisN2z_pl_card_width = 159;
+        this.CEisN2z_pl_card_height = 62;
+    }
+
+    set_max_cell_xy(x,y) {
+        if (this.pl_max_cell_x != x || this.pl_max_cell_y != y) {
+            this.pl_max_cell_x = x;
+            this.pl_max_cell_y = y;
+            return true;
+        }
+        return false;
+    }
+
+    set_cell_size(width, height) {
+        this.GVitVNl_pl_cell_width = width;
+        this.GVitVNl_pl_cell_height = height;
+    }
+
+    get_cell_width() {
+        return this.GVitVNl_pl_cell_width;
+    }
+
+    get_cell_height() {
+        return this.GVitVNl_pl_cell_height;
+    }
+
+    set_card_size(width, height) {
+        this.CEisN2z_pl_card_width = width;
+        this.CEisN2z_pl_card_height = height;
+        this.GVitVNl_pl_cell_width = this.CEisN2z_pl_card_width + 20;
+        this.GVitVNl_pl_cell_height = this.CEisN2z_pl_card_height + 20;
+    }
+
+    get_card_width() {
+        return this.CEisN2z_pl_card_width;
+    }
+
+    get_card_height() {
+        return this.CEisN2z_pl_card_height;
+    }
+}
+
 class RenderPipelineNode {
     constructor(nodeid) {
         this.nodeid = nodeid;
@@ -104,17 +153,17 @@ class RenderPipelineNode {
     get_paralax_in_cell() {
         return this.dtbqA0E_paralax_precalculated;
     }
+
+
+    draw_card(_ctx) {
+
+    }
 }
 
 class RenderPipelineEditor {
     constructor(canvas_id, canvas_container_id) {
         this.fontSize = 16;
-        this.pl_max_cell_x = -1;
-        this.pl_max_cell_y = -1;
-        this.pl_cell_width = 170;
-        this.pl_cell_height = 86;
-        this.pl_card_width = 159;
-        this.pl_card_height = 62;
+        this._conf = new RenderPipelineConfig()
         this.pl_height = 100;
         this.is_draw_grid = true;
         this.pl_width = 100;
@@ -264,9 +313,9 @@ class RenderPipelineEditor {
         var found_val = null;
         for (var i in this.pl_data) {
             var x1 = this.pl_data[i].hidden_x1;
-            var x2 = x1 + this.pl_card_width;
+            var x2 = x1 + this._conf.get_card_width();
             var y1 = this.pl_data[i].hidden_y1;
-            var y2 = y1 + this.pl_card_height;
+            var y2 = y1 + this._conf.get_card_height();
             if (x0 > x1 && x0 < x2 && y0 > y1 && y0 < y2) {
                 found_val = i;
             }
@@ -306,8 +355,8 @@ class RenderPipelineEditor {
         }
 
         if (this.movingEnable && this.pl_highlightCard != null) {
-            var t_x = Math.floor((x0 - this.pl_padding) / this.pl_cell_width);
-            var t_y = Math.floor((y0 - this.pl_padding) / this.pl_cell_height);
+            var t_x = Math.floor((x0 - this.pl_padding) / this._conf.get_cell_width());
+            var t_y = Math.floor((y0 - this.pl_padding) / this._conf.get_cell_height());
 
             // console.log(y0);
             if (this.pl_data_render[this.pl_highlightCard].update_cell_xy(t_x, t_y)) {
@@ -325,9 +374,9 @@ class RenderPipelineEditor {
 
         for (var i in this.pl_data) {
             var x1 = this.pl_data[i].hidden_x1;
-            var x2 = x1 + this.pl_card_width;
+            var x2 = x1 + this._conf.get_card_width();
             var y1 = this.pl_data[i].hidden_y1;
-            var y2 = y1 + this.pl_card_height;
+            var y2 = y1 + this._conf.get_card_height();
             var res = false;
 
             if (x0 > x1 && x0 < x2 && y0 > y1 && y0 < y2) {
@@ -378,8 +427,10 @@ class RenderPipelineEditor {
             var card_width = _node_r.update_meansures(this.ctx)
             max_width = Math.max(card_width, max_width)
         }
-        this.pl_card_width = parseInt(max_width) + 20;
-        this.pl_cell_width = this.pl_card_width + 20;
+        this._conf.set_card_size(
+            parseInt(max_width) + 20,
+            this._conf.get_card_height()
+        );
     }
 
     update_image_size() {
@@ -391,29 +442,22 @@ class RenderPipelineEditor {
             new_max_cell_y = Math.max(this.pl_data[i].cell_y, new_max_cell_y);
         }
 
-        if (new_max_cell_x != this.pl_max_cell_x || new_max_cell_y != this.pl_max_cell_y) {
-            this.pl_max_cell_y = new_max_cell_y;
-            this.pl_max_cell_x = new_max_cell_x;
-
-            this.pl_width =  (this.pl_max_cell_x + 1) * this.pl_cell_width + 2 * this.pl_padding + 100;
-            this.pl_height = (this.pl_max_cell_y + 1) * this.pl_cell_height + 2 * this.pl_padding + 100;
+        if (this._conf.set_max_cell_xy(new_max_cell_x, new_max_cell_y)) {
+            this.pl_width =  (this._conf.pl_max_cell_x + 1) * this._conf.get_cell_width() + 2 * this.pl_padding + 100;
+            this.pl_height = (this._conf.pl_max_cell_y + 1) * this._conf.get_cell_height() + 2 * this.pl_padding + 100;
             this.canvas.width  = this.pl_width;
             this.canvas.height = this.pl_height;
             this.canvas.style.width  = this.pl_width + 'px';
             this.canvas.style.height = this.pl_height + 'px';
         }
-        /*console.log("max_cell_x = ", max_cell_x);
-        console.log("this.pl_width = ", this.pl_width);
-        console.log("max_cell_y = ", max_cell_y);
-        console.log("this.pl_height = ", this.pl_height);*/
     }
 
     calcX_in_px(cell_x) {
-        return this.pl_padding + cell_x * this.pl_cell_width;
+        return this.pl_padding + cell_x * this._conf.get_cell_width();
     }
     
     calcY_in_px(cell_y) {
-        return this.pl_padding + cell_y * this.pl_cell_height;
+        return this.pl_padding + cell_y * this._conf.get_cell_height();
     }
 
     clear_canvas() {
@@ -429,16 +473,16 @@ class RenderPipelineEditor {
         }
 
         this.ctx.strokeStyle = "#E9F0E0";
-        for (var x = this.pl_padding; x <= this.pl_width; x = x + this.pl_cell_width) {
-            var x1 = x - (this.pl_cell_width - this.pl_card_width) / 2;
+        for (var x = this.pl_padding; x <= this.pl_width; x = x + this._conf.get_cell_width()) {
+            var x1 = x - (this._conf.get_cell_width() - this._conf.get_card_width()) / 2;
             this.ctx.beginPath();
             this.ctx.moveTo(x1, 0);
             this.ctx.lineTo(x1, this.pl_height);
             this.ctx.stroke();
         }
     
-        for (var y = this.pl_padding; y <= this.pl_height; y = y + this.pl_cell_height) {
-            var y1 = y - (this.pl_cell_height - this.pl_card_height) / 2;
+        for (var y = this.pl_padding; y <= this.pl_height; y = y + this._conf.get_cell_height()) {
+            var y1 = y - (this._conf.get_cell_height() - this._conf.get_card_height()) / 2;
             this.ctx.beginPath();
             this.ctx.moveTo(0, y1);
             this.ctx.lineTo(this.pl_width, y1);
@@ -452,9 +496,9 @@ class RenderPipelineEditor {
         // ctx.fillRect(10, 10, 100, 100);
         this.ctx.lineWidth = 1;
 
-        for (var node_id in this.pl_data_render) {
-            var _node = this.pl_data_render[node_id]
-            // node.draw_card(this.ctx);
+        for (var nodeid in this.pl_data_render) {
+            var _node = this.pl_data_render[nodeid]
+            _node.draw_card(this.ctx);
         }
 
         // cards
@@ -464,8 +508,8 @@ class RenderPipelineEditor {
 
             var paralax = _node_r.get_paralax_in_cell();
            
-            var x1 = this.pl_padding + p.cell_x * this.pl_cell_width + paralax;
-            var y1 = this.pl_padding + p.cell_y * this.pl_cell_height + paralax;
+            var x1 = this.pl_padding + p.cell_x * this._conf.get_cell_width() + paralax;
+            var y1 = this.pl_padding + p.cell_y * this._conf.get_cell_height() + paralax;
             this.pl_data[i].hidden_x1 = x1;
             this.pl_data[i].hidden_y1 = y1;
 
@@ -475,15 +519,15 @@ class RenderPipelineEditor {
             } else {
                 this.ctx.fillStyle = this.pl_highlightCard == i ? "#E6ECDF" : "white";
             }
-            this.ctx.fillRect(x1, y1, this.pl_card_width, this.pl_card_height);
+            this.ctx.fillRect(x1, y1, this._conf.get_card_width(), this._conf.get_card_height());
             this.ctx.fillStyle = "black";
 
-            this.ctx.strokeRect(x1, y1, this.pl_card_width, this.pl_card_height);
+            this.ctx.strokeRect(x1, y1, this._conf.get_card_width(), this._conf.get_card_height());
             var d = 20;
-            var x1_name = (this.pl_card_width - _node_r.name_width) / 2;
+            var x1_name = (this._conf.get_card_width() - _node_r.name_width) / 2;
             this.ctx.fillText('' + p['name'], x1 + x1_name, y1 + d);
             d += 20;
-            var x1_description = (this.pl_card_width - _node_r.description_width) / 2;
+            var x1_description = (this._conf.get_card_width() - _node_r.description_width) / 2;
             this.ctx.fillText('' + p['description'], x1 + x1_description, y1 + d);
         }
     }
@@ -495,7 +539,7 @@ class RenderPipelineEditor {
 
             if (p.incoming) {
 
-                var main_x1 = this.calcX_in_px(p.cell_x) + this.pl_card_width / 2;
+                var main_x1 = this.calcX_in_px(p.cell_x) + this._conf.get_card_width() / 2;
                 var main_y1 = this.calcY_in_px(p.cell_y);
 
                 var max_y = 0;
@@ -507,8 +551,8 @@ class RenderPipelineEditor {
                     if (!node) {
                         continue;
                     }
-                    var inc_x1 = this.calcX_in_px(node.cell_x) + this.pl_card_width / 2;
-                    var inc_y1 = this.calcY_in_px(node.cell_y) + this.pl_card_height;
+                    var inc_x1 = this.calcX_in_px(node.cell_x) + this._conf.get_card_width() / 2;
+                    var inc_y1 = this.calcY_in_px(node.cell_y) + this._conf.get_card_height();
 
                     if (!has_income) {
                         has_income = true;
@@ -525,15 +569,15 @@ class RenderPipelineEditor {
                 min_x = Math.min(main_x1, min_x);
                 max_x = Math.max(main_x1, max_x);
 
-                max_y += this.pl_cell_height / 2 + (this.pl_cell_height - this.pl_card_height) / 2;
+                max_y += this._conf.get_cell_height() / 2 + (this._conf.get_cell_height() - this._conf.get_card_height()) / 2;
 
                 for (var inc in p.incoming) {
                     var node = this.pl_data[inc];
                     if (!node) {
                         continue;
                     }
-                    var inc_x1 = this.calcX_in_px(node.cell_x) + this.pl_card_width / 2;
-                    var inc_y1 = this.calcY_in_px(node.cell_y) + this.pl_card_height;
+                    var inc_x1 = this.calcX_in_px(node.cell_x) + this._conf.get_card_width() / 2;
+                    var inc_y1 = this.calcY_in_px(node.cell_y) + this._conf.get_card_height();
 
                     // out circle
                     this.ctx.beginPath();
@@ -615,11 +659,11 @@ class RenderPipelineEditor {
     }
 
     add_block() {
-        var pos_x = this.canvas_container.scrollLeft - this.pl_padding + this.pl_cell_width;
-        pos_x = parseInt(pos_x / this.pl_cell_width);
+        var pos_x = this.canvas_container.scrollLeft - this.pl_padding + this._conf.get_cell_width();
+        pos_x = parseInt(pos_x / this._conf.get_cell_width());
 
-        var pos_y = this.canvas_container.scrollTop - this.pl_padding + this.pl_cell_height
-        pos_y = parseInt(pos_y / this.pl_cell_height);
+        var pos_y = this.canvas_container.scrollTop - this.pl_padding + this._conf.get_cell_height()
+        pos_y = parseInt(pos_y / this._conf.get_cell_height());
 
         var new_id = null;
         while (new_id == null) {
