@@ -14,3 +14,14 @@ Nice diagram and something else:
 
 * https://github.com/elyra-ai/examples/tree/master/pipelines/hello_world_kubeflow_pipelines
 * https://github.com/elyra-ai/pipeline-editor
+
+
+
+Block-scheme editor:
+
+https://draw.io
+
+
+Plugin for Jenkins
+
+https://www.jenkins.io/doc/book/blueocean/pipeline-editor/
