@@ -25,3 +25,8 @@ https://draw.io
 Plugin for Jenkins
 
 https://www.jenkins.io/doc/book/blueocean/pipeline-editor/
+
+
+PlantUML
+* https://plantuml.com/ru/starting
+* http://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000
