@@ -328,17 +328,20 @@ class RenderPipelineEditor {
 
         if (this.editorState == 'remove') {
             var nodeid = this.selectedBlock['block-id-undermouse'];
+            console.log(nodeid)
             if (nodeid) {
                 this.selectedBlockIdEditing = null;
                 delete this.pl_data[nodeid];
                 delete this.pt_data_render[nodeid];
+                this.prepare_data_render();
+                this.update_meansures();
                 this.update_pipeline_diagram();
                 this.editorState = 'moving';
                 
                 // reset selection
                 this.selectedBlockIdEditing = null;
                 if (this.onchoosedelement) {
-                    this.onchoosedelement(this.selectedBlockIdEditing);
+                    this.onchoosedelement(null);
                 }
             }
             return;
