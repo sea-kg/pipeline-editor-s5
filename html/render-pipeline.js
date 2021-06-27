@@ -103,6 +103,14 @@ class RenderPipelineNode {
         return this.IQrRW7r_hash_cell_xy;
     }
 
+    get_cell_x() {
+        return this.IQrRW7r_cell_x;
+    }
+
+    get_cell_y() {
+        return this.IQrRW7r_cell_y;
+    }
+
     copy_from_json(_json) {
         this.set_name(_json['name'])
         this.set_description(_json['description'])
@@ -117,11 +125,19 @@ class RenderPipelineNode {
         }
     }
 
+    get_name() {
+        return this.name; 
+    }
+
     set_description(description) {
         if (this.description != description) {
             this.description = description
             this.need_update_meansure = true;
         }
+    }
+
+    get_description() {
+        return this.description;
     }
 
     update_meansures(_ctx) {
@@ -508,8 +524,8 @@ class RenderPipelineEditor {
 
             var paralax = _node_r.get_paralax_in_cell();
            
-            var x1 = this.pl_padding + p.cell_x * this._conf.get_cell_width() + paralax;
-            var y1 = this.pl_padding + p.cell_y * this._conf.get_cell_height() + paralax;
+            var x1 = this.pl_padding + _node_r.get_cell_x() * this._conf.get_cell_width() + paralax;
+            var y1 = this.pl_padding + _node_r.get_cell_y() * this._conf.get_cell_height() + paralax;
             this.pl_data[i].hidden_x1 = x1;
             this.pl_data[i].hidden_y1 = y1;
 
@@ -525,10 +541,10 @@ class RenderPipelineEditor {
             this.ctx.strokeRect(x1, y1, this._conf.get_card_width(), this._conf.get_card_height());
             var d = 20;
             var x1_name = (this._conf.get_card_width() - _node_r.name_width) / 2;
-            this.ctx.fillText('' + p['name'], x1 + x1_name, y1 + d);
+            this.ctx.fillText('' + _node_r.get_name(), x1 + x1_name, y1 + d);
             d += 20;
             var x1_description = (this._conf.get_card_width() - _node_r.description_width) / 2;
-            this.ctx.fillText('' + p['description'], x1 + x1_description, y1 + d);
+            this.ctx.fillText('' + _node_r.get_description(), x1 + x1_description, y1 + d);
         }
     }
 
