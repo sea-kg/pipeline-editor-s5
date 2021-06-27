@@ -14,6 +14,7 @@ class RenderPipelineConfig {
     constructor() {
         this.pl_max_cell_x = -1;
         this.pl_max_cell_y = -1;
+        this.pl_padding = 20;
 
         this.GVitVNl_pl_cell_width = 170;
         this.GVitVNl_pl_cell_height = 86;
@@ -43,6 +44,10 @@ class RenderPipelineConfig {
         return this.GVitVNl_pl_cell_height;
     }
 
+    get_padding() {
+        return this.pl_padding;
+    }
+
     set_card_size(width, height) {
         this.CEisN2z_pl_card_width = width;
         this.CEisN2z_pl_card_height = height;
@@ -60,7 +65,8 @@ class RenderPipelineConfig {
 }
 
 class RenderPipelineNode {
-    constructor(nodeid) {
+    constructor(nodeid, _conf) {
+        this._conf = _conf;
         this.nodeid = nodeid;
         this.name = "edit me";
         this.name_width = 0;
@@ -74,6 +80,7 @@ class RenderPipelineNode {
         this.need_update_meansure = true;
         this.dtbqA0E_nodes_in_same_cells = []
         this.dtbqA0E_paralax_precalculated = 0
+        this.dfIxewv_outcoming = []
     }
 
     to_json() {
@@ -170,9 +177,48 @@ class RenderPipelineNode {
         return this.dtbqA0E_paralax_precalculated;
     }
 
+    outcoming_reset() {
+        this.dfIxewv_outcoming = []
+    }
 
-    draw_card(_ctx) {
+    outcoming_add(nodeid) {
+        this.dfIxewv_outcoming.push(nodeid)
+    }
 
+    get_paralax_for_line(node_id) {
+        if (this.dfIxewv_outcoming.length == 1) {
+            return 0;
+        }
+        // paralax
+        var diff = parseInt(this.dfIxewv_outcoming.length / 2);
+        var idx = this.dfIxewv_outcoming.indexOf(node_id);
+        return (idx - diff)*5;
+    }
+
+
+    draw_card(_ctx, selectedBlockIdEditing, highlightCard) {
+        var paralax = this.get_paralax_in_cell();
+        var x1 = this._conf.pl_padding + this.get_cell_x() * this._conf.get_cell_width() + paralax;
+        var y1 = this._conf.pl_padding + this.get_cell_y() * this._conf.get_cell_height() + paralax;
+        this.hidden_x1 = x1;
+        this.hidden_y1 = y1;
+
+        // fill
+        if (selectedBlockIdEditing == this.nodeid) {
+            _ctx.fillStyle = "red";
+        } else {
+            _ctx.fillStyle = highlightCard == this.nodeid ? "#E6ECDF" : "white";
+        }
+        _ctx.fillRect(x1, y1, this._conf.get_card_width(), this._conf.get_card_height());
+        _ctx.fillStyle = "black";
+
+        _ctx.strokeRect(x1, y1, this._conf.get_card_width(), this._conf.get_card_height());
+        var d = 20;
+        var x1_name = (this._conf.get_card_width() - this.name_width) / 2;
+        _ctx.fillText('' + this.get_name(), x1 + x1_name, y1 + d);
+        d += 20;
+        var x1_description = (this._conf.get_card_width() - this.description_width) / 2;
+        _ctx.fillText('' + this.get_description(), x1 + x1_description, y1 + d);
     }
 }
 
@@ -328,9 +374,9 @@ class RenderPipelineEditor {
     find_block_id(x0, y0) {
         var found_val = null;
         for (var i in this.pl_data) {
-            var x1 = this.pl_data[i].hidden_x1;
+            var x1 = this.pl_data_render[i].hidden_x1;
             var x2 = x1 + this._conf.get_card_width();
-            var y1 = this.pl_data[i].hidden_y1;
+            var y1 = this.pl_data_render[i].hidden_y1;
             var y2 = y1 + this._conf.get_card_height();
             if (x0 > x1 && x0 < x2 && y0 > y1 && y0 < y2) {
                 found_val = i;
@@ -389,9 +435,9 @@ class RenderPipelineEditor {
         // var block_id = find_block_id(x0, y0);
 
         for (var i in this.pl_data) {
-            var x1 = this.pl_data[i].hidden_x1;
+            var x1 = this.pl_data_render[i].hidden_x1;
             var x2 = x1 + this._conf.get_card_width();
-            var y1 = this.pl_data[i].hidden_y1;
+            var y1 = this.pl_data_render[i].hidden_y1;
             var y2 = y1 + this._conf.get_card_height();
             var res = false;
 
@@ -487,7 +533,8 @@ class RenderPipelineEditor {
         if (!this.is_draw_grid) {
             return;
         }
-
+        
+        this.ctx.lineWidth = 1;
         this.ctx.strokeStyle = "#E9F0E0";
         for (var x = this.pl_padding; x <= this.pl_width; x = x + this._conf.get_cell_width()) {
             var x1 = x - (this._conf.get_cell_width() - this._conf.get_card_width()) / 2;
@@ -514,49 +561,94 @@ class RenderPipelineEditor {
 
         for (var nodeid in this.pl_data_render) {
             var _node = this.pl_data_render[nodeid]
-            _node.draw_card(this.ctx);
+            _node.draw_card(this.ctx, this.selectedBlockIdEditing, this.pl_highlightCard);
         }
+    }
 
-        // cards
-        for (var i in this.pl_data) {
-            var p = this.pl_data[i];
-            var _node_r = this.pl_data_render[i];
+    draw_line(x0, y0, x1, y1, x2, y2) {
+        this.ctx.strokeStyle = "black";
+        this.ctx.lineWidth = 2;
+        // out circle
+        this.ctx.beginPath();
+        this.ctx.arc(x0, y0, 6, 0, Math.PI);
+        this.ctx.fill();
 
-            var paralax = _node_r.get_paralax_in_cell();
-           
-            var x1 = this.pl_padding + _node_r.get_cell_x() * this._conf.get_cell_width() + paralax;
-            var y1 = this.pl_padding + _node_r.get_cell_y() * this._conf.get_cell_height() + paralax;
-            this.pl_data[i].hidden_x1 = x1;
-            this.pl_data[i].hidden_y1 = y1;
+        // arrow
+        this.ctx.beginPath();
+        this.ctx.moveTo(x2 - 6, y2 - 12);
+        this.ctx.lineTo(x2 + 6, y2 - 12);
+        this.ctx.lineTo(x2 + 0, y2 - 0);
+        this.ctx.lineTo(x2 - 6, y2 - 12);
+        this.ctx.fill();
 
-            // fill
-            if (this.selectedBlockIdEditing == i) {
-                this.ctx.fillStyle = "red";
+        if (x0 == x1 && x1 == x2) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(x0, y0);
+            this.ctx.lineTo(x2, y2);
+            this.ctx.stroke();
+        } else {
+            var cw = 10;
+            this.ctx.beginPath();
+            this.ctx.moveTo(x0, y0);
+            this.ctx.lineTo(x0, y1 - cw);
+            this.ctx.stroke();
+
+            var _x0 = x0;
+            var _x2 = x2;
+            if (x2 < x0) {
+                _x0 = x0 - cw;
+                _x2 = x2 + cw;
+                this.ctx.beginPath();
+                this.ctx.arc(x0 - cw, y1 - cw, cw, 0, Math.PI / 2);
+                this.ctx.stroke();
+
+                this.ctx.beginPath();
+                this.ctx.arc(_x2, y1 + cw, cw, Math.PI, - Math.PI / 2);
+                this.ctx.stroke();
             } else {
-                this.ctx.fillStyle = this.pl_highlightCard == i ? "#E6ECDF" : "white";
-            }
-            this.ctx.fillRect(x1, y1, this._conf.get_card_width(), this._conf.get_card_height());
-            this.ctx.fillStyle = "black";
+                _x0 = x0 + cw;
+                _x2 = x2 - cw;
 
-            this.ctx.strokeRect(x1, y1, this._conf.get_card_width(), this._conf.get_card_height());
-            var d = 20;
-            var x1_name = (this._conf.get_card_width() - _node_r.name_width) / 2;
-            this.ctx.fillText('' + _node_r.get_name(), x1 + x1_name, y1 + d);
-            d += 20;
-            var x1_description = (this._conf.get_card_width() - _node_r.description_width) / 2;
-            this.ctx.fillText('' + _node_r.get_description(), x1 + x1_description, y1 + d);
+                this.ctx.beginPath();
+                this.ctx.arc(_x0, y1 - cw, cw, Math.PI / 2, Math.PI);
+                this.ctx.stroke();
+
+                this.ctx.beginPath();
+                this.ctx.arc(_x2, y1 + cw, cw, 1.5 * Math.PI, 2 * Math.PI);
+                this.ctx.stroke();
+            }
+
+            // horizontal first
+            this.ctx.beginPath();
+            this.ctx.moveTo(_x0, y1);
+            this.ctx.lineTo(x1 - cw, y1);
+            this.ctx.stroke();
+            
+            // vertical
+            this.ctx.beginPath();
+            this.ctx.moveTo(x1 - cw, y1);
+            this.ctx.lineTo(_x2, y1);
+            this.ctx.stroke();
+            
+
+
+            // horizontal last
+            this.ctx.beginPath();
+            this.ctx.moveTo(x2, y1 + cw);
+            this.ctx.lineTo(x2, y2);
+            this.ctx.stroke();
         }
     }
 
     draw_lines() {
         this.ctx.lineWidth = 1;
-        for (var i in this.pl_data) {
-            var p = this.pl_data[i];
+        for (var nodeid in this.pl_data_render) {
+            var p = this.pl_data_render[nodeid];
 
             if (p.incoming) {
 
-                var main_x1 = this.calcX_in_px(p.cell_x) + this._conf.get_card_width() / 2;
-                var main_y1 = this.calcY_in_px(p.cell_y);
+                var main_x1 = this.calcX_in_px(p.get_cell_x()) + this._conf.get_card_width() / 2;
+                var main_y1 = this.calcY_in_px(p.get_cell_y());
 
                 var max_y = 0;
                 var min_x = 0;
@@ -588,47 +680,31 @@ class RenderPipelineEditor {
                 max_y += this._conf.get_cell_height() / 2 + (this._conf.get_cell_height() - this._conf.get_card_height()) / 2;
 
                 for (var inc in p.incoming) {
-                    var node = this.pl_data[inc];
-                    if (!node) {
+                    var in_node = this.pl_data_render[inc];
+                    if (!in_node) {
                         continue;
                     }
-                    var inc_x1 = this.calcX_in_px(node.cell_x) + this._conf.get_card_width() / 2;
-                    var inc_y1 = this.calcY_in_px(node.cell_y) + this._conf.get_card_height();
+                    var paralax = in_node.get_paralax_for_line(nodeid);
+                    if (paralax != 0) {
+                        // console.log("in_nodeid=", inc, "out_nodeid=", nodeid, ", paralax=", paralax);
+                        // console.log(in_node)
+                    }
+                    
+                    // TODO calculate in node
+                    var inc_x1 = this.calcX_in_px(in_node.get_cell_x()) + this._conf.get_card_width() / 2 + paralax;
+                    var inc_y1 = this.calcY_in_px(in_node.get_cell_y()) + this._conf.get_card_height();
 
-                    // out circle
-                    this.ctx.beginPath();
-                    this.ctx.arc(inc_x1, inc_y1, 6, 0, Math.PI);
-                    this.ctx.fill();
-
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(inc_x1, inc_y1);
-                    this.ctx.lineTo(inc_x1, max_y);
-                    this.ctx.stroke();
-
-                    this.ctx.fillRect(inc_x1 - 3, max_y - 3, 6, 6);
+                    this.draw_line(
+                        inc_x1, inc_y1,
+                        max_x, max_y + paralax,
+                        main_x1, main_y1
+                    )
                 }
                 
-                if (has_income) {
-                    // horizontal line
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(min_x, max_y);
-                    this.ctx.lineTo(max_x, max_y);
-                    this.ctx.stroke();
-
-                    // to
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(main_x1, max_y);
-                    this.ctx.lineTo(main_x1, main_y1);
-                    this.ctx.stroke();
-
-                    // arrow
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(main_x1 - 6, main_y1 - 12);
-                    this.ctx.lineTo(main_x1 + 6, main_y1 - 12);
-                    this.ctx.lineTo(main_x1, main_y1);
-                    this.ctx.lineTo(main_x1 - 6, main_y1 - 12);
-                    this.ctx.fill();
-                }
+                // if (has_income) {
+                //     // horizontal line
+                //     
+                // }
             }
         }
     }
@@ -696,7 +772,7 @@ class RenderPipelineEditor {
                 "cell_y": pos_y
             }
             this.pl_data[new_id] = _node_d
-            var node = new RenderPipelineNode(new_id)
+            var node = new RenderPipelineNode(new_id, this._conf)
             node.copy_from_json(_node_d)
             this.pl_data_render[new_id] = node
             this.prepare_data_cards_one_cells()
@@ -717,11 +793,12 @@ class RenderPipelineEditor {
     prepare_data_render() {
         this.pl_data_render = {}
         for(var node_id in this.pl_data) {
-            var node = new RenderPipelineNode(node_id)
+            var node = new RenderPipelineNode(node_id, this._conf)
             node.copy_from_json(this.pl_data[node_id])
             this.pl_data_render[node_id] = node
         }
         this.prepare_data_cards_one_cells()
+        this.prepare_lines_out();
     }
 
     prepare_data_cards_one_cells() {
@@ -741,6 +818,24 @@ class RenderPipelineEditor {
             var _hcxy = _node.get_hash_cell_xy();
             for (var nid in coord_list[_hcxy]) {
                 _node.nodes_in_same_cells_add(coord_list[_hcxy][nid]);
+            }
+        }
+    }
+    
+    prepare_lines_out() {
+        for (var nodeid in this.pl_data_render) {
+            var _node = this.pl_data_render[nodeid]
+            _node.outcoming_reset()
+        }
+
+        for (var nodeid in this.pl_data_render) {
+            var _node = this.pl_data_render[nodeid]
+            for (var nid in _node.incoming) {
+                if (this.pl_data_render[nid]) {
+                    this.pl_data_render[nid].outcoming_add(nodeid)
+                } else {
+                    console.warn("Node with id=" + nid + " does not exists")
+                }
             }
         }
     }
