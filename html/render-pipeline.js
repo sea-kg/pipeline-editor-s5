@@ -597,9 +597,11 @@ class RenderPipelineEditor {
             this.ctx.stroke();
 
             var _x0 = x0;
+            var _x1 = x1;
             var _x2 = x2;
             if (x2 < x0) {
                 _x0 = x0 - cw;
+                _x1 = x1 - cw;
                 _x2 = x2 + cw;
                 this.ctx.beginPath();
                 this.ctx.arc(x0 - cw, y1 - cw, cw, 0, Math.PI / 2);
@@ -610,6 +612,7 @@ class RenderPipelineEditor {
                 this.ctx.stroke();
             } else {
                 _x0 = x0 + cw;
+                _x1 = x1 - cw;
                 _x2 = x2 - cw;
 
                 this.ctx.beginPath();
@@ -624,16 +627,14 @@ class RenderPipelineEditor {
             // horizontal first
             this.ctx.beginPath();
             this.ctx.moveTo(_x0, y1);
-            this.ctx.lineTo(x1 - cw, y1);
+            this.ctx.lineTo(_x0, y1);
             this.ctx.stroke();
             
             // vertical
             this.ctx.beginPath();
-            this.ctx.moveTo(x1 - cw, y1);
+            this.ctx.moveTo(_x0, y1);
             this.ctx.lineTo(_x2, y1);
             this.ctx.stroke();
-            
-
 
             // horizontal last
             this.ctx.beginPath();
@@ -699,7 +700,7 @@ class RenderPipelineEditor {
 
                     this.draw_line(
                         inc_x1, inc_y1,
-                        max_x, max_y + paralax,
+                        inc_x1, max_y - paralax,
                         main_x1, main_y1
                     )
                 }

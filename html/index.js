@@ -73,6 +73,20 @@ function save_to_localstorage() {
     localStorage.setItem('_data', _data);
 }
 
+function clear_localstorage() {
+    localStorage.setItem('_data', '{}');
+    render.set_data({})
+    render.update_meansures();
+    render.update_pipeline_diagram();
+}
+
+function sample_localstorage() {
+    localStorage.removeItem('_data');
+    render.set_data(data_pl_example);
+    render.update_meansures();
+    render.update_pipeline_diagram();
+}
+
 function connect_blocks() {
     render.start_connect_blocks();
 }
@@ -100,7 +114,6 @@ function resize_canvas() {
 function input_onchangename() {
     var block_id = document.getElementById("prop_block_id").value;
     if (block_id) {
-        console.log(document.getElementById("prop_name").value);
         render.pl_data[block_id]['name'] = document.getElementById("prop_name").value;
         render.pl_data[block_id]['description'] = document.getElementById("prop_description").value;
         render.update_meansures();

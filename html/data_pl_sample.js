@@ -1,773 +1,679 @@
 var data_pl_example = {
     "1": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"9": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "9": ""
+        },
+        "cell_x": 7,
+        "cell_y": 11
+    },
+    "2": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "29": ""
+        },
         "cell_x": 9,
         "cell_y": 8
     },
-    "2": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"29": ""},
-        
-        "cell_x": 10,
-        "cell_y": 7
-    },
     "3": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"1": ""},
-        
-        "cell_x": 9,
-        "cell_y": 12
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "1": ""
+        },
+        "cell_x": 6,
+        "cell_y": 13
     },
     "4": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"1": ""},
-        
-        "cell_x": 10,
-        "cell_y": 12
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "1": ""
+        },
+        "cell_x": 8,
+        "cell_y": 14
     },
     "5": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"25": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "25": ""
+        },
         "cell_x": 12,
         "cell_y": 13
     },
     "6": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"4": ""},
-        
-        "cell_x": 13,
-        "cell_y": 15
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "4": ""
+        },
+        "cell_x": 7,
+        "cell_y": 16
     },
     "7": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"4": ""},
-        
-        "cell_x": 11,
-        "cell_y": 15
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "4": ""
+        },
+        "cell_x": 9,
+        "cell_y": 16
     },
     "8": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"11": ""},
-        
-        "cell_x": 6,
+        "name": "Node 8",
+        "description": "",
+        "incoming": {
+            "11": ""
+        },
+        "cell_x": 5,
         "cell_y": 4
     },
     "9": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "0": "",
+            "16": ""
+        },
         "cell_x": 8,
-        "cell_y": 6
+        "cell_y": 9
     },
     "10": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"9": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "9": ""
+        },
         "cell_x": 8,
-        "cell_y": 8
+        "cell_y": 11
     },
     "11": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"78": ""},
-        
-        "cell_x": 9,
-        "cell_y": 2
-    },
-    "12": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
+        "name": "Node 11",
+        "description": "",
+        "incoming": {
+            "78": ""
+        },
         "cell_x": 6,
         "cell_y": 2
     },
     "15": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"11": ""},
-        
-        "cell_x": 1,
-        "cell_y": 7
+        "name": "Node 15",
+        "description": "",
+        "incoming": {
+            "11": ""
+        },
+        "cell_x": 3,
+        "cell_y": 5
     },
     "16": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"11": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "11": "",
+            "79": ""
+        },
+        "cell_x": 7,
+        "cell_y": 6
+    },
+    "17": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "11": ""
+        },
         "cell_x": 14,
         "cell_y": 4
     },
-    "17": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"11": ""},
-        
+    "18": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "11": ""
+        },
         "cell_x": 15,
         "cell_y": 4
     },
-    "18": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"11": ""},
-        
-        "cell_x": 16,
-        "cell_y": 4
-    },
     "19": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"11": ""},
-        
-        "cell_x": 20,
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "11": ""
+        },
+        "cell_x": 18,
         "cell_y": 4
     },
     "20": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"11": ""},
-        
-        "cell_x": 29,
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "11": ""
+        },
+        "cell_x": 20,
         "cell_y": 4
     },
     "21": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"11": ""},
-        
-        "cell_x": 30,
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "11": ""
+        },
+        "cell_x": 21,
         "cell_y": 4
     },
     "22": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"11": ""},
-        
-        "cell_x": 25,
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "11": ""
+        },
+        "cell_x": 22,
         "cell_y": 4
     },
     "23": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"25": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "25": ""
+        },
         "cell_x": 13,
         "cell_y": 13
     },
     "24": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"27": ""},
-        
-        "cell_x": 12,
-        "cell_y": 11
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "27": ""
+        },
+        "cell_x": 11,
+        "cell_y": 12
     },
     "25": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"31": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "31": ""
+        },
         "cell_x": 13,
         "cell_y": 11
     },
-    "26": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 12,
-        "cell_y": 9
-    },
     "27": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "0": "",
+            "51": ""
+        },
         "cell_x": 11,
-        "cell_y": 9
-    },
-    "28": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 10,
-        "cell_y": 5
+        "cell_y": 10
     },
     "29": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 11,
-        "cell_y": 5
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "0": "",
+            "79": ""
+        },
+        "cell_x": 10,
+        "cell_y": 6
     },
-    "30": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
+    "31": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "0": "",
+            "17": ""
+        },
         "cell_x": 14,
         "cell_y": 9
     },
-    "31": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 15,
-        "cell_y": 9
-    },
     "32": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"31": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "31": ""
+        },
         "cell_x": 14,
         "cell_y": 11
     },
     "33": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"31": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "31": ""
+        },
         "cell_x": 15,
         "cell_y": 11
     },
-    "34": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 10,
-        "cell_y": 15
-    },
-    "35": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"34": ""},
-        
-        "cell_x": 10,
-        "cell_y": 17
-    },
-    "36": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 19,
-        "cell_y": 5
-    },
     "37": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"19": ""},
-        
-        "cell_x": 20,
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "19": ""
+        },
+        "cell_x": 17,
         "cell_y": 7
     },
     "38": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"19": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "19": ""
+        },
         "cell_x": 19,
-        "cell_y": 7
-    },
-    "39": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 21,
         "cell_y": 7
     },
     "40": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"37": ""},
-        
-        "cell_x": 20,
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "37": ""
+        },
+        "cell_x": 16,
         "cell_y": 9
     },
     "41": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"37": ""},
-        
-        "cell_x": 21,
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "37": ""
+        },
+        "cell_x": 18,
         "cell_y": 9
     },
-    "42": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 22,
-        "cell_y": 10
-    },
     "43": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"41": ""},
-        
-        "cell_x": 22,
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "41": ""
+        },
+        "cell_x": 17,
         "cell_y": 12
     },
     "44": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"41": ""},
-        
-        "cell_x": 21,
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "41": ""
+        },
+        "cell_x": 19,
         "cell_y": 12
     },
     "45": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 23,
-        "cell_y": 12
-    },
-    "46": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"45": ""},
-        
-        "cell_x": 22,
-        "cell_y": 14
-    },
-    "47": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"45": ""},
-        
-        "cell_x": 23,
-        "cell_y": 14
-    },
-    "48": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 19,
-        "cell_y": 10
-    },
-    "49": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"48": ""},
-        
-        "cell_x": 19,
-        "cell_y": 12
-    },
-    "50": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"9": ""},
-        
-        "cell_x": 6,
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "0": "",
+            "59": ""
+        },
+        "cell_x": 21,
         "cell_y": 8
     },
-    "51": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"29": ""},
-        
-        "cell_x": 11,
-        "cell_y": 7
+    "46": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "45": ""
+        },
+        "cell_x": 20,
+        "cell_y": 10
     },
-    "52": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"29": ""},
-        
-        "cell_x": 12,
-        "cell_y": 7
+    "47": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "45": ""
+        },
+        "cell_x": 21,
+        "cell_y": 10
     },
-    "53": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"29": ""},
-        
-        "cell_x": 13,
-        "cell_y": 7
-    },
-    "54": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 7,
-        "cell_y": 9
-    },
-    "55": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"54": ""},
-        
-        "cell_x": 8,
+    "48": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "0": "",
+            "40": ""
+        },
+        "cell_x": 16,
         "cell_y": 11
     },
-    "56": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 7,
-        "cell_y": 11
-    },
-    "57": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"56": ""},
-        
-        "cell_x": 8,
+    "49": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "48": ""
+        },
+        "cell_x": 16,
         "cell_y": 13
     },
-    "58": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 31,
-        "cell_y": 4
+    "50": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "9": ""
+        },
+        "cell_x": 9,
+        "cell_y": 11
+    },
+    "51": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "29": ""
+        },
+        "cell_x": 11,
+        "cell_y": 8
+    },
+    "52": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "29": ""
+        },
+        "cell_x": 12,
+        "cell_y": 8
+    },
+    "53": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "29": ""
+        },
+        "cell_x": 13,
+        "cell_y": 8
     },
     "59": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"21": ""},
-        
-        "cell_x": 31,
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "21": ""
+        },
+        "cell_x": 21,
         "cell_y": 6
     },
     "60": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 2,
-        "cell_y": 7
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "0": "",
+            "63": ""
+        },
+        "cell_x": 6,
+        "cell_y": 9
     },
     "61": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"15": ""},
-        
-        "cell_x": 0,
-        "cell_y": 12
-    },
-    "62": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
+        "name": "Node 61",
+        "description": "",
+        "incoming": {
+            "15": ""
+        },
         "cell_x": 1,
-        "cell_y": 12
+        "cell_y": 8
     },
     "63": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"15": ""},
-        
+        "name": "Node 63",
+        "description": "",
+        "incoming": {
+            "15": ""
+        },
+        "cell_x": 3,
+        "cell_y": 7
+    },
+    "65": {
+        "name": "Node 65",
+        "description": "",
+        "incoming": {
+            "61": ""
+        },
+        "cell_x": 0,
+        "cell_y": 11
+    },
+    "66": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "61": ""
+        },
         "cell_x": 2,
         "cell_y": 10
     },
-    "65": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"61": ""},
-        
-        "cell_x": 0,
-        "cell_y": 14
-    },
-    "66": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"61": ""},
-        
-        "cell_x": 2,
-        "cell_y": 14
-    },
     "67": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"61": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "61": ""
+        },
         "cell_x": 3,
-        "cell_y": 14
+        "cell_y": 10
     },
     "68": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"61": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "61": ""
+        },
         "cell_x": 4,
-        "cell_y": 14
+        "cell_y": 11
     },
     "69": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"61": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "61": ""
+        },
         "cell_x": 5,
-        "cell_y": 14
-    },
-    "70": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 1,
-        "cell_y": 14
+        "cell_y": 11
     },
     "71": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"66": ""},
-        
-        "cell_x": 2,
-        "cell_y": 16
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "66": ""
+        },
+        "cell_x": 1,
+        "cell_y": 13
     },
     "72": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"66": ""},
-        
-        "cell_x": 1,
-        "cell_y": 16
-    },
-    "73": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "66": ""
+        },
         "cell_x": 3,
-        "cell_y": 16
+        "cell_y": 13
     },
     "74": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"71": ""},
-        
-        "cell_x": 2,
-        "cell_y": 18
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "71": ""
+        },
+        "cell_x": 0,
+        "cell_y": 15
     },
     "75": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"71": ""},
-        
-        "cell_x": 3,
-        "cell_y": 18
-    },
-    "76": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 0,
-        "cell_y": 16
-    },
-    "77": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"76": ""},
-        
-        "cell_x": 0,
-        "cell_y": 18
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "71": ""
+        },
+        "cell_x": 2,
+        "cell_y": 15
     },
     "78": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
+        "name": "Node 78",
+        "description": "",
+        "incoming": {
+            "0": ""
+        },
         "cell_x": 9,
         "cell_y": 0
     },
     "79": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 10,
-        "cell_y": 0
+        "name": "Node 79",
+        "description": "",
+        "incoming": {
+            "0": ""
+        },
+        "cell_x": 8,
+        "cell_y": 4
     },
     "80": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"78": ""},
-        
-        "cell_x": 10,
+        "name": "Node 80",
+        "description": "",
+        "incoming": {
+            "78": ""
+        },
+        "cell_x": 11,
         "cell_y": 2
     },
     "81": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "0": "",
+            "22": ""
+        },
         "cell_x": 24,
-        "cell_y": 4
+        "cell_y": 6
     },
     "82": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"81": ""},
-        
-        "cell_x": 25,
-        "cell_y": 6
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "81": ""
+        },
+        "cell_x": 23,
+        "cell_y": 8
     },
     "83": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"81": ""},
-        
-        "cell_x": 27,
-        "cell_y": 6
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "81": ""
+        },
+        "cell_x": 26,
+        "cell_y": 8
     },
     "84": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"81": ""},
-        
-        "cell_x": 23,
-        "cell_y": 6
-    },
-    "85": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 28,
-        "cell_y": 7
-    },
-    "86": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 26,
-        "cell_y": 7
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "81": ""
+        },
+        "cell_x": 27,
+        "cell_y": 8
     },
     "87": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"82": ""},
-        
-        "cell_x": 24,
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "82": ""
+        },
+        "cell_x": 22,
         "cell_y": 10
     },
     "88": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "0": ""
+        },
         "cell_x": 25,
-        "cell_y": 10
+        "cell_y": 13
     },
     "89": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"82": ""},
-        
-        "cell_x": 26,
-        "cell_y": 10
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "82": ""
+        },
+        "cell_x": 24,
+        "cell_y": 11
     },
     "90": {
         "name": "some 1111",
         "description": "descrp 111",
         "incoming": {
-            "89": "",
-            "88": ""
-        
+            "88": "",
+            "89": ""
         },
-        "cell_x": 27,
-        "cell_y": 11
+        "cell_x": 25,
+        "cell_y": 15
     },
     "91": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"87": ""},
-        
-        "cell_x": 25,
-        "cell_y": 13
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "87": ""
+        },
+        "cell_x": 23,
+        "cell_y": 12
     },
     "92": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"89": ""},
-        
-        "cell_x": 27,
-        "cell_y": 14
-    },
-    "93": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"89": ""},
-        
-        "cell_x": 28,
-        "cell_y": 14
-    },
-    "94": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"89": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "89": ""
+        },
         "cell_x": 26,
         "cell_y": 14
     },
-    "95": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"83": ""},
-        
-        "cell_x": 30,
-        "cell_y": 9
+    "93": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "89": ""
+        },
+        "cell_x": 27,
+        "cell_y": 14
     },
-    "96": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 29,
+    "94": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "89": ""
+        },
+        "cell_x": 28,
+        "cell_y": 14
+    },
+    "95": {
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "83": ""
+        },
+        "cell_x": 28,
         "cell_y": 10
     },
     "97": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"95": ""},
-        
-        "cell_x": 29,
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "95": ""
+        },
+        "cell_x": 30,
         "cell_y": 12
     },
     "98": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"0": ""},
-        
-        "cell_x": 31,
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "0": "",
+            "95": ""
+        },
+        "cell_x": 29,
         "cell_y": 12
     },
     "99": {
-        "name": "some",
-        "description": "descrp",
-        "incoming": {"95": ""},
-        
+        "name": "Node",
+        "description": "",
+        "incoming": {
+            "95": ""
+        },
         "cell_x": 31,
-        "cell_y": 14
+        "cell_y": 12
     }
 };

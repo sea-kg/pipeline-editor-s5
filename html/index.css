@@ -163,8 +163,16 @@ body {
     background-image: url("./images/draw-grid-disable.svg");
 }
 
-.pipeline-editor-functions-btn.save-to-storage {
-    background-image: url("./images/save-to-storage.svg");
+.pipeline-editor-functions-btn.storage-save-to {
+    background-image: url("./images/storage-save-to.svg");
+}
+
+.pipeline-editor-functions-btn.storage-clear {
+    background-image: url("./images/storage-clear.svg");
+}
+
+.pipeline-editor-functions-btn.storage-sample {
+    background-image: url("./images/storage-sample.svg");
 }
 
 .pipeline-editor-functions-btn.remove-block {
