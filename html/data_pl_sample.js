@@ -27,7 +27,7 @@ var data_pl_example = {
         "cell_y": 13
     },
     "4": {
-        "name": "Node",
+        "name": "Packing",
         "description": "",
         "incoming": {
             "1": ""
@@ -45,8 +45,8 @@ var data_pl_example = {
         "cell_y": 13
     },
     "6": {
-        "name": "Node",
-        "description": "",
+        "name": "Upload",
+        "description": "prod",
         "incoming": {
             "4": ""
         },
@@ -54,8 +54,8 @@ var data_pl_example = {
         "cell_y": 16
     },
     "7": {
-        "name": "Node",
-        "description": "",
+        "name": "Upload",
+        "description": "dev",
         "incoming": {
             "4": ""
         },
@@ -91,8 +91,8 @@ var data_pl_example = {
         "cell_y": 11
     },
     "11": {
-        "name": "Node 11",
-        "description": "",
+        "name": "send",
+        "description": "webhook",
         "incoming": {
             "78": ""
         },
@@ -503,8 +503,8 @@ var data_pl_example = {
         "cell_y": 15
     },
     "78": {
-        "name": "Node 78",
-        "description": "",
+        "name": "Product 1",
+        "description": "commit",
         "incoming": {
             "0": ""
         },
@@ -521,7 +521,7 @@ var data_pl_example = {
         "cell_y": 4
     },
     "80": {
-        "name": "Node 80",
+        "name": "",
         "description": "",
         "incoming": {
             "78": ""
@@ -654,7 +654,7 @@ var data_pl_example = {
         "incoming": {
             "95": ""
         },
-        "cell_x": 30,
+        "cell_x": 29,
         "cell_y": 12
     },
     "98": {
@@ -664,7 +664,7 @@ var data_pl_example = {
             "0": "",
             "95": ""
         },
-        "cell_x": 29,
+        "cell_x": 30,
         "cell_y": 12
     },
     "99": {
