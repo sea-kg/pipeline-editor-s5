@@ -75,7 +75,6 @@ var data_pl_example = {
         "name": "Node",
         "description": "",
         "incoming": {
-            "0": "",
             "16": ""
         },
         "cell_x": 8,
@@ -94,7 +93,7 @@ var data_pl_example = {
         "name": "send",
         "description": "webhook",
         "incoming": {
-            "78": ""
+            "EKeObF6": ""
         },
         "cell_x": 6,
         "cell_y": 2
@@ -203,7 +202,6 @@ var data_pl_example = {
         "name": "Node",
         "description": "",
         "incoming": {
-            "0": "",
             "51": ""
         },
         "cell_x": 11,
@@ -213,7 +211,6 @@ var data_pl_example = {
         "name": "Node",
         "description": "",
         "incoming": {
-            "0": "",
             "79": ""
         },
         "cell_x": 10,
@@ -223,7 +220,6 @@ var data_pl_example = {
         "name": "Node",
         "description": "",
         "incoming": {
-            "0": "",
             "17": ""
         },
         "cell_x": 14,
@@ -305,7 +301,6 @@ var data_pl_example = {
         "name": "Node",
         "description": "",
         "incoming": {
-            "0": "",
             "59": ""
         },
         "cell_x": 21,
@@ -333,7 +328,6 @@ var data_pl_example = {
         "name": "Node",
         "description": "",
         "incoming": {
-            "0": "",
             "40": ""
         },
         "cell_x": 16,
@@ -397,7 +391,6 @@ var data_pl_example = {
         "name": "Node",
         "description": "",
         "incoming": {
-            "0": "",
             "63": ""
         },
         "cell_x": 6,
@@ -502,21 +495,10 @@ var data_pl_example = {
         "cell_x": 2,
         "cell_y": 15
     },
-    "78": {
-        "name": "Product 1",
-        "description": "commit",
-        "incoming": {
-            "0": ""
-        },
-        "cell_x": 9,
-        "cell_y": 0
-    },
     "79": {
         "name": "Node 79",
         "description": "",
-        "incoming": {
-            "0": ""
-        },
+        "incoming": {},
         "cell_x": 8,
         "cell_y": 4
     },
@@ -524,16 +506,15 @@ var data_pl_example = {
         "name": "",
         "description": "",
         "incoming": {
-            "78": ""
+            "EKeObF6": ""
         },
-        "cell_x": 11,
+        "cell_x": 8,
         "cell_y": 2
     },
     "81": {
         "name": "Node",
         "description": "",
         "incoming": {
-            "0": "",
             "22": ""
         },
         "cell_x": 24,
@@ -578,9 +559,7 @@ var data_pl_example = {
     "88": {
         "name": "Node",
         "description": "",
-        "incoming": {
-            "0": ""
-        },
+        "incoming": {},
         "cell_x": 25,
         "cell_y": 13
     },
@@ -661,7 +640,6 @@ var data_pl_example = {
         "name": "Node",
         "description": "",
         "incoming": {
-            "0": "",
             "95": ""
         },
         "cell_x": 30,
@@ -675,5 +653,12 @@ var data_pl_example = {
         },
         "cell_x": 31,
         "cell_y": 12
+    },
+    "EKeObF6": {
+        "name": "Product 1",
+        "description": "commit",
+        "incoming": {},
+        "cell_x": 7,
+        "cell_y": 0
     }
 };
