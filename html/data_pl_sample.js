@@ -563,7 +563,7 @@ var data_pl_example = {
         "cell_x": 25,
         "cell_y": 13
     },
-    "89": {
+    "iACVkUp": {
         "name": "Node",
         "description": "",
         "incoming": {
@@ -577,7 +577,7 @@ var data_pl_example = {
         "description": "descrp 111",
         "incoming": {
             "88": "",
-            "89": ""
+            "iACVkUp": ""
         },
         "cell_x": 25,
         "cell_y": 15
@@ -595,7 +595,7 @@ var data_pl_example = {
         "name": "Node",
         "description": "",
         "incoming": {
-            "89": ""
+            "iACVkUp": ""
         },
         "cell_x": 26,
         "cell_y": 14
@@ -604,7 +604,7 @@ var data_pl_example = {
         "name": "Node",
         "description": "",
         "incoming": {
-            "89": ""
+            "iACVkUp": ""
         },
         "cell_x": 27,
         "cell_y": 14
@@ -613,7 +613,7 @@ var data_pl_example = {
         "name": "Node",
         "description": "",
         "incoming": {
-            "89": ""
+            "iACVkUp": ""
         },
         "cell_x": 28,
         "cell_y": 14
@@ -645,7 +645,7 @@ var data_pl_example = {
         "cell_x": 30,
         "cell_y": 12
     },
-    "99": {
+    "MXGgtjs": {
         "name": "Node",
         "description": "",
         "incoming": {
@@ -659,6 +659,7 @@ var data_pl_example = {
         "description": "commit",
         "incoming": {},
         "cell_x": 7,
-        "cell_y": 0
+        "cell_y": 0,
+        "color": "green"
     }
 };
