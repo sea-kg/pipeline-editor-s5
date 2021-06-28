@@ -81,6 +81,7 @@ class RenderPipelineNode {
         this.dtbqA0E_nodes_in_same_cells = []
         this.dtbqA0E_paralax_precalculated = 0
         this.dfIxewv_outcoming = []
+        this.cWIV4UF_color = "#ffffff";
     }
 
     to_json() {
@@ -89,8 +90,19 @@ class RenderPipelineNode {
             "description": this.description,
             "incoming": this.incoming,
             "cell_x": this.IQrRW7r_cell_x,
-            "cell_y": this.IQrRW7r_cell_y
+            "cell_y": this.IQrRW7r_cell_y,
+            "color": this.cWIV4UF_color
         }
+    }
+
+    copy_from_json(_json) {
+        this.set_name(_json['name'])
+        this.set_description(_json['description'])
+        if (_json['color']) {
+            this.set_color(_json['color'])
+        }
+        this.incoming = _json['incoming']
+        this.update_cell_xy(_json["cell_x"], _json["cell_y"])
     }
 
     update_cell_xy(pos_x, pos_y) {
@@ -118,11 +130,12 @@ class RenderPipelineNode {
         return this.IQrRW7r_cell_y;
     }
 
-    copy_from_json(_json) {
-        this.set_name(_json['name'])
-        this.set_description(_json['description'])
-        this.incoming = _json['incoming']
-        this.update_cell_xy(_json["cell_x"], _json["cell_y"])
+    set_color(val) {
+        this.cWIV4UF_color = val;
+    }
+
+    get_color() {
+        return this.cWIV4UF_color;
     }
 
     set_name(name) {
@@ -207,7 +220,7 @@ class RenderPipelineNode {
         if (selectedBlockIdEditing == this.nodeid) {
             _ctx.fillStyle = "red";
         } else {
-            _ctx.fillStyle = highlightCard == this.nodeid ? "#E6ECDF" : "white";
+            _ctx.fillStyle = highlightCard == this.nodeid ? "#E6ECDF" : this.cWIV4UF_color;
         }
         _ctx.fillRect(x1, y1, this._conf.get_card_width(), this._conf.get_card_height());
         _ctx.fillStyle = "black";
