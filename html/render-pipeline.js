@@ -209,7 +209,7 @@ class RenderPipelineNode {
     }
 
 
-    draw_card(_ctx, selectedBlockIdEditing, highlightCard) {
+    draw_card(_ctx, selectedBlockIdEditing) {
         var paralax = this.get_paralax_in_cell();
         var x1 = this._conf.pl_padding + this.get_cell_x() * this._conf.get_cell_width() + paralax;
         var y1 = this._conf.pl_padding + this.get_cell_y() * this._conf.get_cell_height() + paralax;
@@ -220,7 +220,7 @@ class RenderPipelineNode {
         if (selectedBlockIdEditing == this.nodeid) {
             _ctx.fillStyle = "red";
         } else {
-            _ctx.fillStyle = highlightCard == this.nodeid ? "#E6ECDF" : this.cWIV4UF_color;
+            _ctx.fillStyle = this.cWIV4UF_color;
         }
         _ctx.fillRect(x1, y1, this._conf.get_card_width(), this._conf.get_card_height());
         _ctx.fillStyle = "black";
@@ -244,7 +244,6 @@ class RenderPipelineEditor {
         this.pl_width = 100;
         this.pl_padding = 20;
         this.pl_scale = 1.0;
-        this.pl_highlightCard = null;
         this.pl_data = {}; // original user data
         this.pt_data_render = {}; // TODO: data with preprocessing like a real x,y
         this.movingEnable = false;
@@ -381,7 +380,7 @@ class RenderPipelineEditor {
             }
         }
 
-        if (this.pl_highlightCard != null) {
+        if (this.selectedBlockIdEditing != null) {
             // console.log(target);
             this.movingEnable = true;
         }
@@ -432,24 +431,23 @@ class RenderPipelineEditor {
             return;
         }
 
-        if (this.movingEnable && this.pl_highlightCard != null) {
+        if (this.movingEnable && this.selectedBlockIdEditing != null) {
             var t_x = Math.floor((x0 - this.pl_padding) / this._conf.get_cell_width());
             var t_y = Math.floor((y0 - this.pl_padding) / this._conf.get_cell_height());
 
             // console.log(y0);
-            if (this.pl_data_render[this.pl_highlightCard].update_cell_xy(t_x, t_y)) {
-                this.pl_data[this.pl_highlightCard].cell_x = t_x;
-                this.pl_data[this.pl_highlightCard].cell_y = t_y;
+            if (this.pl_data_render[this.selectedBlockIdEditing].update_cell_xy(t_x, t_y)) {
+                this.pl_data[this.selectedBlockIdEditing].cell_x = t_x;
+                this.pl_data[this.selectedBlockIdEditing].cell_y = t_y;
                 this.prepare_data_cards_one_cells()
                 this.update_pipeline_diagram();
             }
             return;
         }
-        
-        var changesExists = false;
-        this.pl_highlightCard = null;
-        // var block_id = find_block_id(x0, y0);
 
+        var block_id = this.find_block_id(x0, y0);
+
+        var cursor = 'default';
         for (var i in this.pl_data) {
             var x1 = this.pl_data_render[i].hidden_x1;
             var x2 = x1 + this._conf.get_card_width();
@@ -458,22 +456,10 @@ class RenderPipelineEditor {
             var res = false;
 
             if (x0 > x1 && x0 < x2 && y0 > y1 && y0 < y2) {
-                res = true;
-                target.style.cursor = 'pointer';
-                this.pl_highlightCard = i;
-            }
-
-            if (this.pl_data[i]['hidden_highlight'] != res) {
-                changesExists = true;
-                this.pl_data[i]['hidden_highlight'] = res;
+                cursor = 'pointer';
             }
         }
-        if (this.pl_highlightCard == null) {
-            target.style.cursor = 'default';
-        }
-        if (changesExists) {
-            this.update_pipeline_diagram();
-        }
+        target.style.cursor = cursor;
     };
 
     scale_plus(diff) {
