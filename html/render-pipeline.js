@@ -249,6 +249,8 @@ class RenderPipelineEditor {
         this.movingEnable = false;
         this.scrollMoving = false;
         this.scrollMovingPos = {};
+        this.diagram_name = "";
+        this.diagram_description = "";
         this.conneсtingBlocks = {
             'state': 'nope',
         };
@@ -266,7 +268,7 @@ class RenderPipelineEditor {
         this.canvas_container = document.getElementById(canvas_container_id);
 
         this.ctx = this.canvas.getContext("2d");
-        this.init_canvas()
+        this.init_font_size();
 
         var self = this;
         this.canvas.onmouseover = function(event) {
@@ -286,7 +288,7 @@ class RenderPipelineEditor {
         }
     }
 
-    init_canvas() {
+    init_font_size() {
         this.ctx.font = this.fontSize + "px Arial";
     }
 
@@ -557,6 +559,22 @@ class RenderPipelineEditor {
             this.ctx.stroke();
         }
     }
+    
+    draw_diagram_name() {
+        var font_name_size = 32;
+        var font_description_size = 20;
+
+        // this.diagram_name = "Test";
+        // this.diagram_description = "test descr";
+
+        this.ctx.font = font_name_size + "px Arial";
+        this.ctx.fillText('' + this.diagram_name, this.pl_padding, this.pl_padding + font_name_size);
+
+        this.ctx.font = font_description_size + "px Arial";
+        this.ctx.fillText('' + this.diagram_description, this.pl_padding + 10, this.pl_padding + font_name_size + font_description_size);
+
+        this.init_font_size();
+    }
 
     draw_cards() {
         this.ctx.strokeStyle = "black";
@@ -706,11 +724,12 @@ class RenderPipelineEditor {
 
     update_pipeline_diagram() {
         this.update_image_size();
-        this.init_canvas();
+        this.init_font_size();
         this.clear_canvas();
         this.draw_grid();
         this.draw_cards();
         this.draw_lines();
+        this.draw_diagram_name();
     }
 
     start_connect_blocks() {
