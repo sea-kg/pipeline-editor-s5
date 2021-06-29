@@ -612,6 +612,12 @@ class RenderPipelineEditor {
             this.ctx.moveTo(x0, y0);
             this.ctx.lineTo(x2, y2);
             this.ctx.stroke();
+            this.drawed_lines.push({
+                "x0": x0,
+                "y0": y0,
+                "x2": x2,
+                "y2": y2
+            })
         } else {
             var cw = 10;
             this.ctx.beginPath();
@@ -664,6 +670,7 @@ class RenderPipelineEditor {
     }
 
     draw_lines() {
+        this.drawed_lines = []
         this.ctx.lineWidth = 1;
         for (var nodeid in this.pl_data_render) {
             var p = this.pl_data_render[nodeid];
