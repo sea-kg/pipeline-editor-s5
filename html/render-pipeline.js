@@ -340,7 +340,7 @@ class RenderPipelineEditor {
 
         if (this.editorState == 'remove') {
             var nodeid = this.selectedBlock['block-id-undermouse'];
-            console.log(nodeid)
+            console.log(nodeid);
             if (nodeid) {
                 this.selectedBlockIdEditing = null;
                 delete this.pl_data[nodeid];
@@ -439,7 +439,7 @@ class RenderPipelineEditor {
             if (this.pl_data_render[this.selectedBlockIdEditing].update_cell_xy(t_x, t_y)) {
                 this.pl_data[this.selectedBlockIdEditing].cell_x = t_x;
                 this.pl_data[this.selectedBlockIdEditing].cell_y = t_y;
-                this.prepare_data_cards_one_cells()
+                this.prepare_data_cards_one_cells();
                 this.update_pipeline_diagram();
             }
             return;
@@ -453,7 +453,6 @@ class RenderPipelineEditor {
             var x2 = x1 + this._conf.get_card_width();
             var y1 = this.pl_data_render[i].hidden_y1;
             var y2 = y1 + this._conf.get_card_height();
-            var res = false;
 
             if (x0 > x1 && x0 < x2 && y0 > y1 && y0 < y2) {
                 cursor = 'pointer';
@@ -595,12 +594,9 @@ class RenderPipelineEditor {
             this.ctx.lineTo(x0, y1 - cw);
             this.ctx.stroke();
 
-            var _x0 = x0;
-            var _x1 = x1;
-            var _x2 = x2;
+            var _x0, _x2;
             if (x2 < x0) {
                 _x0 = x0 - cw;
-                _x1 = x1 - cw;
                 _x2 = x2 + cw;
                 this.ctx.beginPath();
                 this.ctx.arc(x0 - cw, y1 - cw, cw, 0, Math.PI / 2);
@@ -611,7 +607,6 @@ class RenderPipelineEditor {
                 this.ctx.stroke();
             } else {
                 _x0 = x0 + cw;
-                _x1 = x1 - cw;
                 _x2 = x2 - cw;
 
                 this.ctx.beginPath();
@@ -677,9 +672,6 @@ class RenderPipelineEditor {
                     }
                 }
 
-                min_x = Math.min(main_x1, min_x);
-                max_x = Math.max(main_x1, max_x);
-
                 max_y += this._conf.get_cell_height() / 2 + (this._conf.get_cell_height() - this._conf.get_card_height()) / 2;
 
                 for (var inc in p.incoming) {
@@ -688,10 +680,6 @@ class RenderPipelineEditor {
                         continue;
                     }
                     var paralax = in_node.get_paralax_for_line(nodeid);
-                    if (paralax != 0) {
-                        // console.log("in_nodeid=", inc, "out_nodeid=", nodeid, ", paralax=", paralax);
-                        // console.log(in_node)
-                    }
                     
                     // TODO calculate in node
                     var inc_x1 = this.calcX_in_px(in_node.get_cell_x()) + this._conf.get_card_width() / 2 + paralax;
@@ -701,7 +689,7 @@ class RenderPipelineEditor {
                         inc_x1, inc_y1,
                         inc_x1, max_y - paralax,
                         main_x1, main_y1
-                    )
+                    );
                 }
                 
                 // if (has_income) {
