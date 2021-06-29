@@ -258,7 +258,7 @@ class RenderPipelineEditor {
             'block-id-undermouse': null
         };
         this.selectedBlockIdEditing = null;
-
+        this.drawed_lines = []
         this.editorState = 'moving';
 
         // this.editorState = 'moving' or 'connecting-blocks' or 'removing-blocks'
@@ -588,9 +588,12 @@ class RenderPipelineEditor {
         }
     }
 
-    draw_line(x0, y0, x1, y1, x2, y2) {
+    draw_line(x0, x2, y0, y1, y2) {
         this.ctx.strokeStyle = "black";
         this.ctx.lineWidth = 2;
+
+        // for this.drawed_lines
+
         // out circle
         this.ctx.beginPath();
         this.ctx.arc(x0, y0, 6, 0, Math.PI);
@@ -604,7 +607,7 @@ class RenderPipelineEditor {
         this.ctx.lineTo(x2 - 6, y2 - 12);
         this.ctx.fill();
 
-        if (x0 == x1 && x1 == x2) {
+        if (x0 == x2) {
             this.ctx.beginPath();
             this.ctx.moveTo(x0, y0);
             this.ctx.lineTo(x2, y2);
@@ -708,9 +711,10 @@ class RenderPipelineEditor {
                     var inc_y1 = this.calcY_in_px(in_node.get_cell_y()) + this._conf.get_card_height();
 
                     this.draw_line(
-                        inc_x1, inc_y1,
-                        inc_x1, max_y - paralax,
-                        main_x1, main_y1
+                        inc_x1, main_x1,
+                        inc_y1,
+                        max_y - paralax,
+                        main_y1
                     );
                 }
                 
