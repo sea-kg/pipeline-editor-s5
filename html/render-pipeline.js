@@ -434,7 +434,11 @@ class RenderPipelineEditor {
         if (this.movingEnable && this.selectedBlockIdEditing != null) {
             var t_x = Math.floor((x0 - this.pl_padding) / this._conf.get_cell_width());
             var t_y = Math.floor((y0 - this.pl_padding) / this._conf.get_cell_height());
-
+            
+            if (t_x < 0 || t_y < 0) {
+                // don't allow move to the left and top border
+                return;
+            }
             // console.log(y0);
             if (this.pl_data_render[this.selectedBlockIdEditing].update_cell_xy(t_x, t_y)) {
                 this.pl_data[this.selectedBlockIdEditing].cell_x = t_x;
