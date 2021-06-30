@@ -8,7 +8,41 @@ function JWwfsRY_random_makeid() {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
    }
    return result;
-}
+};
+
+class RenderPipelineLine {
+    constructor(x0, y0, x1, y1) {
+        this.x0 = x0;
+        this.y0 = y0;
+        this.x1 = x1;
+        this.y1 = y1;
+        this.orientation = '';
+        if (x0 == x1 && y0 != y1) {
+            this.orientation = 'vertical';
+        }
+        if (y0 == y1 && x0 != x1) {
+            this.orientation = 'horizontal';
+        }
+        if (this.orientation == '') {
+            console.error("Expected horizontal or vertical line ", this);
+        }
+    }
+
+    has_collision(line) {
+        if (this.orientation != line.orientation) {
+            return false;
+        }
+        if (this.orientation == 'vertical') {
+            return (line.y0 > this.y0 && line.y0 < this.y1)
+                || (line.y1 > this.y0 && line.y1 < this.y1);
+        }
+        if (this.orientation == 'horizontal') {
+            return (line.x0 > this.x0 && line.x0 < this.x1)
+                || (line.x1 > this.x0 && line.x1 < this.x1);
+        }
+        return false;
+    }
+};
 
 class RenderPipelineConfig {
     constructor() {
@@ -588,37 +622,52 @@ class RenderPipelineEditor {
         }
     }
 
+    correct_line(line) {
+        for (var l in this.drawed_lines) {
+            if (this.drawed_lines[l].has_collision(line)) {
+                // TODO correct coordinates
+                // console.warn("has collision between ", this.drawed_lines[l], line)
+            }
+        }
+        return line;
+    }
+
     draw_line(x0, x2, y0, y1, y2) {
         this.ctx.strokeStyle = "black";
         this.ctx.lineWidth = 2;
 
-        // for this.drawed_lines
+        var line1 = new RenderPipelineLine(x0, y0, x0, y1);
+        line1 = this.correct_line(line1)
+        var line2 = new RenderPipelineLine(x0, y1, x2, y1);
+        line2 = this.correct_line(line2)
+        var line3 = new RenderPipelineLine(x2, y1, x2, y2);
+        line3 = this.correct_line(line3)
 
         // out circle
         this.ctx.beginPath();
-        this.ctx.arc(x0, y0, 6, 0, Math.PI);
+        this.ctx.arc(line1.x0, line1.y0, 6, 0, Math.PI);
         this.ctx.fill();
 
         // arrow
         this.ctx.beginPath();
-        this.ctx.moveTo(x2 - 6, y2 - 12);
-        this.ctx.lineTo(x2 + 6, y2 - 12);
-        this.ctx.lineTo(x2 + 0, y2 - 0);
-        this.ctx.lineTo(x2 - 6, y2 - 12);
+        this.ctx.moveTo(line3.x1 - 6, line3.y1 - 12);
+        this.ctx.lineTo(line3.x1 + 6, line3.y1 - 12);
+        this.ctx.lineTo(line3.x1 + 0, line3.y1 - 0);
+        this.ctx.lineTo(line3.x1 - 6, line3.y1 - 12);
         this.ctx.fill();
 
         if (x0 == x2) {
+            var line0 = new RenderPipelineLine(x0, y0, x2, y2);
+            this.drawed_lines.push(line0);
             this.ctx.beginPath();
-            this.ctx.moveTo(x0, y0);
-            this.ctx.lineTo(x2, y2);
+            this.ctx.moveTo(line0.x0, line0.y0);
+            this.ctx.lineTo(line0.x1, line0.y1);
             this.ctx.stroke();
-            this.drawed_lines.push({
-                "x0": x0,
-                "y0": y0,
-                "x2": x2,
-                "y2": y2
-            })
         } else {
+            this.drawed_lines.push(line1);
+            this.drawed_lines.push(line2);
+            this.drawed_lines.push(line3);
+
             var cw = 10;
             this.ctx.beginPath();
             this.ctx.moveTo(x0, y0);
