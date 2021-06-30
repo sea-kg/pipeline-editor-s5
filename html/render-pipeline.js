@@ -919,9 +919,10 @@ class RenderPipelineEditor {
             var bl1 = this.conneсtingBlocks.incoming_block_id;
             var bl2 = this.conneсtingBlocks.block_id;
             this.pl_data[bl2]["incoming"][bl1] = "";
-            console.log(this.pl_data[bl2])
+            console.log(this.pl_data[bl2]);
+            this.prepare_data_render();
+            this.update_meansures();
             this.update_pipeline_diagram();
-            
         }
     }
 
