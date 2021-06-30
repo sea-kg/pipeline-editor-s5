@@ -10,21 +10,31 @@ function JWwfsRY_random_makeid() {
    return result;
 };
 
+RPL_LINE_ORIENT_NONE = 0;
+RPL_LINE_ORIENT_VERTICAL = 1;
+RPL_LINE_ORIENT_HORIZONTAL = 2;
+
 class RenderPipelineLine {
     constructor(x0, y0, x1, y1) {
         this.x0 = x0;
         this.y0 = y0;
         this.x1 = x1;
         this.y1 = y1;
-        this.orientation = '';
+        this.ymin = Math.min(this.y0, this.y1);
+        this.ymax = Math.max(this.y0, this.y1);
+        this.xmin = Math.min(this.x0, this.x1);
+        this.xmax = Math.max(this.x0, this.x1);
+        this.orientation = RPL_LINE_ORIENT_NONE;
+        this.error = null;
         if (x0 == x1 && y0 != y1) {
-            this.orientation = 'vertical';
+            this.orientation = RPL_LINE_ORIENT_VERTICAL;
         }
         if (y0 == y1 && x0 != x1) {
-            this.orientation = 'horizontal';
+            this.orientation = RPL_LINE_ORIENT_HORIZONTAL;
         }
         if (this.orientation == '') {
-            console.error("Expected horizontal or vertical line ", this);
+            this.error = "Expected horizontal or vertical line";
+            console.error(this.error, this);
         }
     }
 
@@ -32,15 +42,89 @@ class RenderPipelineLine {
         if (this.orientation != line.orientation) {
             return false;
         }
-        if (this.orientation == 'vertical') {
-            return (line.y0 > this.y0 && line.y0 < this.y1)
-                || (line.y1 > this.y0 && line.y1 < this.y1);
+        
+        if (this.orientation == RPL_LINE_ORIENT_VERTICAL) {
+            return (line.y0 > this.ymin && line.y0 < this.ymax)
+                || (line.y1 > this.ymin && line.y1 < this.ymax);
         }
-        if (this.orientation == 'horizontal') {
-            return (line.x0 > this.x0 && line.x0 < this.x1)
-                || (line.x1 > this.x0 && line.x1 < this.x1);
+        if (this.orientation == RPL_LINE_ORIENT_HORIZONTAL) {
+            return (line.x0 > this.xmin && line.x0 < this.xmax)
+                || (line.x1 > this.xmin && line.x1 < this.xmax);
         }
         return false;
+    }
+
+    draw_out_circle(_ctx, radius) {
+        _ctx.beginPath();
+        _ctx.arc(this.x0, this.y0, radius, 0, Math.PI);
+        _ctx.fill();
+    }
+
+    draw_line(_ctx, cut0, cut2) {
+        _ctx.beginPath();
+        _ctx.moveTo(this.x0, this.y0);
+        _ctx.lineTo(this.x1, this.y1);
+        _ctx.stroke();
+    }
+
+    draw_arrow(_ctx, radius) {
+        _ctx.beginPath();
+        _ctx.moveTo(this.x1 - radius, this.y1 - radius*2);
+        _ctx.lineTo(this.x1 + radius, this.y1 - radius*2);
+        _ctx.lineTo(this.x1 +      0, this.y1 -        0);
+        _ctx.lineTo(this.x1 - radius, this.y1 - radius*2);
+        _ctx.fill();
+    }
+};
+
+class RenderPipelineDrawedLinesCache {
+    constructor() {
+        this.clear();
+    }
+
+    add(line) {
+        if (line.orientation == RPL_LINE_ORIENT_VERTICAL) {
+            if (this.vertical_lines[line.x0] === undefined) {
+                this.vertical_lines[line.x0] = [];
+            }
+            this.vertical_lines[line.x0].push(line);
+        } else if (line.orientation == RPL_LINE_ORIENT_HORIZONTAL) {
+            if (this.horizontal_lines[line.y0] === undefined) {
+                this.horizontal_lines[line.y0] = [];
+            }
+            this.horizontal_lines[line.y0].push(line);
+        }
+    }
+
+    has_collision(line) {
+        if (line.orientation = RPL_LINE_ORIENT_HORIZONTAL) {
+            if (this.horizontal_lines[line.y0]) {
+                for (var l in this.horizontal_lines[line.y0]) {
+                    var _line = this.horizontal_lines[line.y0][l];
+                    if (_line.has_collision(line) || line.has_collision(_line)) {
+                        return true;
+                    }
+                }
+            }
+
+        } else if (line.orientation = RPL_LINE_ORIENT_VERTICAL) {
+            if (this.vertical_lines[line.x0]) {
+                for (var l in this.vertical_lines[line.x0]) {
+                    var _line = this.horizontal_lines[line.x0][l];
+                    if (_line.has_collision(line) || line.has_collision(_line)) {
+                        return true;
+                    }
+                }
+            }
+        } else {
+            console.error("Some shit");
+        }
+        return false;
+    }
+
+    clear() {
+        this.vertical_lines = {};
+        this.horizontal_lines = {};
     }
 };
 
@@ -49,7 +133,7 @@ class RenderPipelineConfig {
         this.pl_max_cell_x = -1;
         this.pl_max_cell_y = -1;
         this.pl_padding = 20;
-
+        this.wZFF096_radius_for_angels = 10;
         this.GVitVNl_pl_cell_width = 170;
         this.GVitVNl_pl_cell_height = 86;
         this.CEisN2z_pl_card_width = 159;
@@ -96,6 +180,10 @@ class RenderPipelineConfig {
     get_card_height() {
         return this.CEisN2z_pl_card_height;
     }
+
+    get_radius_for_angels() {
+        return this.wZFF096_radius_for_angels;
+    }
 }
 
 class RenderPipelineNode {
@@ -135,7 +223,10 @@ class RenderPipelineNode {
         if (_json['color']) {
             this.set_color(_json['color'])
         }
-        this.incoming = _json['incoming']
+        this.incoming = {};
+        for (var nid in _json['incoming']) {
+            this.incoming[nid] = _json['incoming'][nid];
+        }
         this.update_cell_xy(_json["cell_x"], _json["cell_y"])
     }
 
@@ -292,11 +383,10 @@ class RenderPipelineEditor {
             'block-id-undermouse': null
         };
         this.selectedBlockIdEditing = null;
-        this.drawed_lines = []
+        this.drawed_lines_cache = new RenderPipelineDrawedLinesCache();
         this.editorState = 'moving';
 
         // this.editorState = 'moving' or 'connecting-blocks' or 'removing-blocks'
-
 
         this.canvas = document.getElementById(canvas_id);
         this.canvas_container = document.getElementById(canvas_container_id);
@@ -333,7 +423,7 @@ class RenderPipelineEditor {
 
     set_data(data) {
         this.pl_data = this.clone_object(data);
-        this.prepare_data_render()
+        this.prepare_data_render();
     }
 
     canvas_onmouseover(event) {
@@ -623,78 +713,119 @@ class RenderPipelineEditor {
     }
 
     correct_line(line) {
-        for (var l in this.drawed_lines) {
-            if (this.drawed_lines[l].has_collision(line)) {
-                // TODO correct coordinates
-                // console.warn("has collision between ", this.drawed_lines[l], line)
+        var has_collision = true;
+        var protection_while = 0;
+        var step_size = 5;
+        while (has_collision) {
+            has_collision = false;
+            protection_while++;
+            if (this.drawed_lines_cache.has_collision(line)) {
+                has_collision = true;
+                if (line.orientation = RPL_LINE_ORIENT_HORIZONTAL) {
+                    line.y0 -= step_size;
+                    line.y1 -= step_size;
+                } else if (line.orientation = RPL_LINE_ORIENT_VERTICAL) {
+                    line.x0 += step_size;
+                    line.x1 += step_size;
+                } else {
+                    console.error("Some shit");
+                    return line;
+                }
+            }
+            if (protection_while > 100) {
+                console.error("protection_while, Some shit");
+                return line;
             }
         }
         return line;
     }
 
-    draw_line(x0, x2, y0, y1, y2) {
+    check_error(line, out_nodeid, in_nodeid) {
+        if (line.error) {
+            console.error("Error (" + out_nodeid + "->" + in_nodeid + "): " + line.error);
+        }
+    }
+
+    draw_line(x0, x2, y0, y1, y2, out_nodeid, in_nodeid) {
         this.ctx.strokeStyle = "black";
         this.ctx.lineWidth = 2;
 
-        var line1 = new RenderPipelineLine(x0, y0, x0, y1);
-        line1 = this.correct_line(line1)
-        var line2 = new RenderPipelineLine(x0, y1, x2, y1);
-        line2 = this.correct_line(line2)
-        var line3 = new RenderPipelineLine(x2, y1, x2, y2);
-        line3 = this.correct_line(line3)
-
-        // out circle
-        this.ctx.beginPath();
-        this.ctx.arc(line1.x0, line1.y0, 6, 0, Math.PI);
-        this.ctx.fill();
-
-        // arrow
-        this.ctx.beginPath();
-        this.ctx.moveTo(line3.x1 - 6, line3.y1 - 12);
-        this.ctx.lineTo(line3.x1 + 6, line3.y1 - 12);
-        this.ctx.lineTo(line3.x1 + 0, line3.y1 - 0);
-        this.ctx.lineTo(line3.x1 - 6, line3.y1 - 12);
-        this.ctx.fill();
-
         if (x0 == x2) {
             var line0 = new RenderPipelineLine(x0, y0, x2, y2);
-            this.drawed_lines.push(line0);
-            this.ctx.beginPath();
-            this.ctx.moveTo(line0.x0, line0.y0);
-            this.ctx.lineTo(line0.x1, line0.y1);
-            this.ctx.stroke();
+            line0.draw_out_circle(this.ctx, 6);
+            line0.draw_line(this.ctx);
+            line0.draw_arrow(this.ctx, 6);
+            this.drawed_lines_cache.add(line0);
         } else {
-            this.drawed_lines.push(line1);
-            this.drawed_lines.push(line2);
-            this.drawed_lines.push(line3);
+            var line1 = new RenderPipelineLine(x0, y0, x0, y1);
+            this.check_error(line1);
+            line1 = this.correct_line(line1);
 
-            var cw = 10;
+            var line2 = new RenderPipelineLine(x0, line1.y1, x2, line1.y1);
+            this.check_error(line2);
+            line2 = this.correct_line(line2);
+            line1.y1 = line2.y0;
+
+            var line3 = new RenderPipelineLine(x2, line2.y0, x2, y2);
+            this.check_error(line3);
+            line3 = this.correct_line(line3);
+
+            line1.draw_out_circle(this.ctx, 6);
+            line3.draw_arrow(this.ctx, 6);
+            this.drawed_lines_cache.add(line1);
+            this.drawed_lines_cache.add(line2);
+            this.drawed_lines_cache.add(line3);
+
+            var cw = 10; // rasius od angels
             this.ctx.beginPath();
-            this.ctx.moveTo(x0, y0);
-            this.ctx.lineTo(x0, y1 - cw);
+            this.ctx.moveTo(line1.x0, line1.y0);
+            this.ctx.lineTo(line1.x0, line1.y1 - this._conf.get_radius_for_angels());
             this.ctx.stroke();
 
             var _x0, _x2;
-            if (x2 < x0) {
-                _x0 = x0 - cw;
-                _x2 = x2 + cw;
+            if (line3.x0 < line1.x0) {
+                _x0 = line1.x0 - this._conf.get_radius_for_angels();
+                _x2 = line3.x0 + this._conf.get_radius_for_angels();
                 this.ctx.beginPath();
-                this.ctx.arc(x0 - cw, y1 - cw, cw, 0, Math.PI / 2);
+                this.ctx.arc(
+                    line1.x1 - this._conf.get_radius_for_angels(),
+                    line1.y1 - this._conf.get_radius_for_angels(),
+                    this._conf.get_radius_for_angels(),
+                    0,
+                    Math.PI / 2
+                );
                 this.ctx.stroke();
 
                 this.ctx.beginPath();
-                this.ctx.arc(_x2, y1 + cw, cw, Math.PI, - Math.PI / 2);
+                this.ctx.arc(
+                    _x2,
+                    line1.y1 + this._conf.get_radius_for_angels(),
+                    this._conf.get_radius_for_angels(),
+                    Math.PI, - Math.PI / 2
+                );
                 this.ctx.stroke();
             } else {
-                _x0 = x0 + cw;
-                _x2 = x2 - cw;
+                _x0 = x0 + this._conf.get_radius_for_angels();
+                _x2 = x2 - this._conf.get_radius_for_angels();
 
                 this.ctx.beginPath();
-                this.ctx.arc(_x0, y1 - cw, cw, Math.PI / 2, Math.PI);
+                this.ctx.arc(
+                    _x0,
+                    line1.y1 - this._conf.get_radius_for_angels(),
+                    this._conf.get_radius_for_angels(),
+                    Math.PI / 2,
+                    Math.PI
+                );
                 this.ctx.stroke();
 
                 this.ctx.beginPath();
-                this.ctx.arc(_x2, y1 + cw, cw, 1.5 * Math.PI, 2 * Math.PI);
+                this.ctx.arc(
+                    _x2,
+                    line1.y1 + this._conf.get_radius_for_angels(),
+                    this._conf.get_radius_for_angels(),
+                    1.5 * Math.PI,
+                    2 * Math.PI
+                );
                 this.ctx.stroke();
             }
 
@@ -706,71 +837,56 @@ class RenderPipelineEditor {
             
             // vertical
             this.ctx.beginPath();
-            this.ctx.moveTo(_x0, y1);
-            this.ctx.lineTo(_x2, y1);
+            this.ctx.moveTo(_x0, line2.y0);
+            this.ctx.lineTo(_x2, line2.y0);
             this.ctx.stroke();
 
             // horizontal last
             this.ctx.beginPath();
-            this.ctx.moveTo(x2, y1 + cw);
+            this.ctx.moveTo(x2, y1 + this._conf.get_radius_for_angels());
             this.ctx.lineTo(x2, y2);
             this.ctx.stroke();
         }
     }
 
     draw_lines() {
-        this.drawed_lines = []
+        this.drawed_lines_cache.clear();
         this.ctx.lineWidth = 1;
-        for (var nodeid in this.pl_data_render) {
-            var p = this.pl_data_render[nodeid];
+        for (var in_nodeid in this.pl_data_render) {
+            var p = this.pl_data_render[in_nodeid];
 
             if (p.incoming) {
 
-                var main_x1 = this.calcX_in_px(p.get_cell_x()) + this._conf.get_card_width() / 2;
-                var main_y1 = this.calcY_in_px(p.get_cell_y());
+                var x2 = this.calcX_in_px(p.get_cell_x()) + this._conf.get_card_width() / 2;
+                var y2 = this.calcY_in_px(p.get_cell_y());
 
-                var max_y = 0;
-                var min_x = 0;
-                var max_x = 0;
-                var has_income = false;
+                var y1 = [];
                 for (var inc in p.incoming) {
-                    var node = this.pl_data[inc];
-                    if (!node) {
-                        continue;
-                    }
-                    var inc_x1 = this.calcX_in_px(node.cell_x) + this._conf.get_card_width() / 2;
-                    var inc_y1 = this.calcY_in_px(node.cell_y) + this._conf.get_card_height();
-
-                    if (!has_income) {
-                        has_income = true;
-                        max_y = inc_y1;
-                        min_x = inc_x1;
-                        max_x = inc_x1;
-                    } else {
-                        max_y = Math.max(inc_y1, max_y);
-                        min_x = Math.min(inc_x1, min_x);
-                        max_x = Math.max(inc_x1, max_x);
-                    }
+                    y1.push(this.pl_data_render[inc].get_cell_y());
                 }
+                y1 = Math.max.apply(null, y1);
+                y1 = this.calcY_in_px(y1) + this._conf.get_card_height();
+                y1 += this._conf.get_cell_height() / 2 + (this._conf.get_cell_height() - this._conf.get_card_height()) / 2;
 
-                max_y += this._conf.get_cell_height() / 2 + (this._conf.get_cell_height() - this._conf.get_card_height()) / 2;
-
-                for (var inc in p.incoming) {
-                    var in_node = this.pl_data_render[inc];
+                for (var out_nodeid in p.incoming) {
+                    var in_node = this.pl_data_render[out_nodeid];
                     if (!in_node) {
                         continue;
                     }
-                    var paralax = in_node.get_paralax_for_line(nodeid);
+                    var paralax = in_node.get_paralax_for_line(in_nodeid);
                     
                     // TODO calculate in node
-                    var inc_x1 = this.calcX_in_px(in_node.get_cell_x()) + this._conf.get_card_width() / 2 + paralax;
-                    var inc_y1 = this.calcY_in_px(in_node.get_cell_y()) + this._conf.get_card_height();
+                    var x0 = this.calcX_in_px(in_node.get_cell_x()) + this._conf.get_card_width() / 2 + paralax;
+                    var y0 = this.calcY_in_px(in_node.get_cell_y()) + this._conf.get_card_height();
 
                     this.draw_line(
-                        inc_x1, main_x1,
-                        inc_y1,
-                        max_y - paralax,
-                        main_y1
+                        Math.floor(x0),
+                        Math.floor(x2),
+                        Math.floor(y0),
+                        Math.floor(y1 - paralax),
+                        Math.floor(y2),
+                        out_nodeid,
+                        in_nodeid,
                     );
                 }
                 
@@ -866,11 +982,21 @@ class RenderPipelineEditor {
 
     prepare_data_render() {
         this.pl_data_render = {}
-        for(var node_id in this.pl_data) {
+        for (var node_id in this.pl_data) {
             var node = new RenderPipelineNode(node_id, this._conf)
             node.copy_from_json(this.pl_data[node_id])
             this.pl_data_render[node_id] = node
         }
+
+        for (var node_id in this.pl_data_render) {
+            var node = this.pl_data_render[node_id];
+            for (var nid in node.incoming) {
+                if (!this.pl_data_render[nid]) {
+                    console.warn("Removed incoming node ", nid, " for ", node_id)
+                }
+            }
+        }
+
         this.prepare_data_cards_one_cells()
         this.prepare_lines_out();
     }
