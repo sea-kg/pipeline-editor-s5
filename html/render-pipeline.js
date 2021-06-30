@@ -575,7 +575,7 @@ class RenderPipelineEditor {
             return;
         }
 
-        var block_id = this.find_block_id(x0, y0);
+        // var block_id = this.find_block_id(x0, y0);
 
         var cursor = 'default';
         for (var i in this.pl_data) {
