@@ -759,7 +759,7 @@ class RenderPipelineEditor {
         } else {
             var line1 = new RenderPipelineLine(x0, y0, x0, y1);
             this.check_error(line1);
-            line1 = this.correct_line(line1);
+            // line1 = this.correct_line(line1);
 
             var line2 = new RenderPipelineLine(x0, line1.y1, x2, line1.y1);
             this.check_error(line2);
@@ -768,7 +768,7 @@ class RenderPipelineEditor {
 
             var line3 = new RenderPipelineLine(x2, line2.y0, x2, y2);
             this.check_error(line3);
-            line3 = this.correct_line(line3);
+            // line3 = this.correct_line(line3);
 
             line1.draw_out_circle(this.ctx, 6);
             line3.draw_arrow(this.ctx, 6);
