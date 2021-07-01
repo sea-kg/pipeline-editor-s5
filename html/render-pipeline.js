@@ -759,16 +759,14 @@ class RenderPipelineEditor {
         } else {
             var line1 = new RenderPipelineLine(x0, y0, x0, y1);
             this.check_error(line1);
-            // line1 = this.correct_line(line1);
 
             var line2 = new RenderPipelineLine(x0, line1.y1, x2, line1.y1);
             this.check_error(line2);
             line2 = this.correct_line(line2);
             line1.y1 = line2.y0;
 
-            var line3 = new RenderPipelineLine(x2, line2.y0, x2, y2);
+            var line3 = new RenderPipelineLine(x2, line2.y1, x2, y2);
             this.check_error(line3);
-            // line3 = this.correct_line(line3);
 
             line1.draw_out_circle(this.ctx, 6);
             line3.draw_arrow(this.ctx, 6);
@@ -776,7 +774,6 @@ class RenderPipelineEditor {
             this.drawed_lines_cache.add(line2);
             this.drawed_lines_cache.add(line3);
 
-            var cw = 10; // rasius od angels
             this.ctx.beginPath();
             this.ctx.moveTo(line1.x0, line1.y0);
             this.ctx.lineTo(line1.x0, line1.y1 - this._conf.get_radius_for_angels());
@@ -843,8 +840,8 @@ class RenderPipelineEditor {
 
             // horizontal last
             this.ctx.beginPath();
-            this.ctx.moveTo(x2, y1 + this._conf.get_radius_for_angels());
-            this.ctx.lineTo(x2, y2);
+            this.ctx.moveTo(line3.x0, line3.y0 + this._conf.get_radius_for_angels());
+            this.ctx.lineTo(line3.x1, line3.y1);
             this.ctx.stroke();
         }
     }
@@ -868,32 +865,33 @@ class RenderPipelineEditor {
                 y1 = this.calcY_in_px(y1) + this._conf.get_card_height();
                 y1 += this._conf.get_cell_height() / 2 + (this._conf.get_cell_height() - this._conf.get_card_height()) / 2;
 
+                var in_count = 0;
+                for (var out_nodeid in p.incoming) {
+                    in_count++;
+                }
+                var iter = 0;
                 for (var out_nodeid in p.incoming) {
                     var in_node = this.pl_data_render[out_nodeid];
-                    if (!in_node) {
-                        continue;
-                    }
                     var paralax = in_node.get_paralax_for_line(in_nodeid);
                     
                     // TODO calculate in node
                     var x0 = this.calcX_in_px(in_node.get_cell_x()) + this._conf.get_card_width() / 2 + paralax;
                     var y0 = this.calcY_in_px(in_node.get_cell_y()) + this._conf.get_card_height();
-
+                    var idx = 0;
+                    if (in_count > 1) {
+                        idx = iter - (in_count/2);
+                    }
                     this.draw_line(
                         Math.floor(x0),
-                        Math.floor(x2),
+                        Math.floor(x2 + idx*15),
                         Math.floor(y0),
-                        Math.floor(y1 - paralax),
+                        Math.floor(y1),
                         Math.floor(y2),
                         out_nodeid,
                         in_nodeid,
                     );
+                    iter++;
                 }
-                
-                // if (has_income) {
-                //     // horizontal line
-                //     
-                // }
             }
         }
     }
