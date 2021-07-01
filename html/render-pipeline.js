@@ -330,7 +330,7 @@ class RenderPipelineNode {
         // paralax
         var diff = parseInt(this.dfIxewv_outcoming.length / 2);
         var idx = this.dfIxewv_outcoming.indexOf(node_id);
-        return (idx - diff)*5;
+        return (idx - diff)*15;
     }
 
 
@@ -879,7 +879,7 @@ class RenderPipelineEditor {
                     var y0 = this.calcY_in_px(in_node.get_cell_y()) + this._conf.get_card_height();
                     var idx = 0;
                     if (in_count > 1) {
-                        idx = iter - (in_count/2);
+                        idx = iter - parseInt(in_count/2);
                     }
                     this.draw_line(
                         Math.floor(x0),
