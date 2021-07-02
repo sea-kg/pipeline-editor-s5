@@ -77,6 +77,20 @@ class RenderPipelineLine {
     }
 };
 
+class RenderPipelineConnection {
+    constructor(line1, line2, line3, out_nodeid, in_nodeid) {
+        this.line1 = line1;
+        this.line2 = line2;
+        this.line3 = line3;
+        this.in_nodeid = in_nodeid;
+        this.out_nodeid = out_nodeid;
+    }
+
+    draw(_ctx) {
+
+    }
+};
+
 class RenderPipelineDrawedLinesCache {
     constructor() {
         this.clear();
@@ -384,8 +398,9 @@ class RenderPipelineEditor {
         };
         this.selectedBlockIdEditing = null;
         this.drawed_lines_cache = new RenderPipelineDrawedLinesCache();
+        this.connections = [];
         this.editorState = 'moving';
-
+        
         // this.editorState = 'moving' or 'connecting-blocks' or 'removing-blocks'
 
         this.canvas = document.getElementById(canvas_id);
@@ -746,7 +761,7 @@ class RenderPipelineEditor {
         }
     }
 
-    draw_line(x0, x2, y0, y1, y2, out_nodeid, in_nodeid) {
+    add_to_draw_connection(x0, x2, y0, y1, y2, out_nodeid, in_nodeid) {
         this.ctx.strokeStyle = "black";
         this.ctx.lineWidth = 2;
 
@@ -767,6 +782,14 @@ class RenderPipelineEditor {
 
             var line3 = new RenderPipelineLine(x2, line2.y1, x2, y2);
             this.check_error(line3);
+
+            this.connections.push(new RenderPipelineConnection(
+                line1,
+                line2,
+                line3,
+                out_nodeid,
+                in_nodeid
+            ));
 
             line1.draw_out_circle(this.ctx, 6);
             line3.draw_arrow(this.ctx, 6);
@@ -846,8 +869,9 @@ class RenderPipelineEditor {
         }
     }
 
-    draw_lines() {
+    draw_connections() {
         this.drawed_lines_cache.clear();
+        this.connections = [];
         this.ctx.lineWidth = 1;
         for (var in_nodeid in this.pl_data_render) {
             var p = this.pl_data_render[in_nodeid];
@@ -881,7 +905,7 @@ class RenderPipelineEditor {
                     if (in_count > 1) {
                         idx = iter - parseInt(in_count/2);
                     }
-                    this.draw_line(
+                    this.add_to_draw_connection(
                         Math.floor(x0),
                         Math.floor(x2 + idx*15),
                         Math.floor(y0),
@@ -894,6 +918,10 @@ class RenderPipelineEditor {
                 }
             }
         }
+
+        for (var i in this.connections) {
+            this.connections[i].draw(this.ctx);
+        }
     }
 
     update_pipeline_diagram() {
@@ -902,7 +930,7 @@ class RenderPipelineEditor {
         this.clear_canvas();
         this.draw_grid();
         this.draw_cards();
-        this.draw_lines();
+        this.draw_connections();
         this.draw_diagram_name();
     }
 
