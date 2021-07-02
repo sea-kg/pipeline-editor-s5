@@ -14,6 +14,11 @@ RPL_LINE_ORIENT_NONE = 0;
 RPL_LINE_ORIENT_VERTICAL = 1;
 RPL_LINE_ORIENT_HORIZONTAL = 2;
 
+RPL_LINE_ANGEL_END_LEFT = 0;
+RPL_LINE_ANGEL_END_RIGHT = 1;
+RPL_LINE_ANGEL_RIGHT_DOWN = 2;
+RPL_LINE_ANGEL_LEFT_DOWN = 3;
+
 class RenderPipelineLine {
     constructor(x0, y0, x1, y1) {
         this.x0 = x0;
@@ -76,14 +81,42 @@ class RenderPipelineLine {
         _ctx.fill();
     }
 
-    draw_arc(_ctx, radius, start_angle, end_angle) {
+    draw_arc(_ctx, radius, angle) {
+        var angle_start = 0;
+        var angle_end = 0;
+        var kx = 1;
+        var ky = 1;
+        if (angle == RPL_LINE_ANGEL_END_LEFT) {
+            angle_start = 0;
+            angle_end = Math.PI / 2;
+            kx = -1;
+            ky = -1;
+        } else if (angle == RPL_LINE_ANGEL_END_RIGHT) {
+            angle_start = Math.PI / 2;
+            angle_end = Math.PI;
+            kx = 1;
+            ky = -1;
+        } else if (angle == RPL_LINE_ANGEL_LEFT_DOWN) {
+            angle_start = Math.PI;
+            angle_end = - Math.PI / 2;
+            kx = 1;
+            ky = 1;
+        } else if (angle == RPL_LINE_ANGEL_RIGHT_DOWN) {
+            angle_start = 1.5 * Math.PI;
+            angle_end = 2 * Math.PI;
+            kx = -1;
+            ky = 1;
+        } else {
+            console.error("Unknown type of angle");
+        }   
+        
         _ctx.beginPath();
         _ctx.arc(
-            this.x1 - radius,
-            this.y1 - radius,
+            this.x1 + kx * radius,
+            this.y1 + ky * radius,
             radius,
-            start_angle,
-            end_angle
+            angle_start,
+            angle_end
         );
         _ctx.stroke();
     }
@@ -778,7 +811,8 @@ class RenderPipelineEditor {
         this.ctx.lineWidth = 2;
 
         if (x0 == x2) {
-            var line0 = new RenderPipelineLine(x0, y0, x2, y2);
+            // only one horizontal line
+            var line0 = new RenderPipelineLine(x0, y0, x2, y2);            
             line0.draw_out_circle(this.ctx, 6);
             line0.draw_line(this.ctx);
             line0.draw_arrow(this.ctx, 6);
@@ -808,7 +842,8 @@ class RenderPipelineEditor {
             this.drawed_lines_cache.add(line1);
             this.drawed_lines_cache.add(line2);
             this.drawed_lines_cache.add(line3);
-
+            
+            // horizontal first
             this.ctx.beginPath();
             this.ctx.moveTo(line1.x0, line1.y0);
             this.ctx.lineTo(line1.x0, line1.y1 - this._conf.get_radius_for_angels());
@@ -821,55 +856,30 @@ class RenderPipelineEditor {
                 line1.draw_arc(
                     this.ctx,
                     this._conf.get_radius_for_angels(),
-                    0,
-                    Math.PI / 2
+                    RPL_LINE_ANGEL_END_LEFT
                 );
                 
-                /*line2.draw_arc(
+                line2.draw_arc(
                     this.ctx,
                     this._conf.get_radius_for_angels(),
-                    Math.PI,
-                    - Math.PI / 2
-                );*/
-                this.ctx.beginPath();
-                this.ctx.arc(
-                    _x2,
-                    line1.y1 + this._conf.get_radius_for_angels(),
-                    this._conf.get_radius_for_angels(),
-                    Math.PI,
-                    - Math.PI / 2
+                    RPL_LINE_ANGEL_LEFT_DOWN
                 );
-                this.ctx.stroke();
             } else {
                 _x0 = x0 + this._conf.get_radius_for_angels();
                 _x2 = x2 - this._conf.get_radius_for_angels();
 
-                this.ctx.beginPath();
-                this.ctx.arc(
-                    _x0,
-                    line1.y1 - this._conf.get_radius_for_angels(),
+                line1.draw_arc(
+                    this.ctx,
                     this._conf.get_radius_for_angels(),
-                    Math.PI / 2,
-                    Math.PI
+                    RPL_LINE_ANGEL_END_RIGHT
                 );
-                this.ctx.stroke();
 
-                this.ctx.beginPath();
-                this.ctx.arc(
-                    _x2,
-                    line1.y1 + this._conf.get_radius_for_angels(),
+                line2.draw_arc(
+                    this.ctx,
                     this._conf.get_radius_for_angels(),
-                    1.5 * Math.PI,
-                    2 * Math.PI
+                    RPL_LINE_ANGEL_RIGHT_DOWN
                 );
-                this.ctx.stroke();
             }
-
-            // horizontal first
-            this.ctx.beginPath();
-            this.ctx.moveTo(_x0, y1);
-            this.ctx.lineTo(_x0, y1);
-            this.ctx.stroke();
             
             // vertical
             this.ctx.beginPath();
