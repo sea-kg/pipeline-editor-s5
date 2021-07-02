@@ -75,6 +75,18 @@ class RenderPipelineLine {
         _ctx.lineTo(this.x1 - radius, this.y1 - radius*2);
         _ctx.fill();
     }
+
+    draw_arc(_ctx, radius, start_angle, end_angle) {
+        _ctx.beginPath();
+        _ctx.arc(
+            this.x1 - radius,
+            this.y1 - radius,
+            radius,
+            start_angle,
+            end_angle
+        );
+        _ctx.stroke();
+    }
 };
 
 class RenderPipelineConnection {
@@ -806,22 +818,26 @@ class RenderPipelineEditor {
             if (line3.x0 < line1.x0) {
                 _x0 = line1.x0 - this._conf.get_radius_for_angels();
                 _x2 = line3.x0 + this._conf.get_radius_for_angels();
-                this.ctx.beginPath();
-                this.ctx.arc(
-                    line1.x1 - this._conf.get_radius_for_angels(),
-                    line1.y1 - this._conf.get_radius_for_angels(),
+                line1.draw_arc(
+                    this.ctx,
                     this._conf.get_radius_for_angels(),
                     0,
                     Math.PI / 2
                 );
-                this.ctx.stroke();
-
+                
+                /*line2.draw_arc(
+                    this.ctx,
+                    this._conf.get_radius_for_angels(),
+                    Math.PI,
+                    - Math.PI / 2
+                );*/
                 this.ctx.beginPath();
                 this.ctx.arc(
                     _x2,
                     line1.y1 + this._conf.get_radius_for_angels(),
                     this._conf.get_radius_for_angels(),
-                    Math.PI, - Math.PI / 2
+                    Math.PI,
+                    - Math.PI / 2
                 );
                 this.ctx.stroke();
             } else {
