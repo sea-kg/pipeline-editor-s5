@@ -59,6 +59,21 @@ class RenderPipelineLine {
         return false;
     }
 
+    has_intersection(line) {
+        if (this.orientation == line.orientation) {
+            return this.has_collision(line);
+        } else if (this.orientation == RPL_LINE_ORIENT_HORIZONTAL) {
+            return (line.x0 >= this.x0 && line.x0 <= this.x1)
+                && (this.y0 >= line.y0 && this.y0 <= line.y1)
+            ;
+        } else if (this.orientation == RPL_LINE_ORIENT_VERTICAL) {
+            return (line.y0 >= this.y0 && line.y0 <= this.y1)
+                && (this.x0 >= line.x0 && this.x0 <= line.x1)
+            ;
+        }
+        return false;
+    }
+
     draw_out_circle(_ctx, radius) {
         _ctx.beginPath();
         _ctx.arc(this.x0, this.y0, radius, 0, Math.PI);
@@ -123,16 +138,78 @@ class RenderPipelineLine {
 };
 
 class RenderPipelineConnection {
-    constructor(line1, line2, line3, out_nodeid, in_nodeid) {
+    constructor(line1, line2, line3, conf, out_nodeid, in_nodeid) {
         this.line1 = line1;
         this.line2 = line2;
         this.line3 = line3;
+        this._conf = conf;
         this.in_nodeid = in_nodeid;
         this.out_nodeid = out_nodeid;
     }
 
     draw(_ctx) {
+        this.line1.draw_out_circle(_ctx, 6);
+        this.line3.draw_arrow(_ctx, 6);
 
+        // horizontal first
+        _ctx.beginPath();
+        _ctx.moveTo(this.line1.x0, this.line1.y0);
+        _ctx.lineTo(this.line1.x0, this.line1.y1 - this._conf.get_radius_for_angels());
+        _ctx.stroke();
+
+        var _x0, _x2;
+        if (this.line3.x0 < this.line1.x0) {
+            _x0 = this.line1.x0 - this._conf.get_radius_for_angels();
+            _x2 = this.line3.x0 + this._conf.get_radius_for_angels();
+            this.line1.draw_arc(
+                _ctx,
+                this._conf.get_radius_for_angels(),
+                RPL_LINE_ANGEL_END_LEFT
+            );
+            
+            this.line2.draw_arc(
+                _ctx,
+                this._conf.get_radius_for_angels(),
+                RPL_LINE_ANGEL_LEFT_DOWN
+            );
+        } else {
+            _x0 = this.line1.x0 + this._conf.get_radius_for_angels();
+            _x2 = this.line3.x0 - this._conf.get_radius_for_angels();
+
+            this.line1.draw_arc(
+                _ctx,
+                this._conf.get_radius_for_angels(),
+                RPL_LINE_ANGEL_END_RIGHT
+            );
+
+            this.line2.draw_arc(
+                _ctx,
+                this._conf.get_radius_for_angels(),
+                RPL_LINE_ANGEL_RIGHT_DOWN
+            );
+        }
+        
+        // vertical
+        _ctx.beginPath();
+        _ctx.moveTo(_x0, this.line2.y0);
+        _ctx.lineTo(_x2, this.line2.y0);
+        _ctx.stroke();
+
+        // horizontal last
+        _ctx.beginPath();
+        _ctx.moveTo(this.line3.x0, this.line3.y0 + this._conf.get_radius_for_angels());
+        _ctx.lineTo(this.line3.x1, this.line3.y1);
+        _ctx.stroke();
+    }
+
+    has_perpendicular_intersections(line) {
+        var ret = 0;
+        if (line.orientation == RPL_LINE_ORIENT_HORIZONTAL) {
+            return this.line1.has_intersection(line) || this.line3.has_intersection(line);
+        } else if (line.orientation == RPL_LINE_ORIENT_VERTICAL) {
+            return this.line2.has_intersection(line);
+        }
+        return ret;
     }
 };
 
@@ -819,79 +896,28 @@ class RenderPipelineEditor {
             this.drawed_lines_cache.add(line0);
         } else {
             var line1 = new RenderPipelineLine(x0, y0, x0, y1);
-            this.check_error(line1);
+            this.check_error(line1, out_nodeid, in_nodeid);
 
             var line2 = new RenderPipelineLine(x0, line1.y1, x2, line1.y1);
-            this.check_error(line2);
+            this.check_error(line2, out_nodeid, in_nodeid);
             line2 = this.correct_line(line2);
             line1.y1 = line2.y0;
 
             var line3 = new RenderPipelineLine(x2, line2.y1, x2, y2);
-            this.check_error(line3);
+            this.check_error(line3, out_nodeid, in_nodeid);
+            
+            this.drawed_lines_cache.add(line1);
+            this.drawed_lines_cache.add(line2);
+            this.drawed_lines_cache.add(line3);
 
             this.connections.push(new RenderPipelineConnection(
                 line1,
                 line2,
                 line3,
+                this._conf,
                 out_nodeid,
                 in_nodeid
             ));
-
-            line1.draw_out_circle(this.ctx, 6);
-            line3.draw_arrow(this.ctx, 6);
-            this.drawed_lines_cache.add(line1);
-            this.drawed_lines_cache.add(line2);
-            this.drawed_lines_cache.add(line3);
-            
-            // horizontal first
-            this.ctx.beginPath();
-            this.ctx.moveTo(line1.x0, line1.y0);
-            this.ctx.lineTo(line1.x0, line1.y1 - this._conf.get_radius_for_angels());
-            this.ctx.stroke();
-
-            var _x0, _x2;
-            if (line3.x0 < line1.x0) {
-                _x0 = line1.x0 - this._conf.get_radius_for_angels();
-                _x2 = line3.x0 + this._conf.get_radius_for_angels();
-                line1.draw_arc(
-                    this.ctx,
-                    this._conf.get_radius_for_angels(),
-                    RPL_LINE_ANGEL_END_LEFT
-                );
-                
-                line2.draw_arc(
-                    this.ctx,
-                    this._conf.get_radius_for_angels(),
-                    RPL_LINE_ANGEL_LEFT_DOWN
-                );
-            } else {
-                _x0 = x0 + this._conf.get_radius_for_angels();
-                _x2 = x2 - this._conf.get_radius_for_angels();
-
-                line1.draw_arc(
-                    this.ctx,
-                    this._conf.get_radius_for_angels(),
-                    RPL_LINE_ANGEL_END_RIGHT
-                );
-
-                line2.draw_arc(
-                    this.ctx,
-                    this._conf.get_radius_for_angels(),
-                    RPL_LINE_ANGEL_RIGHT_DOWN
-                );
-            }
-            
-            // vertical
-            this.ctx.beginPath();
-            this.ctx.moveTo(_x0, line2.y0);
-            this.ctx.lineTo(_x2, line2.y0);
-            this.ctx.stroke();
-
-            // horizontal last
-            this.ctx.beginPath();
-            this.ctx.moveTo(line3.x0, line3.y0 + this._conf.get_radius_for_angels());
-            this.ctx.lineTo(line3.x1, line3.y1);
-            this.ctx.stroke();
         }
     }
 
@@ -944,9 +970,38 @@ class RenderPipelineEditor {
                 }
             }
         }
+        
+        // try swap lines for minimal crosses
+        this.beautify_connections();
 
         for (var i in this.connections) {
             this.connections[i].draw(this.ctx);
+        }
+    }
+
+    find_perpendicular_intersections(conn) {
+        var ret = 0;
+        for (var i in this.connections) {
+            ret += this.connections[i].has_perpendicular_intersections(conn.line1) ? 1 : 0;
+            ret += this.connections[i].has_perpendicular_intersections(conn.line2) ? 1 : 0;
+            ret += this.connections[i].has_perpendicular_intersections(conn.line3) ? 1 : 0;
+        }
+        return ret;
+    }
+
+    beautify_connections() {
+        var swaps = 1;
+        while (swaps > 0) {
+            swaps = 0;
+            for (var i in this.connections) {
+                var conn = this.connections[i];
+                // 1. find count of intersections
+                var count = this.find_perpendicular_intersections(conn);
+                if (count > 0) {
+                    console.log("Found intersections", count);
+                }
+                // this.connections[i].draw(this.ctx);
+            }
         }
     }
 
