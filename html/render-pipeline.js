@@ -13,6 +13,7 @@ function JWwfsRY_random_makeid() {
 RPL_LINE_ORIENT_NONE = 0;
 RPL_LINE_ORIENT_VERTICAL = 1;
 RPL_LINE_ORIENT_HORIZONTAL = 2;
+RPL_LINE_ORIENT_POINT = 3;
 
 RPL_LINE_ANGEL_END_LEFT = 0;
 RPL_LINE_ANGEL_END_RIGHT = 1;
@@ -33,9 +34,10 @@ class RenderPipelineLine {
         this.error = null;
         if (x0 == x1 && y0 != y1) {
             this.orientation = RPL_LINE_ORIENT_VERTICAL;
-        }
-        if (y0 == y1 && x0 != x1) {
+        } else if (y0 == y1 && x0 != x1) {
             this.orientation = RPL_LINE_ORIENT_HORIZONTAL;
+        } else if (y0 == y1 && x0 == x1) {
+            this.orientation = RPL_LINE_ORIENT_POINT;
         }
         if (this.orientation == '') {
             this.error = "Expected horizontal or vertical line";
@@ -94,12 +96,12 @@ class RenderPipelineLine {
         if (this.orientation == line.orientation) {
             return this.has_collision(line);
         } else if (this.orientation == RPL_LINE_ORIENT_HORIZONTAL) {
-            return (line.x0 >= this.xmin && line.x0 <= this.xmax)
-                && (this.y0 >= line.ymin && this.y0 <= line.ymax)
+            return (line.x0 > this.xmin && line.x0 < this.xmax)
+                && (this.y0 > line.ymin && this.y0 < line.ymax)
             ;
         } else if (this.orientation == RPL_LINE_ORIENT_VERTICAL) {
-            return (line.y0 >= this.ymin && line.y0 <= this.ymax)
-                && (this.x0 >= line.xmin && this.x0 <= line.xmax)
+            return (line.y0 > this.ymin && line.y0 < this.ymax)
+                && (this.x0 > line.xmin && this.x0 < line.xmax)
             ;
         }
         return false;
@@ -181,6 +183,15 @@ class RenderPipelineConnection {
     draw(_ctx) {
         this.line1.draw_out_circle(_ctx, 6);
         this.line3.draw_arrow(_ctx, 6);
+        
+        if (this.line1.x0 == this.line3.x0) {
+            // simple line 
+            _ctx.beginPath();
+            _ctx.moveTo(this.line1.x0, this.line1.y0);
+            _ctx.lineTo(this.line1.x0, this.line3.y1);
+            _ctx.stroke();
+            return;
+        }
 
         // horizontal first
         _ctx.beginPath();
@@ -239,17 +250,6 @@ class RenderPipelineConnection {
             || line.has_intersection(this.line2)
             || line.has_intersection(this.line3)
         ;
-            // || ;
-            //    
-            //    || 
-            // ;
-        /* if (line.orientation == RPL_LINE_ORIENT_HORIZONTAL) {
-            return this.line1.has_intersection(line)
-                || this.line3.has_intersection(line);
-            ;
-        } else if (line.orientation == RPL_LINE_ORIENT_VERTICAL) {
-            return this.line2.has_intersection(line);
-        }*/
     }
 };
 
@@ -928,38 +928,29 @@ class RenderPipelineEditor {
         this.ctx.strokeStyle = "black";
         this.ctx.lineWidth = 2;
 
-        if (x0 == x2) {
-            // only one horizontal line
-            var line0 = new RenderPipelineLine(x0, y0, x2, y2);            
-            line0.draw_out_circle(this.ctx, 6);
-            line0.draw_line(this.ctx);
-            line0.draw_arrow(this.ctx, 6);
-            this.drawed_lines_cache.add(line0);
-        } else {
-            var line1 = new RenderPipelineLine(x0, y0, x0, y1);
-            this.check_error(line1, out_nodeid, in_nodeid);
+        var line1 = new RenderPipelineLine(x0, y0, x0, y1);
+        this.check_error(line1, out_nodeid, in_nodeid);
 
-            var line2 = new RenderPipelineLine(x0, line1.y1, x2, line1.y1);
-            this.check_error(line2, out_nodeid, in_nodeid);
-            line2 = this.correct_line(line2);
-            line1.y1 = line2.y0;
+        var line2 = new RenderPipelineLine(x0, line1.y1, x2, line1.y1);
+        this.check_error(line2, out_nodeid, in_nodeid);
+        line2 = this.correct_line(line2);
+        line1.y1 = line2.y0;
 
-            var line3 = new RenderPipelineLine(x2, line2.y1, x2, y2);
-            this.check_error(line3, out_nodeid, in_nodeid);
-            
-            this.drawed_lines_cache.add(line1);
-            this.drawed_lines_cache.add(line2);
-            this.drawed_lines_cache.add(line3);
+        var line3 = new RenderPipelineLine(x2, line2.y1, x2, y2);
+        this.check_error(line3, out_nodeid, in_nodeid);
+        
+        this.drawed_lines_cache.add(line1);
+        this.drawed_lines_cache.add(line2);
+        this.drawed_lines_cache.add(line3);
 
-            this.connections.push(new RenderPipelineConnection(
-                line1,
-                line2,
-                line3,
-                this._conf,
-                out_nodeid,
-                in_nodeid
-            ));
-        }
+        this.connections.push(new RenderPipelineConnection(
+            line1,
+            line2,
+            line3,
+            this._conf,
+            out_nodeid,
+            in_nodeid
+        ));
     }
 
     draw_connections() {
@@ -1012,7 +1003,7 @@ class RenderPipelineEditor {
         }
         
         // try swap lines for minimal crosses
-        // this.beautify_connections();
+        this.beautify_connections();
 
         for (var i in this.connections) {
             this.connections[i].draw(this.ctx);
@@ -1095,23 +1086,23 @@ class RenderPipelineEditor {
     }
 
     try_swaps(found_same_in, i0, found_length) {
-        console.log("try swaps for ", i0);
+        // console.log("try swaps for ", i0);
         for (var _i1 in found_same_in) {
             var i1 = found_same_in[_i1];
-            console.log("try swap with ", i1);
+            // console.log("try swap with ", i1);
             if (i0 == i1) {
-                console.log("swap skip for same ", i1);
+                // console.log("swap skip for same ", i1);
                 continue; 
             }
-            console.log("swap " + i0 + " <> " + i1);
+            // console.log("swap " + i0 + " <> " + i1);
             this.swap_in_connections(i0, i1);
             var found2 = this.find_perpendicular_intersections(i0);
-            console.log("found2 ", found2);
+            // console.log("found2 ", found2);
             if (found2.length < found_length) {
-                console.log("found better solution ");
+                // console.log("found better solution ");
                 return true;
             }
-            console.log("reverted swap");
+            // console.log("reverted swap");
             this.swap_in_connections(i1, i0);
         }
         return false;
@@ -1119,10 +1110,10 @@ class RenderPipelineEditor {
 
     beautify_connections() {
         var swaps = 1;
-        var _while_protected = 0
+        var _while_protected = 0;
         while (swaps > 0) {
             _while_protected++;
-            if (_while_protected > 100) {
+            if (_while_protected > 500) {
                 console.error(_while_protected);
                 return;
             }
@@ -1131,8 +1122,8 @@ class RenderPipelineEditor {
             // debug
             /*console.log(this.connections);
             var in_nodeid = "tVIp2Oe";
-            var i0 = 13;
-            var i1 = 12;
+            var i0 = 1;
+            var i1 = 2;
             var found = this.find_perpendicular_intersections(i0);
             console.log("Found before");
             this.print_connection_info(found);
@@ -1140,31 +1131,31 @@ class RenderPipelineEditor {
             var found_same_in = this.find_in_connections(in_nodeid);
             console.log("Found same in ", found_same_in);
             this.print_connection_info(found_same_in);
-            console.log("swap 13 !!!!!")
+            console.log("swap " + i0 + " !!!!!")
             this.swap_in_connections(i1, i0);
             var found2 = this.find_perpendicular_intersections(i0);
             console.log("Found after");
             this.print_connection_info(found2);
             console.log(this.connections[i0])
             console.log(this.connections[i1])
-            return; */
+            return;*/
 
             for (var i0 in this.connections) {
                 var in_nodeid = this.connections[i0].in_nodeid;
                 var out_nodeid = this.connections[i0].out_nodeid;
-                console.log("Process ", i0);
-                this.print_connection_info(i0);
+                // console.log("Process ", i0);
+                // this.print_connection_info(i0);
                 // 1. find count of intersections
                 var found = this.find_perpendicular_intersections(i0);
                 if (found.length > 0) {
-                    console.log("Found intersections", found);
-                    this.print_connection_info(found);
+                    // console.log("Found intersections", found);
+                    // this.print_connection_info(found);
                     var found_same_in = this.find_in_connections(in_nodeid);
-                    console.log("Found same in ", found_same_in);
+                    // console.log("Found same in ", found_same_in);
                     if (found_same_in.length > 0) {
                         if (this.try_swaps(found_same_in, i0, found.length)) {
                             swaps++;
-                            found = this.find_perpendicular_intersections(i0);
+                            // found = this.find_perpendicular_intersections(i0);
                         }
                     }
                 }
@@ -1197,7 +1188,7 @@ class RenderPipelineEditor {
             var bl1 = this.conneсtingBlocks.incoming_block_id;
             var bl2 = this.conneсtingBlocks.block_id;
             this.pl_data[bl2]["incoming"][bl1] = "";
-            console.log(this.pl_data[bl2]);
+            // console.log(this.pl_data[bl2]);
             this.prepare_data_render();
             this.update_meansures();
             this.update_pipeline_diagram();
