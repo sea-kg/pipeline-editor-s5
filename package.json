@@ -1,0 +1,24 @@
+{
+    "name": "pipeline-editor-s5",
+    "version": "v0.0.1",
+    "description": "Visaul web-editor for a pipelines",
+    "main": "html/render-pipeline.js",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/sea-kg/pipeline-editor-s5.git"
+    },
+    "keywords": [
+      "pipeline",
+      "editor",
+      "library"
+    ],
+    "bugs": {
+      "url": "https://github.com/sea-kg/pipeline-editor-s5/issues"
+    },
+    "author": "Evgenii Sopov",
+    "license": "MIT",
+    "licenses": [{
+      "type": "MIT",
+      "url": "https://github.com/sea-kg/pipeline-editor-s5/blob/master/LICENSE"
+    }]
+  }
