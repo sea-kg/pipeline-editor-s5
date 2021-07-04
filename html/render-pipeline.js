@@ -372,6 +372,7 @@ class RenderPipelineNode {
         this.description_width = 0;
         this.max_card_width = 0;
         this.incoming = {};
+        this.incoming_order = [];
         // this.IQrRW7r_cell_x = 0;
         // this.IQrRW7r_cell_y = 0;
         this.update_cell_xy(0,0)
@@ -509,6 +510,15 @@ class RenderPipelineNode {
         return (idx - diff)*15;
     }
 
+    update_incoming_sort(pl_data_render) {
+        this.incoming_order = []
+        for(var nodeid in this.incoming) {
+            this.incoming_order.push(nodeid);
+        }
+        this.incoming_order.sort(function(a, b) {
+            return pl_data_render[a].get_cell_x() - pl_data_render[b].get_cell_x();
+        })
+    }
 
     draw_card(_ctx, selectedBlockIdEditing) {
         var paralax = this.get_paralax_in_cell();
@@ -887,6 +897,7 @@ class RenderPipelineEditor {
         for (var nodeid in this.pl_data_render) {
             var _node = this.pl_data_render[nodeid]
             _node.draw_card(this.ctx, this.selectedBlockIdEditing, this.pl_highlightCard);
+            _node.update_incoming_sort(this.pl_data_render);
         }
     }
 
@@ -957,8 +968,10 @@ class RenderPipelineEditor {
         this.drawed_lines_cache.clear();
         this.connections = [];
         this.ctx.lineWidth = 1;
+        var middle_of_height = this._conf.get_cell_height() / 2 + (this._conf.get_cell_height() - this._conf.get_card_height()) / 2;
         for (var in_nodeid in this.pl_data_render) {
             var p = this.pl_data_render[in_nodeid];
+            var in_count = p.incoming_order.length;
             if (p.incoming) {
 
                 var x2 = this.calcX_in_px(p.get_cell_x()) + this._conf.get_card_width() / 2;
@@ -969,13 +982,9 @@ class RenderPipelineEditor {
                     y1.push(this.pl_data_render[inc].get_cell_y());
                 }
                 y1 = Math.max.apply(null, y1);
-                y1 = this.calcY_in_px(y1) + this._conf.get_card_height();
-                y1 += this._conf.get_cell_height() / 2 + (this._conf.get_cell_height() - this._conf.get_card_height()) / 2;
+                y1 = this.calcY_in_px(y1) + this._conf.get_cell_height();
+                y1 += middle_of_height;
 
-                var in_count = 0;
-                for (var out_nodeid in p.incoming) {
-                    in_count++;
-                }
                 var iter = 0;
                 for (var out_nodeid in p.incoming) {
                     var in_node = this.pl_data_render[out_nodeid];
@@ -984,15 +993,15 @@ class RenderPipelineEditor {
                     // TODO calculate in node
                     var x0 = this.calcX_in_px(in_node.get_cell_x()) + this._conf.get_card_width() / 2 + paralax;
                     var y0 = this.calcY_in_px(in_node.get_cell_y()) + this._conf.get_card_height();
-                    var idx = 0;
-                    if (in_count > 1) {
-                        idx = iter - parseInt(in_count/2);
-                    }
+                    var idx = p.incoming_order.indexOf(out_nodeid);
+                    console.log((p.incoming_order.length - 1) / 2);
+                    var in_x2_diff = idx * 15 - ((p.incoming_order.length - 1) / 2) * 15;
+                    var in_y1_diff = (p.incoming_order.length - idx)*10 - ((p.incoming_order.length - 1) / 2)*10;
                     this.add_to_draw_connection(
                         Math.floor(x0),
-                        Math.floor(x2 + idx*15),
+                        Math.floor(x2 + in_x2_diff),
                         Math.floor(y0),
-                        Math.floor(y1),
+                        Math.floor(y1 - in_y1_diff),
                         Math.floor(y2),
                         out_nodeid,
                         in_nodeid,
@@ -1003,7 +1012,7 @@ class RenderPipelineEditor {
         }
         
         // try swap lines for minimal crosses
-        this.beautify_connections();
+        // this.beautify_connections();
 
         for (var i in this.connections) {
             this.connections[i].draw(this.ctx);
