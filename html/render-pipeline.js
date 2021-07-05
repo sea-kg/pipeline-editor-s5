@@ -1128,30 +1128,8 @@ class RenderPipelineEditor {
             }
             swaps = 0;
 
-            // debug
-            /*console.log(this.connections);
-            var in_nodeid = "tVIp2Oe";
-            var i0 = 1;
-            var i1 = 2;
-            var found = this.find_perpendicular_intersections(i0);
-            console.log("Found before");
-            this.print_connection_info(found);
-
-            var found_same_in = this.find_in_connections(in_nodeid);
-            console.log("Found same in ", found_same_in);
-            this.print_connection_info(found_same_in);
-            console.log("swap " + i0 + " !!!!!")
-            this.swap_in_connections(i1, i0);
-            var found2 = this.find_perpendicular_intersections(i0);
-            console.log("Found after");
-            this.print_connection_info(found2);
-            console.log(this.connections[i0])
-            console.log(this.connections[i1])
-            return;*/
-
             for (var i0 in this.connections) {
                 var in_nodeid = this.connections[i0].in_nodeid;
-                var out_nodeid = this.connections[i0].out_nodeid;
                 // console.log("Process ", i0);
                 // this.print_connection_info(i0);
                 // 1. find count of intersections
