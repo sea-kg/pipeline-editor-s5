@@ -5,6 +5,13 @@ All notable changes to pipeline-editor-s5 project will be documented in this fil
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.1.0] - 2021-07-06 (2021 Jul 7)
+
+### Changed
+
+* Data format
+* Cleanup code
+
 ## [v0.0.1] - 2021-07-06 (2021 Jul 6)
 
 ### Added
