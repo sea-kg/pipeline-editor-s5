@@ -547,7 +547,7 @@ class RenderPipelineNode {
 }
 
 class RenderPipelineEditor {
-    constructor(canvas_id, canvas_container_id) {
+    constructor(canvas_id) {
         this.fontSize = 16;
         this._conf = new RenderPipelineConfig()
         this.pl_height = 100;
@@ -577,7 +577,7 @@ class RenderPipelineEditor {
         // this.editorState = 'moving' or 'connecting-blocks' or 'removing-blocks'
 
         this.canvas = document.getElementById(canvas_id);
-        this.canvas_container = document.getElementById(canvas_container_id);
+        this.canvas_container = this.canvas.parentElement;
 
         this.ctx = this.canvas.getContext("2d");
         this.init_font_size();
