@@ -4,9 +4,40 @@
 
 Pipeline Editor (just editor)
 
+html:
 
-
-
+```html
+<div style="overflow: scroll; height: 400px; min-height: 400px;">
+    <canvas id="pipeline_diagram_canvas"></canvas>
+</div>
+<script src="./render-pipeline.js?ver=1"></script>
+<script>
+    window.render1 = new RenderPipelineEditor('pipeline_diagram_canvas', 'canvas_container');
+    render1.set_data({
+        "title": "Some",
+        "nodes": {
+            "aCaqNjY": {
+                "name": "One",
+                "description": "...",
+                "incoming": {},
+                "cell_x": 1,
+                "cell_y": 0,
+                "color": "#ffffff"
+            },
+            "kB3Cu9b": {
+                "name": "Two",
+                "description": "...",
+                "incoming": {
+                    "aCaqNjY": ""
+                },
+                "cell_x": 2,
+                "cell_y": 2,
+                "color": "#ffffff"
+            }
+        }
+    });
+</script>
+```
 
 ## Other pipeline editors
 
