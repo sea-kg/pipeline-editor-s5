@@ -35,28 +35,28 @@ function switch_draw_grid(el) {
 
 function switch_to_tab_ui_editor(active_id) {
     var _data = JSON.parse(json_content.value);
-    render.set_data(_data)
+    render.set_data(_data);
     render.update_meansures();
     render.update_pipeline_diagram();
 }
 
 function switch_to_tab_json() {
-    var _data = render.export_to_json();
+    var _data = render.get_data();
     json_content.value = JSON.stringify(_data, undefined, 4);
 }
 
 function switch_to_tab_export() {
-    var _data = render.export_to_json();
+    var _data = render.get_data();
     json_content.value = JSON.stringify(_data, undefined, 4);
 }
 
 function switch_to_tab_settings() {
-    var _data = render.export_to_json();
+    var _data = render.get_data();
     json_content.value = JSON.stringify(_data, undefined, 4);
 }
 
 function switch_to_tab_about() {
-    var _data = render.export_to_json();
+    var _data = render.get_data();
     json_content.value = JSON.stringify(_data, undefined, 4);
 }
 
@@ -68,7 +68,7 @@ function save_as_image() {
 }
 
 function save_to_localstorage() {
-    var _data = render.export_to_json();
+    var _data = render.get_data();
     _data = JSON.stringify(_data, undefined, 4);
     localStorage.setItem('_data', _data);
 }
@@ -114,10 +114,10 @@ function resize_canvas() {
 function input_onchangename() {
     var block_id = document.getElementById("prop_block_id").value;
     if (block_id) {
-        render.pl_data[block_id]['name'] = document.getElementById("prop_name").value;
-        render.pl_data[block_id]['description'] = document.getElementById("prop_description").value;
-        render.pl_data[block_id]['color'] = document.getElementById("prop_color").value;
-        render.prepare_data_render();
+        render.pl_data_render[block_id].set_name(document.getElementById("prop_name").value);
+        render.pl_data_render[block_id].set_description(document.getElementById("prop_description").value);
+        render.pl_data_render[block_id].set_color(document.getElementById("prop_color").value);
+        // render.prepare_data_render();
         render.update_meansures();
         render.update_pipeline_diagram();
     }
@@ -126,15 +126,11 @@ function input_onchangename() {
 function render_onchoosedelement(block_id) {
     if (block_id) {
         document.getElementById("prop_block_id").value = block_id;
-        document.getElementById("prop_name").value = render.pl_data[block_id]['name'];
+        document.getElementById("prop_name").value = render.pl_data_render[block_id].get_name();
         document.getElementById("prop_name").removeAttribute('readonly');
-        document.getElementById("prop_description").value = render.pl_data[block_id]['description'];
+        document.getElementById("prop_description").value = render.pl_data_render[block_id].get_description();
         document.getElementById("prop_description").removeAttribute('readonly');
-        if (render.pl_data[block_id]['color']) {
-            document.getElementById("prop_color").value = render.pl_data[block_id]['color'];
-        } else {
-            document.getElementById("prop_color").value = "#ffffff";
-        }
+        document.getElementById("prop_color").value = render.pl_data_render[block_id].get_color();
         document.getElementById("prop_color").removeAttribute('readonly');
     } else {
         document.getElementById("prop_block_id").value = "";

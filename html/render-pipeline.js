@@ -526,14 +526,14 @@ class RenderPipelineNode {
 class RenderPipelineEditor {
     constructor(canvas_id) {
         this.fontSize = 16;
+        this.title = "Edit me";
         this._conf = new RenderPipelineConfig()
         this.pl_height = 100;
         this.is_draw_grid = true;
         this.pl_width = 100;
         this.pl_padding = 20;
         this.pl_scale = 1.0;
-        this.pl_data = {}; // original user data
-        this.pt_data_render = {}; // TODO: data with preprocessing like a real x,y
+        this.pl_data_render = {};
         this.movingEnable = false;
         this.scrollMoving = false;
         this.scrollMovingPos = {};
@@ -587,8 +587,28 @@ class RenderPipelineEditor {
     }
 
     set_data(data) {
-        this.pl_data = this.clone_object(data);
-        this.prepare_data_render();
+        this.title = data["title"];
+        this.pl_data_render = {};
+        for (var node_id in data["nodes"]) {
+            var node = new RenderPipelineNode(node_id, this._conf)
+            node.copy_from_json(data["nodes"][node_id])
+            this.pl_data_render[node_id] = node;
+        }
+
+        for (var node_id in this.pl_data_render) {
+            var node = this.pl_data_render[node_id];
+            for (var nid in node.incoming) {
+                if (!this.pl_data_render[nid]) {
+                    console.warn("Removed incoming node ", nid, " for ", node_id)
+                }
+            }
+        }
+
+        this.prepare_data_cards_one_cells()
+        this.prepare_lines_out();
+
+        this.update_meansures();
+        this.update_pipeline_diagram();
     }
 
     canvas_onmouseover(event) {
@@ -634,9 +654,8 @@ class RenderPipelineEditor {
             console.log(nodeid);
             if (nodeid) {
                 this.selectedBlockIdEditing = null;
-                delete this.pl_data[nodeid];
-                delete this.pt_data_render[nodeid];
-                this.prepare_data_render();
+                delete this.pl_data_render[nodeid];
+                // this.prepare_data_render();
                 this.update_meansures();
                 this.update_pipeline_diagram();
                 this.editorState = 'moving';
@@ -679,7 +698,7 @@ class RenderPipelineEditor {
 
     find_block_id(x0, y0) {
         var found_val = null;
-        for (var i in this.pl_data) {
+        for (var i in this.pl_data_render) {
             var x1 = this.pl_data_render[i].hidden_x1;
             var x2 = x1 + this._conf.get_card_width();
             var y1 = this.pl_data_render[i].hidden_y1;
@@ -732,8 +751,6 @@ class RenderPipelineEditor {
             }
             // console.log(y0);
             if (this.pl_data_render[this.selectedBlockIdEditing].update_cell_xy(t_x, t_y)) {
-                this.pl_data[this.selectedBlockIdEditing].cell_x = t_x;
-                this.pl_data[this.selectedBlockIdEditing].cell_y = t_y;
                 this.prepare_data_cards_one_cells();
                 this.update_pipeline_diagram();
             }
@@ -743,7 +760,7 @@ class RenderPipelineEditor {
         // var block_id = this.find_block_id(x0, y0);
 
         var cursor = 'default';
-        for (var i in this.pl_data) {
+        for (var i in this.pl_data_render) {
             var x1 = this.pl_data_render[i].hidden_x1;
             var x2 = x1 + this._conf.get_card_width();
             var y1 = this.pl_data_render[i].hidden_y1;
@@ -777,11 +794,8 @@ class RenderPipelineEditor {
 
     update_meansures() {
         var max_width = 0;
-        for (var node_id in this.pl_data) {
-            var _node_orig = this.pl_data[node_id]
+        for (var node_id in this.pl_data_render) {
             var _node_r = this.pl_data_render[node_id]
-            _node_r.set_name(_node_orig.name)
-            _node_r.set_description(_node_orig.description)
             var card_width = _node_r.update_meansures(this.ctx)
             max_width = Math.max(card_width, max_width)
         }
@@ -794,10 +808,10 @@ class RenderPipelineEditor {
     update_image_size() {
         var new_max_cell_x = 0;
         var new_max_cell_y = 0;
-        for (var i in this.pl_data) {
-            this.pl_data[i]['hidden_highlight'] = false; // reset here ?
-            new_max_cell_x = Math.max(this.pl_data[i].cell_x, new_max_cell_x);
-            new_max_cell_y = Math.max(this.pl_data[i].cell_y, new_max_cell_y);
+        for (var i in this.pl_data_render) {
+            this.pl_data_render[i].hidden_highlight = false; // reset here ?
+            new_max_cell_x = Math.max(this.pl_data_render[i].get_cell_x(), new_max_cell_x);
+            new_max_cell_y = Math.max(this.pl_data_render[i].get_cell_y(), new_max_cell_y);
         }
 
         if (this._conf.set_max_cell_xy(new_max_cell_x, new_max_cell_y)) {
@@ -956,7 +970,10 @@ class RenderPipelineEditor {
 
                 var y1 = [];
                 for (var inc in p.incoming) {
-                    y1.push(this.pl_data_render[inc].get_cell_y());
+                    var in_node = this.pl_data_render[inc];
+                    if (in_node) {
+                        y1.push(in_node.get_cell_y());
+                    }
                 }
                 y1 = Math.max.apply(null, y1);
                 y1 = this.calcY_in_px(y1) + this._conf.get_cell_height();
@@ -965,15 +982,19 @@ class RenderPipelineEditor {
                 var iter = 0;
                 for (var out_nodeid in p.incoming) {
                     var in_node = this.pl_data_render[out_nodeid];
+                    if (!in_node) {
+                        console.error("Not found node with id " + inc);
+                        continue;
+                    }
                     var paralax = in_node.get_paralax_for_line(in_nodeid);
                     
                     // TODO calculate in node
                     var x0 = this.calcX_in_px(in_node.get_cell_x()) + this._conf.get_card_width() / 2 + paralax;
                     var y0 = this.calcY_in_px(in_node.get_cell_y()) + this._conf.get_card_height();
                     var idx = p.incoming_order.indexOf(out_nodeid);
-                    console.log((p.incoming_order.length - 1) / 2);
-                    var in_x2_diff = idx * 15 - ((p.incoming_order.length - 1) / 2) * 15;
-                    var in_y1_diff = (p.incoming_order.length - idx)*10 - ((p.incoming_order.length - 1) / 2)*10;
+                    console.log((in_count - 1) / 2);
+                    var in_x2_diff = idx * 15 - ((in_count - 1) / 2) * 15;
+                    var in_y1_diff = (in_count - idx)*10 - ((in_count - 1) / 2)*10;
                     this.add_to_draw_connection(
                         Math.floor(x0),
                         Math.floor(x2 + in_x2_diff),
@@ -1031,25 +1052,19 @@ class RenderPipelineEditor {
             this.conneсtingBlocks.state = 'nope';
             var bl1 = this.conneсtingBlocks.incoming_block_id;
             var bl2 = this.conneсtingBlocks.block_id;
-            this.pl_data[bl2]["incoming"][bl1] = "";
-            // console.log(this.pl_data[bl2]);
-            this.prepare_data_render();
+            this.pl_data_render[bl2].incoming[bl1] = "";
+            // this.prepare_data_render();
             this.update_meansures();
             this.update_pipeline_diagram();
         }
     }
 
-    export_to_json() {
+    get_data() {
         var _ret = {};
-        for (var i in this.pl_data) {
-            _ret[i] = {}
-            for (var n in this.pl_data[i]) {
-                if (n.startsWith("hidden_")) {
-                    _ret[i][n] = undefined;        
-                } else {
-                    _ret[i][n] = this.pl_data[i][n];
-                }
-            }
+        _ret["title"] = this.title;
+        _ret["nodes"] = {};
+        for (var i in this.pl_data_render) {
+            _ret["nodes"][i] = this.pl_data_render[i].to_json();
         }
         return _ret;
     }
@@ -1064,7 +1079,7 @@ class RenderPipelineEditor {
         var new_id = null;
         while (new_id == null) {
             new_id = JWwfsRY_random_makeid();
-            if (this.pl_data[new_id]) {
+            if (this.pl_data_render[new_id]) {
                 new_id = null;
                 continue;
             }
@@ -1075,10 +1090,9 @@ class RenderPipelineEditor {
                 "cell_x": pos_x,
                 "cell_y": pos_y
             }
-            this.pl_data[new_id] = _node_d
-            var node = new RenderPipelineNode(new_id, this._conf)
-            node.copy_from_json(_node_d)
-            this.pl_data_render[new_id] = node
+            var _new_node = new RenderPipelineNode(new_id, this._conf);
+            _new_node.copy_from_json(_node_d);
+            this.pl_data_render[new_id] = _new_node;
             this.prepare_data_cards_one_cells()
         }
 
@@ -1092,27 +1106,6 @@ class RenderPipelineEditor {
 
     remove_block() {
         this.editorState = 'remove';
-    }
-
-    prepare_data_render() {
-        this.pl_data_render = {}
-        for (var node_id in this.pl_data) {
-            var node = new RenderPipelineNode(node_id, this._conf)
-            node.copy_from_json(this.pl_data[node_id])
-            this.pl_data_render[node_id] = node
-        }
-
-        for (var node_id in this.pl_data_render) {
-            var node = this.pl_data_render[node_id];
-            for (var nid in node.incoming) {
-                if (!this.pl_data_render[nid]) {
-                    console.warn("Removed incoming node ", nid, " for ", node_id)
-                }
-            }
-        }
-
-        this.prepare_data_cards_one_cells()
-        this.prepare_lines_out();
     }
 
     prepare_data_cards_one_cells() {
