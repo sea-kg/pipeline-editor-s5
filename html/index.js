@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
         _data = data_pl_example;
     }
-    window.render = new RenderPipelineEditor('pipeline_diagram_canvas', 'canvas_container');
+    window.render = new RenderPipelineEditor('pipeline_diagram_canvas');
     render.set_data(_data);
 
     resize_canvas();
