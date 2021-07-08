@@ -524,7 +524,7 @@ class RenderPipelineNode {
 }
 
 class RenderPipelineEditor {
-    constructor(canvas_id) {
+    constructor(canvas_id, cfg) {
         this.fontSize = 16;
         this.title = "Edit me";
         this._conf = new RenderPipelineConfig()
@@ -550,7 +550,13 @@ class RenderPipelineEditor {
         this.drawed_lines_cache = new RenderPipelineDrawedLinesCache();
         this.connections = [];
         this.editorState = 'moving';
+        this.mode_viewer = false;
         
+        if (cfg) {
+            if (cfg['mode-viewer'] === true) {
+                this.mode_viewer = true;
+            }
+        }
         // this.editorState = 'moving' or 'connecting-blocks' or 'removing-blocks'
 
         this.canvas = document.getElementById(canvas_id);

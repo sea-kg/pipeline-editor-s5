@@ -12,7 +12,9 @@ html:
 </div>
 <script src="./render-pipeline.js?ver=1"></script>
 <script>
-    window.render1 = new RenderPipelineEditor('pipeline_diagram_canvas');
+    window.render1 = new RenderPipelineEditor('pipeline_diagram_canvas', {
+        // HERE configs
+    });
     render1.set_data({
         "title": "Some",
         "nodes": {
