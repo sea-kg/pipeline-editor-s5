@@ -41,6 +41,28 @@ html:
 </script>
 ```
 
+
+## Methods
+
+Constructor, example:
+
+`window.render = new RenderPipelineEditor(element_id_canvas);`
+
+### Set / Get data
+
+`render.set_data(_new_data);`
+
+set new data-json
+
+`var data = render.get_data();`
+
+will return data-json
+
+### Draw
+
+* `render.update_meansures();` - Update meansures (like a width of blocks)
+
+
 ## Other pipeline editors
 
 Nice diagram and something else:
