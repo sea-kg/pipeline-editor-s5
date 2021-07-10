@@ -1,14 +1,21 @@
 body {
     background: #666;
+    max-height: 100%;
     height: 100%;
+    margin: 0px;
+    padding: 0px;
 }
 
 .pipeline-editor-container {
     padding: 20px;
     border: 1px solid rgba(159,240,5,0.5);
-    height: calc(100% - 180px);
+    height: calc(100% - 100px);
     background: #999;
     z-index: 100;
+    position: fixed;
+    top: 50px;
+    left: 5px;
+    width: calc(100% - 55px);
 }
 
 .pipeline-editor-panel-buttons {
@@ -26,7 +33,10 @@ body {
 .pipeline-editor-tabs {
     display: block;
     z-index: 1000;
-    position: relative;
+    position: fixed;
+    top: 10px;
+    left: 70px;
+    height: 40px;
 }
 
 .pipeline-editor-tab {

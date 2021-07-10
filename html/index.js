@@ -53,7 +53,7 @@ function switch_to_tab_export() {
 function switch_to_tab_settings() {
     var _data = render.get_data();
     json_content.value = JSON.stringify(_data, undefined, 4);
-    
+
 }
 
 function switch_to_tab_about() {
@@ -107,7 +107,7 @@ function resize_canvas() {
     canvas_cont.style['width'] = new_width;
     
 
-    var new_height = (window.innerHeight - 300) + 'px';
+    var new_height = (window.innerHeight - 150) + 'px';
     canvas_cont.style['max-height'] = new_height;
     canvas_cont.style['height'] = new_height;
 }
