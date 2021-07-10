@@ -527,6 +527,7 @@ class RenderPipelineEditor {
     constructor(canvas_id, cfg) {
         this.fontSize = 16;
         this.title = "Edit me";
+        this.backgroundColor = "#F6F7F1";
         this._conf = new RenderPipelineConfig()
         this.pl_height = 100;
         this.is_draw_grid = true;
@@ -594,6 +595,10 @@ class RenderPipelineEditor {
 
     set_data(data) {
         this.title = data["title"];
+        if (data["background-color"]) {
+            this.backgroundColor = data["background-color"];
+        }
+        
         this.pl_data_render = {};
         for (var node_id in data["nodes"]) {
             var node = new RenderPipelineNode(node_id, this._conf)
@@ -615,6 +620,17 @@ class RenderPipelineEditor {
 
         this.update_meansures();
         this.update_pipeline_diagram();
+    }
+
+    get_data() {
+        var _ret = {};
+        _ret["title"] = this.title;
+        _ret["background-color"] = this.backgroundColor;
+        _ret["nodes"] = {};
+        for (var i in this.pl_data_render) {
+            _ret["nodes"][i] = this.pl_data_render[i].to_json();
+        }
+        return _ret;
     }
 
     canvas_onmouseover(event) {
@@ -839,10 +855,10 @@ class RenderPipelineEditor {
     }
 
     clear_canvas() {
-        this.ctx.fillStyle = "white";
+        this.ctx.fillStyle = this.backgroundColor;
         this.ctx.fillRect(0, 0, this.pl_width, this.pl_height);
         this.ctx.strokeRect(0, 0, this.pl_width, this.pl_height);
-        
+        this.ctx.fillStyle = '#FFFFFF';
     }
 
     draw_grid() {
@@ -1065,15 +1081,7 @@ class RenderPipelineEditor {
         }
     }
 
-    get_data() {
-        var _ret = {};
-        _ret["title"] = this.title;
-        _ret["nodes"] = {};
-        for (var i in this.pl_data_render) {
-            _ret["nodes"][i] = this.pl_data_render[i].to_json();
-        }
-        return _ret;
-    }
+    
 
     add_block() {
         var pos_x = this.canvas_container.scrollLeft - this.pl_padding + this._conf.get_cell_width();

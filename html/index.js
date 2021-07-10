@@ -53,6 +53,7 @@ function switch_to_tab_export() {
 function switch_to_tab_settings() {
     var _data = render.get_data();
     json_content.value = JSON.stringify(_data, undefined, 4);
+    
 }
 
 function switch_to_tab_about() {
@@ -142,7 +143,6 @@ function render_onchoosedelement(block_id) {
         document.getElementById("prop_color").setAttribute('readonly', true);
     }
 }
-
 
 document.addEventListener("DOMContentLoaded", function() {
     var _data = localStorage.getItem('_data')
