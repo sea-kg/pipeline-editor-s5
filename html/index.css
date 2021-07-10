@@ -60,6 +60,8 @@ body {
 .json-content {
     width: 100%;
     height: calc(100% - 10px);
+    font-family: monospace, monospace;
+    font-size: 12px;
 }
 
 .pipeline-editor-btn {
