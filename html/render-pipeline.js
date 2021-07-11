@@ -526,7 +526,7 @@ class RenderPipelineNode {
 class RenderPipelineEditor {
     constructor(canvas_id, cfg) {
         this.fontSize = 16;
-        this.title = "Edit me";
+        this.diagram_name = "Edit me";
         this.backgroundColor = "#F6F7F1";
         this._conf = new RenderPipelineConfig()
         this.pl_height = 100;
@@ -538,7 +538,6 @@ class RenderPipelineEditor {
         this.movingEnable = false;
         this.scrollMoving = false;
         this.scrollMovingPos = {};
-        this.diagram_name = "";
         this.perf = [];
         this.diagram_description = "";
         this.conneсtingBlocks = {
@@ -594,7 +593,8 @@ class RenderPipelineEditor {
     }
 
     set_data(data) {
-        this.title = data["title"];
+        this.diagram_name = data["title"];
+        this.diagram_description = data["description"];
         if (data["background-color"]) {
             this.backgroundColor = data["background-color"];
         }
@@ -624,7 +624,8 @@ class RenderPipelineEditor {
 
     get_data() {
         var _ret = {};
-        _ret["title"] = this.title;
+        _ret["title"] = this.diagram_name;
+        _ret["desctiption"] = this.diagram_description;
         _ret["background-color"] = this.backgroundColor;
         _ret["nodes"] = {};
         for (var i in this.pl_data_render) {
