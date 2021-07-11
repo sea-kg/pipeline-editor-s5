@@ -357,7 +357,7 @@ class RenderPipelineNode {
         this.dtbqA0E_nodes_in_same_cells = []
         this.dtbqA0E_paralax_precalculated = 0
         this.dfIxewv_outcoming = []
-        this.cWIV4UF_color = "#ffffff";
+        this.cWIV4UF_fillColor = "#ffffff";
     }
 
     to_json() {
@@ -367,7 +367,7 @@ class RenderPipelineNode {
             "incoming": this.incoming,
             "cell_x": this.IQrRW7r_cell_x,
             "cell_y": this.IQrRW7r_cell_y,
-            "color": this.cWIV4UF_color
+            "color": this.cWIV4UF_fillColor
         }
     }
 
@@ -410,11 +410,11 @@ class RenderPipelineNode {
     }
 
     set_color(val) {
-        this.cWIV4UF_color = val;
+        this.cWIV4UF_fillColor = val;
     }
 
     get_color() {
-        return this.cWIV4UF_color;
+        return this.cWIV4UF_fillColor;
     }
 
     set_name(name) {
@@ -505,15 +505,20 @@ class RenderPipelineNode {
         this.hidden_y1 = y1;
 
         // fill
-        if (selectedBlockIdEditing == this.nodeid) {
-            _ctx.fillStyle = "red";
-        } else {
-            _ctx.fillStyle = this.cWIV4UF_color;
-        }
+        _ctx.fillStyle = this.cWIV4UF_fillColor;
         _ctx.fillRect(x1, y1, this._conf.get_card_width(), this._conf.get_card_height());
         _ctx.fillStyle = "black";
 
+        // stroke
+        if (selectedBlockIdEditing == this.nodeid) {
+            _ctx.strokeStyle = "red";
+            _ctx.lineWidth = 5;
+        } else {
+            _ctx.strokeStyle = "black";
+            _ctx.lineWidth = 1;
+        }
         _ctx.strokeRect(x1, y1, this._conf.get_card_width(), this._conf.get_card_height());
+
         var d = 20;
         var x1_name = (this._conf.get_card_width() - this.name_width) / 2;
         _ctx.fillText('' + this.get_name(), x1 + x1_name, y1 + d);
