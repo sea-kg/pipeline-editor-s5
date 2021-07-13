@@ -1,6 +1,6 @@
 {
     "name": "pipeline-editor-s5",
-    "version": "v0.1.0",
+    "version": "v0.1.1",
     "description": "Visaul web-editor for a pipelines",
     "main": "html/render-pipeline.js",
     "repository": {
