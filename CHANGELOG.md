@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
-## [v0.1.1] - 2021-07-06 (2021 Jul 7)
+## [v0.1.1] - 2021-07-13 (2021 Jul 13)
 
 ### Changed
 
@@ -21,7 +21,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 * Fixed #28 apply monospase font for json-content (For Safary browser)
-
 
 ### Security
 
