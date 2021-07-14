@@ -639,6 +639,124 @@ class RenderPipelineEditor {
         return _ret;
     }
 
+    extract_all_keys_from_obj(obj, keys) {
+        for (var k in obj) {
+            if (keys[k]) {
+                keys[k]++;
+            } else {
+                keys[k] = 1;
+            }
+            var val = obj[k];
+            if (typeof val == "object") {
+                keys = this.extract_all_keys_from_obj(val, keys);
+            } else {
+                if (keys[val]) {
+                    keys[val]++;
+                } else {
+                    keys[val] = 1;
+                }
+            }
+        }
+        return keys;
+    }
+
+    replace_all_keys_in_obj(obj, replace_keys) {
+        for (var k in obj) {
+            if (replace_keys[k]) {
+                var new_k = replace_keys[k];
+                obj[new_k] = obj[k];
+                delete obj[k];
+                k = new_k;
+            }
+
+            var val = obj[k];
+            if (typeof val == "object") {
+                obj[k] = this.replace_all_keys_in_obj(val, replace_keys);
+            } else {
+                if (replace_keys[val]) {
+                    obj[k] = replace_keys[val];
+                }
+            }
+        }
+        return obj;
+    }
+
+    generate_key_from_alph(pos) {
+        const alphabet = "ABCDEFGHIKLMNOPQRSTVXYZabcdefghiklmnopqrstvxyz";
+        var p10 = pos / alphabet.length;
+        var res = "";
+        for (var i = 0; i <= p10; i++) {
+            var p = pos % alphabet.length;
+            res += alphabet[p];
+            pos = (pos - p) / alphabet.length;
+        }
+        return res;
+    }
+
+    compack_json(data) {
+        var _data = JSON.stringify(data);
+        _data = JSON.parse(_data);
+        var keys = {};
+        keys = this.extract_all_keys_from_obj(_data, keys);
+        var to_replace_keys = [];
+        var all_keys = [];
+        for (var k in keys) {
+            all_keys.push(k);
+            if (keys[k] > 1 && k.length > 1) {
+                to_replace_keys.push(k);
+            }
+        }
+        // console.log("all_keys: ", all_keys);
+        // console.log("to_replace_keys: ", to_replace_keys);
+        var replace_keys = {};
+        var pos = 0;
+        for (var i in to_replace_keys) {
+            var key = to_replace_keys[i];
+            var new_key = this.generate_key_from_alph(pos);
+            var while_safe = 0;
+            while (all_keys.indexOf(new_key) !== -1) {
+                while_safe++;
+                pos++;
+                new_key = this.generate_key_from_alph(pos);
+                if (while_safe > 100) {
+                    console.error("while_safe, more then ", while_safe);
+                    return;
+                }
+            }
+            // pos++;
+            replace_keys[key] = new_key;
+            all_keys.push(new_key);
+        }
+        _data = this.replace_all_keys_in_obj(_data, replace_keys);
+        _data["replaced"]
+        return {
+            "d": _data,
+            "r": replace_keys
+        };
+    }
+
+    to_share() {
+
+        // compack
+        var _data = this.compack_json(this.get_data());
+        _data = JSON.stringify(_data);
+        _data = btoa(_data);
+        console.log("compack: ", _data.length);
+
+        // nocompack
+        var data = this.get_data();
+        data = JSON.stringify(data);
+        data = btoa(data);
+        console.log("nocompack: ", data.length);
+        return data;
+    }
+
+    from_share(data) {
+        data = atob(data);
+        data = JSON.parse(data);
+        this.set_data(data);
+    }
+
     canvas_onmouseover(event) {
         // var target = event.target;
         this.movingEnable = false;

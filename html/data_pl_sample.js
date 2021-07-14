@@ -1,5 +1,6 @@
 var data_pl_example = {
     "title": "Data Example Diagram",
+    "description": "data_pl_sample.js",
     "nodes": {
         "1": {
             "name": "Node",
