@@ -738,8 +738,18 @@ class RenderPipelineEditor {
     to_share() {
 
         // compack
-        var _data = this.compack_json(this.get_data());
+        // var _data = this.compack_json(this.get_data());
+        var _data = this.get_data();
         _data = JSON.stringify(_data);
+
+        console.log("Size of sample is: " + _data.length);
+        // TODO check and use this: https://github.com/pieroxy/lz-string/tree/master/libs
+        var compressed = LZString.compress(_data);
+        console.log("Size of compressed sample is: " + compressed.length);
+        var _string = LZString.decompress(compressed);
+        console.log("Sample is: " + _string);
+
+        console.log("compack (wihtout b64): ", _data.length);
         _data = btoa(_data);
         console.log("compack: ", _data.length);
 
