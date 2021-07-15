@@ -1,4 +1,22 @@
 
+function parsePageParams() {
+    var loc = location.search.slice(1);
+    var arr = loc.split("&");
+    var result = {};
+    var regex = new RegExp("(.*)=([^&#]*)");
+    for(var i = 0; i < arr.length; i++){
+        if(arr[i].trim() != ""){
+            var p = regex.exec(arr[i].trim());
+            // console.log("results: " + JSON.stringify(p));
+            if(p == null)
+                result[decodeURIComponent(arr[i].trim().replace(/\+/g, " "))] = '';
+            else
+                result[decodeURIComponent(p[1].replace(/\+/g, " "))] = decodeURIComponent(p[2].replace(/\+/g, " "));
+        }
+    }
+    console.log(JSON.stringify(result));
+    return result;
+}
 
 function switch_ui_to_tab(_this, _callback) {
     var els = document.getElementsByClassName('pipeline-editor-tab');
@@ -50,8 +68,9 @@ function render_add_blocks(el) {
 function make_share_url(el) {
     var _url = location.protocol + "//" + location.host + location.pathname
     _url += "?v=" + render.get_data_share();
-    var windowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes";
-    var windowObjectReference = window.open(_url, "CNN_WindowName", windowFeatures);
+    window.open(_url, '_blank').focus();
+    // var windowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes";
+    // var windowObjectReference = window.open(_url, "CNN_WindowName", windowFeatures);
 }
 
 function switch_to_tab_ui_editor(active_id) {
@@ -166,16 +185,27 @@ function render_onchoosedelement(block_id) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    var _data = localStorage.getItem('_data')
-    if (_data) {
-        _data = JSON.parse(_data);
+    var _data = {}
+    var _params = parsePageParams();
+    if (_params["v"] !== undefined) {
+        // view mode
+        window.render = new RenderPipelineEditor('pipeline_diagram_canvas', {
+            "mode-viewer": true,
+        });
+        render.set_data_share(_params["v"]);
     } else {
-        _data = data_pl_example;
+        // editor mode
+        var _data = localStorage.getItem('_data')
+        if (_data) {
+            _data = JSON.parse(_data);
+        } else {
+            _data = data_pl_example;
+        }
+        window.render = new RenderPipelineEditor('pipeline_diagram_canvas', {
+            "mode-viewer": false,
+        });
+        render.set_data(_data);    
     }
-    window.render = new RenderPipelineEditor('pipeline_diagram_canvas', {
-        "mode-viewer": false,
-    });
-    render.set_data(_data);
 
     resize_canvas();
     render.update_meansures();

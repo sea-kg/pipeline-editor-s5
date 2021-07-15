@@ -688,7 +688,7 @@ class RenderPipelineEditor {
         }
         var _data = this.get_data();
         _data = JSON.stringify(_data);
-        return LZString.compressToBase64(_data);
+        return encodeURIComponent(LZString.compressToBase64(_data));
     }
 
     set_data_share(data) {
@@ -696,7 +696,7 @@ class RenderPipelineEditor {
             console.error("LZString not found. try include from here https://github.com/pieroxy/lz-string/tree/master/libs");
             return;
         }
-        var _data = LZString.decompressToBase64(data);
+        var _data = LZString.decompressFromBase64(decodeURIComponent(data));
         _data = JSON.parse(_data);
         this.set_data(_data);
     }
