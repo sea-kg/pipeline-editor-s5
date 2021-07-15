@@ -144,6 +144,10 @@ body {
     background-position: 50px 0px;
 }
 
+.pipeline-editor-functions-btn:active:hover {
+    background-position: 50px 0px;
+}
+
 .pipeline-editor-functions-btn:hover {
     transform: scale(1.1);
     background-color: rgba(159,240,5,0.5);
