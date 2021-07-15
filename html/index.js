@@ -33,6 +33,19 @@ function switch_draw_grid(el) {
     render.update_pipeline_diagram();
 }
 
+function render_add_blocks(el) {
+    console.log(el);
+    if (el.classList.contains("pressed")) {
+        el.classList.remove("pressed");
+        // TODO switch mode none
+        // render.add_block();
+    } else {
+        el.classList.add("pressed");
+        // TODO switch mode additing blocks
+        render.add_block();
+    }
+}
+
 function make_share_url(el) {
     var _url = location.protocol + "//" + location.host + location.pathname
     _url += "?v=" + render.get_data_share();
