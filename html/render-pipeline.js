@@ -681,90 +681,24 @@ class RenderPipelineEditor {
         return obj;
     }
 
-    generate_key_from_alph(pos) {
-        const alphabet = "ABCDEFGHIKLMNOPQRSTVXYZabcdefghiklmnopqrstvxyz";
-        var p10 = pos / alphabet.length;
-        var res = "";
-        for (var i = 0; i <= p10; i++) {
-            var p = pos % alphabet.length;
-            res += alphabet[p];
-            pos = (pos - p) / alphabet.length;
+    get_data_share() {
+        if (window.LZString === undefined) {
+            console.error("LZString not found. try include from here https://github.com/pieroxy/lz-string/tree/master/libs");
+            return;
         }
-        return res;
-    }
-
-    compack_json(data) {
-        var _data = JSON.stringify(data);
-        _data = JSON.parse(_data);
-        var keys = {};
-        keys = this.extract_all_keys_from_obj(_data, keys);
-        var to_replace_keys = [];
-        var all_keys = [];
-        for (var k in keys) {
-            all_keys.push(k);
-            if (keys[k] > 1 && k.length > 1) {
-                to_replace_keys.push(k);
-            }
-        }
-        // console.log("all_keys: ", all_keys);
-        // console.log("to_replace_keys: ", to_replace_keys);
-        var replace_keys = {};
-        var pos = 0;
-        for (var i in to_replace_keys) {
-            var key = to_replace_keys[i];
-            var new_key = this.generate_key_from_alph(pos);
-            var while_safe = 0;
-            while (all_keys.indexOf(new_key) !== -1) {
-                while_safe++;
-                pos++;
-                new_key = this.generate_key_from_alph(pos);
-                if (while_safe > 100) {
-                    console.error("while_safe, more then ", while_safe);
-                    return;
-                }
-            }
-            // pos++;
-            replace_keys[key] = new_key;
-            all_keys.push(new_key);
-        }
-        _data = this.replace_all_keys_in_obj(_data, replace_keys);
-        _data["replaced"]
-        return {
-            "d": _data,
-            "r": replace_keys
-        };
-    }
-
-    to_share() {
-
-        // compack
-        // var _data = this.compack_json(this.get_data());
         var _data = this.get_data();
         _data = JSON.stringify(_data);
-
-        console.log("Size of sample is: " + _data.length);
-        // TODO check and use this: https://github.com/pieroxy/lz-string/tree/master/libs
-        var compressed = LZString.compress(_data);
-        console.log("Size of compressed sample is: " + compressed.length);
-        var _string = LZString.decompress(compressed);
-        console.log("Sample is: " + _string);
-
-        console.log("compack (wihtout b64): ", _data.length);
-        _data = btoa(_data);
-        console.log("compack: ", _data.length);
-
-        // nocompack
-        var data = this.get_data();
-        data = JSON.stringify(data);
-        data = btoa(data);
-        console.log("nocompack: ", data.length);
-        return data;
+        return LZString.compressToBase64(_data);
     }
 
-    from_share(data) {
-        data = atob(data);
-        data = JSON.parse(data);
-        this.set_data(data);
+    set_data_share(data) {
+        if (window.LZString === undefined) {
+            console.error("LZString not found. try include from here https://github.com/pieroxy/lz-string/tree/master/libs");
+            return;
+        }
+        var _data = LZString.decompressToBase64(data);
+        _data = JSON.parse(_data);
+        this.set_data(_data);
     }
 
     canvas_onmouseover(event) {
