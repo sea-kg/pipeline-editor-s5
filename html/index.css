@@ -133,11 +133,15 @@ body {
 
 .pipeline-editor-functions-btn {
     display: block;
+    background-position: 0px 0px;
     width: 50px;
     height: 50px;
     cursor: pointer;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+}
+
+.pipeline-editor-functions-btn.pressed {
+    background-position: 50px 0px;
 }
 
 .pipeline-editor-functions-btn:hover {
@@ -145,11 +149,9 @@ body {
     background-color: rgba(159,240,5,0.5);
 }
 
-
 .pipeline-editor-functions-btn.add-block {
-    background-image: url("./images/add-block.svg");
+    background-image: url("./images/add-block.svg?v=1");
 }
-
 
 .pipeline-editor-functions-btn.scale-minus {
     background-image: url("./images/scale-minus.svg");
