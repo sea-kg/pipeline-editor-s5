@@ -141,13 +141,20 @@ function resize_canvas() {
     var left_panel = 60;
     var right_panel = 150;
     var paddings = 120;
+    var height_padding = 150;
+    if (render.mode_viewer) {
+        right_panel = 0;
+        left_panel = 0;
+        paddings = 50;
+        height_padding = 70;
+    }
 
     var new_width = (window.innerWidth - left_panel - right_panel - paddings) + 'px';
     canvas_cont.style['max-width'] = new_width;
     canvas_cont.style['width'] = new_width;
     
 
-    var new_height = (window.innerHeight - 150) + 'px';
+    var new_height = (window.innerHeight - height_padding) + 'px';
     canvas_cont.style['max-height'] = new_height;
     canvas_cont.style['height'] = new_height;
 }
@@ -193,6 +200,12 @@ document.addEventListener("DOMContentLoaded", function() {
             "mode-viewer": true,
         });
         render.set_data_share(_params["v"]);
+        document.getElementById("container_functions").style.display = "none";
+        document.getElementById("container_properties").style.display = "none";
+        document.getElementById("container_editor_tabs").style.display = "none";
+        document.getElementById("tab_content_ui_editor").style.top = "5px";
+        document.getElementById("tab_content_ui_editor").style.height = "calc(100% - 55px)";
+        
     } else {
         // editor mode
         var _data = localStorage.getItem('_data')
