@@ -33,6 +33,13 @@ function switch_draw_grid(el) {
     render.update_pipeline_diagram();
 }
 
+function make_share_url(el) {
+    var _url = location.protocol + "//" + location.host + location.pathname
+    _url += "?v=" + render.get_data_share();
+    var windowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes";
+    var windowObjectReference = window.open(_url, "CNN_WindowName", windowFeatures);
+}
+
 function switch_to_tab_ui_editor(active_id) {
     var _data = JSON.parse(json_content.value);
     render.set_data(_data);

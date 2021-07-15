@@ -193,3 +193,6 @@ body {
     background-image: url("./images/remove-block.svg");
 }
 
+.pipeline-editor-functions-btn.share {
+    background-image: url("./images/share.svg");
+}
