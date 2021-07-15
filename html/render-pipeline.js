@@ -630,7 +630,7 @@ class RenderPipelineEditor {
     get_data() {
         var _ret = {};
         _ret["title"] = this.diagram_name;
-        _ret["desctiption"] = this.diagram_description;
+        _ret["description"] = this.diagram_description;
         _ret["background-color"] = this.backgroundColor;
         _ret["nodes"] = {};
         for (var i in this.pl_data_render) {
