@@ -528,14 +528,21 @@ class RenderPipelineNode {
     }
 }
 
+PIPELINE_EDITOR_STATE_MOVING = 0;
+PIPELINE_EDITOR_STATE_REMOVING_BLOCKS = 1;
+PIPELINE_EDITOR_STATE_ADDING_BLOCKS = 1;
+PIPELINE_EDITOR_STATE_ADDING_CONNECTIONS = 1;
+
 class RenderPipelineEditor {
     constructor(canvas_id, cfg) {
         this.fontSize = 16;
         this.diagram_name = "Edit me";
         this.backgroundColor = "#F6F7F1";
+        
         this._conf = new RenderPipelineConfig()
         this.pl_height = 100;
         this.is_draw_grid = true;
+        this.grid_color = "#bacaa6";
         this.pl_width = 100;
         this.pl_padding = 20;
         this.pl_scale = 1.0;
@@ -554,7 +561,7 @@ class RenderPipelineEditor {
         this.selectedBlockIdEditing = null;
         this.drawed_lines_cache = new RenderPipelineDrawedLinesCache();
         this.connections = [];
-        this.editorState = 'moving';
+        this.editor_state = PIPELINE_EDITOR_STATE_MOVING;
         this.mode_viewer = false;
         
         if (cfg) {
@@ -562,7 +569,7 @@ class RenderPipelineEditor {
                 this.mode_viewer = true;
             }
         }
-        // this.editorState = 'moving' or 'connecting-blocks' or 'removing-blocks'
+        // this.editor_state = 'moving' or 'connecting-blocks' or 'removing-blocks'
 
         this.canvas = document.getElementById(canvas_id);
         this.canvas_container = this.canvas.parentElement;
@@ -701,6 +708,10 @@ class RenderPipelineEditor {
         this.set_data(_data);
     }
 
+    change_state_to_removing_blocks() {
+        this.editor_state = PIPELINE_EDITOR_STATE_REMOVING_BLOCKS;
+    }
+
     canvas_onmouseover(event) {
         // var target = event.target;
         this.movingEnable = false;
@@ -739,7 +750,7 @@ class RenderPipelineEditor {
             return;
         }
 
-        if (this.editorState == 'remove') {
+        if (this.editor_state == PIPELINE_EDITOR_STATE_REMOVING_BLOCKS) {
             var nodeid = this.selectedBlock['block-id-undermouse'];
             console.log(nodeid);
             if (nodeid) {
@@ -748,7 +759,7 @@ class RenderPipelineEditor {
                 // this.prepare_data_render();
                 this.update_meansures();
                 this.update_pipeline_diagram();
-                this.editorState = 'moving';
+                this.editor_state = PIPELINE_EDITOR_STATE_REMOVING_BLOCKS; // continue removing blocks
                 
                 // reset selection
                 this.selectedBlockIdEditing = null;
@@ -935,7 +946,7 @@ class RenderPipelineEditor {
         }
         
         this.ctx.lineWidth = 1;
-        this.ctx.strokeStyle = "#E9F0E0";
+        this.ctx.strokeStyle = this.grid_color;
         for (var x = this.pl_padding; x <= this.pl_width; x = x + this._conf.get_cell_width()) {
             var x1 = x - (this._conf.get_cell_width() - this._conf.get_card_width()) / 2;
             this.ctx.beginPath();
@@ -1184,10 +1195,6 @@ class RenderPipelineEditor {
         if (this.onchoosedelement) {
             this.onchoosedelement(new_id);
         }
-    }
-
-    remove_block() {
-        this.editorState = 'remove';
     }
 
     prepare_data_cards_one_cells() {

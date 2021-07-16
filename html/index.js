@@ -36,19 +36,28 @@ function switch_ui_to_tab(_this, _callback) {
     }
 }
 
-function switch_draw_grid(el) {
-
+function ui_render_switch_draw_grid(el) {
     if (render.is_draw_grid) {
         render.is_draw_grid = false;
-        el.classList.remove('draw-grid-enable')
-        el.classList.add('draw-grid-disable')
+        el.classList.add('pressed')
     } else {
         render.is_draw_grid = true;
-        el.classList.remove('draw-grid-disable')
-        el.classList.add('draw-grid-enable')
+        el.classList.remove('pressed')
     }
-   
     render.update_pipeline_diagram();
+}
+
+function ui_render_removing_blocks(el) {
+    
+    if (render.editor_state == PIPELINE_EDITOR_STATE_REMOVING_BLOCKS) {
+        render.change_state_to_removing_blocks();
+        el.classList.remove('pressed');
+        render.editor_state = PIPELINE_EDITOR_STATE_MOVING;
+    } else {
+        el.classList.add('pressed');
+        render.change_state_to_removing_blocks();
+    }
+    // render.remove_block()
 }
 
 function render_add_blocks(el) {
@@ -205,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("container_editor_tabs").style.display = "none";
         document.getElementById("tab_content_ui_editor").style.top = "5px";
         document.getElementById("tab_content_ui_editor").style.height = "calc(100% - 55px)";
-        
+        render.is_draw_grid = false;
     } else {
         // editor mode
         var _data = localStorage.getItem('_data')
@@ -217,7 +226,7 @@ document.addEventListener("DOMContentLoaded", function() {
         window.render = new RenderPipelineEditor('pipeline_diagram_canvas', {
             "mode-viewer": false,
         });
-        render.set_data(_data);    
+        render.set_data(_data);
     }
 
     resize_canvas();
