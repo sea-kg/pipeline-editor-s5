@@ -173,12 +173,8 @@ body {
     background-image: url("./images/connect-blocks.svg");
 }
 
-.pipeline-editor-functions-btn.draw-grid-enable {
-    background-image: url("./images/draw-grid-enable.svg");
-}
-
-.pipeline-editor-functions-btn.draw-grid-disable {
-    background-image: url("./images/draw-grid-disable.svg");
+.pipeline-editor-functions-btn.grid {
+    background-image: url("./images/grid.svg");
 }
 
 .pipeline-editor-functions-btn.storage-save-to {
