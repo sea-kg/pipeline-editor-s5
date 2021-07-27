@@ -2,7 +2,12 @@
 
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/sea-kg/pipeline-editor-s5.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sea-kg/pipeline-editor-s5/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/sea-kg/pipeline-editor-s5.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sea-kg/pipeline-editor-s5/context:javascript) [![npm](https://img.shields.io/npm/v/pipeline-editor-s5)](https://www.npmjs.com/package/pipeline-editor-s5)
 
-Pipeline Editor (just editor)
+Pipeline Editor s5 (just ui-editor)
+
+[example-editor](https://sea-kg.com/pipeline-editor-s5/)
+
+![Alt text](/contrib/screenshot-01.jpg?raw=true "Screenshot 01")
+
 
 html:
 
