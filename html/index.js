@@ -103,6 +103,9 @@ function switch_to_tab_settings() {
     var _data = render.get_data();
     json_content.value = JSON.stringify(_data, undefined, 4);
 
+    document.getElementById("settings_background_color").value = render.backgroundColor;
+    document.getElementById("settings_diagram_name").value = render.diagram_name;
+    document.getElementById("settings_diagram_description").value = render.diagram_description;
 }
 
 function switch_to_tab_about() {
@@ -180,6 +183,17 @@ function input_onchangename() {
     }
 }
 
+function input_onchangediagramsettings(el) {
+    var _data = JSON.parse(json_content.value);
+    _data["title"] = document.getElementById("settings_diagram_name").value;
+    _data["description"] = document.getElementById("settings_diagram_description").value;
+    _data["background-color"] = document.getElementById("settings_background_color").value;
+    json_content.value = JSON.stringify(_data, undefined, 4);
+    render.set_data(_data);
+    render.update_meansures();
+    render.update_pipeline_diagram();
+}
+
 function render_onchoosedelement(block_id) {
     if (block_id) {
         document.getElementById("prop_block_id").value = block_id;
@@ -237,7 +251,13 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("prop_name").addEventListener('keyup', input_onchangename);
     document.getElementById("prop_description").addEventListener('keyup', input_onchangename);
     document.getElementById("prop_color").addEventListener('keyup', input_onchangename);
-    
+
+    var el_settings = document.getElementsByClassName("diagram-settings-input");
+
+    for(var i = 0; i < el_settings.length; i++) {
+        el_settings[i].addEventListener('keyup', input_onchangediagramsettings);
+    }
+
     render.onchoosedelement = render_onchoosedelement;
 });
 

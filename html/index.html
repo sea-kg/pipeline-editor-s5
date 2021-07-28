@@ -18,6 +18,14 @@
     </div>
     <div
         class="pipeline-editor-tab"
+        id="tab_settings"
+        tab_content_id="tab_content_settings"
+        onclick="switch_ui_to_tab(this, switch_to_tab_settings)"
+    >
+        Settings
+    </div>
+    <div
+        class="pipeline-editor-tab"
         id="tab_json"
         tab_content_id="tab_content_json"
         onclick="switch_ui_to_tab(this, switch_to_tab_json);"
@@ -31,14 +39,6 @@
         onclick="switch_ui_to_tab(this, switch_to_tab_export)"
     >
         Export
-    </div>
-    <div
-        class="pipeline-editor-tab"
-        id="tab_settings"
-        tab_content_id="tab_content_settings"
-        onclick="switch_ui_to_tab(this, switch_to_tab_settings)"
-    >
-        Settings
     </div>
     <div
         class="pipeline-editor-tab"
@@ -86,12 +86,14 @@
     </div>
 </div>
 
-<div class="pipeline-editor-container" id="tab_content_json" style="display: none;">
-    <textarea class="json-content" id="json_content">{}</textarea>
+<div class="pipeline-editor-container" id="tab_content_settings" style="display: none;">
+    Background-color: <input class="diagram-settings-input" id="settings_background_color" value=""/></br>
+    Diagram-name: <input class="diagram-settings-input" id="settings_diagram_name" value=""/></br>
+    Diagram-description: <input class="diagram-settings-input" id="settings_diagram_description" value=""/></br>
 </div>
 
-<div class="pipeline-editor-container" id="tab_content_settings" style="display: none;">
-    TODO Autosave
+<div class="pipeline-editor-container" id="tab_content_json" style="display: none;">
+    <textarea class="json-content" id="json_content">{}</textarea>
 </div>
 
 <div class="pipeline-editor-container" id="tab_content_export" style="display: none;">
