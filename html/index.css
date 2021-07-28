@@ -196,3 +196,7 @@ body {
 .pipeline-editor-functions-btn.share {
     background-image: url("./images/share.svg");
 }
+
+.pipeline-editor-functions-btn.auto-placement {
+    background-image: url("./images/auto-placement.svg");
+}

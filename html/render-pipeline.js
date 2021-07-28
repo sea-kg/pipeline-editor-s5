@@ -627,7 +627,7 @@ class RenderPipelineEditor {
             }
         }
 
-        this.prepare_data_cards_one_cells()
+        this.prepare_data_cards_one_cells();
         this.prepare_lines_out();
 
         this.update_meansures();
@@ -1055,6 +1055,82 @@ class RenderPipelineEditor {
             in_nodeid
         ));
     }
+    
+    auto_placement() {
+        // console.log("Auto placement - start")
+        // reset all nodes to 0,0
+        for (var in_nodeid in this.pl_data_render) {
+            this.pl_data_render[in_nodeid].update_cell_xy(0, 0);
+        }
+
+        // redesign by y
+        var ty = 1;
+        var safe_while = 0; 
+        while (ty > 0)  {
+            ty = 0;
+            safe_while++;
+            if (safe_while > 1000) {
+                console.warn("Auto placement - while safe (y)")
+                break;
+            }
+            for (var cur_nodeid in this.pl_data_render) {
+                var _p0 = this.pl_data_render[cur_nodeid];
+                var _p0x = _p0.get_cell_x();
+                var _p0y = _p0.get_cell_y();
+                var all_incomes = [];
+                for (var in_nodeid in _p0.incoming) {
+                    var _p1 = this.pl_data_render[in_nodeid];
+                    all_incomes.push(_p1.get_cell_y());
+                }
+                if (all_incomes.length > 0) {
+                    var max_y = Math.max.apply(null, all_incomes);
+                    max_y = max_y + 2;
+                    if (_p0y != max_y) {
+                        _p0.update_cell_xy(_p0x, max_y);
+                        ty++;
+                    }
+                }
+            }
+        }
+
+        // redesign by x
+        var tx = 1;
+        var safe_while_x = 0; 
+        while (tx > 0)  {
+            tx = 0;
+            safe_while_x++;
+            if (safe_while_x > 1000) {
+                console.warn("Auto placement - while safe (x)")
+                break;
+            }
+            for (var cur_nodeid in this.pl_data_render) {
+                var _p0 = this.pl_data_render[cur_nodeid];
+                var _p0x = _p0.get_cell_x();
+                var _p0y = _p0.get_cell_y();
+                var all_incomes = [];
+                for (var other_nodeid in this.pl_data_render) {
+                    if (other_nodeid != cur_nodeid) {
+                        var _p1 = this.pl_data_render[other_nodeid];
+                        if (
+                            _p1.get_cell_x() == _p0x
+                            && _p1.get_cell_y() == _p0y
+                        ) {
+                            _p1.update_cell_xy(_p0x+1, _p0y);
+                            tx++;
+                        }
+                    }
+                }
+            }
+        }
+
+        // console.log("Auto placement - done");
+
+        this.prepare_data_cards_one_cells();
+        this.prepare_lines_out();
+
+        this.update_meansures();
+        this.update_pipeline_diagram();
+    }
 
     draw_connections() {
         this.drawed_lines_cache.clear();
@@ -1093,7 +1169,7 @@ class RenderPipelineEditor {
                     var x0 = this.calcX_in_px(in_node.get_cell_x()) + this._conf.get_card_width() / 2 + paralax;
                     var y0 = this.calcY_in_px(in_node.get_cell_y()) + this._conf.get_card_height();
                     var idx = p.incoming_order.indexOf(out_nodeid);
-                    console.log((in_count - 1) / 2);
+                    // console.log("in_count: ", (in_count - 1) / 2);
                     var in_x2_diff = idx * 15 - ((in_count - 1) / 2) * 15;
                     var in_y1_diff = (in_count - idx)*10 - ((in_count - 1) / 2)*10;
                     this.add_to_draw_connection(
@@ -1186,7 +1262,7 @@ class RenderPipelineEditor {
             var _new_node = new RenderPipelineNode(new_id, this._conf);
             _new_node.copy_from_json(_node_d);
             this.pl_data_render[new_id] = _new_node;
-            this.prepare_data_cards_one_cells()
+            this.prepare_data_cards_one_cells();
         }
 
         this.selectedBlockIdEditing = new_id;
