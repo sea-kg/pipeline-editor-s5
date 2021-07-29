@@ -3,752 +3,752 @@ var data_pl_example = {
     "description": "data_pl_sample.js",
     "nodes": {
         "1": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "9": ""
             },
-            "cell_x": 7,
-            "cell_y": 11,
-            "color": "#ffffff"
+            "x": 7,
+            "y": 11,
+            "c": "#ffffff"
         },
         "2": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "29": ""
             },
-            "cell_x": 9,
-            "cell_y": 8,
-            "color": "#ffffff"
+            "x": 9,
+            "y": 8,
+            "c": "#ffffff"
         },
         "3": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "1": ""
             },
-            "cell_x": 6,
-            "cell_y": 13,
-            "color": "#ffffff"
+            "x": 6,
+            "y": 13,
+            "c": "#ffffff"
         },
         "4": {
-            "name": "Packing",
-            "description": "",
-            "incoming": {
+            "n": "Packing",
+            "d": "",
+            "i": {
                 "1": ""
             },
-            "cell_x": 8,
-            "cell_y": 14,
-            "color": "#ffffff"
+            "x": 8,
+            "y": 14,
+            "c": "#ffffff"
         },
         "5": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "25": ""
             },
-            "cell_x": 12,
-            "cell_y": 13,
-            "color": "#ffffff"
+            "x": 12,
+            "y": 13,
+            "c": "#ffffff"
         },
         "6": {
-            "name": "Upload",
-            "description": "prod",
-            "incoming": {
+            "n": "Upload",
+            "d": "prod",
+            "i": {
                 "4": ""
             },
-            "cell_x": 7,
-            "cell_y": 16,
-            "color": "#ffffff"
+            "x": 7,
+            "y": 16,
+            "c": "#ffffff"
         },
         "7": {
-            "name": "Upload",
-            "description": "dev",
-            "incoming": {
+            "n": "Upload",
+            "d": "dev",
+            "i": {
                 "4": ""
             },
-            "cell_x": 9,
-            "cell_y": 16,
-            "color": "#ffffff"
+            "x": 9,
+            "y": 16,
+            "c": "#ffffff"
         },
         "8": {
-            "name": "Node 8",
-            "description": "",
-            "incoming": {
+            "n": "Node 8",
+            "d": "",
+            "i": {
                 "11": ""
             },
-            "cell_x": 5,
-            "cell_y": 4,
-            "color": "#ffffff"
+            "x": 5,
+            "y": 4,
+            "c": "#ffffff"
         },
         "9": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "16": ""
             },
-            "cell_x": 8,
-            "cell_y": 9,
-            "color": "#ffffff"
+            "x": 8,
+            "y": 9,
+            "c": "#ffffff"
         },
         "10": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "9": ""
             },
-            "cell_x": 8,
-            "cell_y": 11,
-            "color": "#ffffff"
+            "x": 8,
+            "y": 11,
+            "c": "#ffffff"
         },
         "11": {
-            "name": "send",
-            "description": "webhook",
-            "incoming": {
+            "n": "send",
+            "d": "webhook",
+            "i": {
                 "EKeObF6": ""
             },
-            "cell_x": 6,
-            "cell_y": 2,
-            "color": "#ffffff"
+            "x": 6,
+            "y": 2,
+            "c": "#ffffff"
         },
         "15": {
-            "name": "Node 15",
-            "description": "",
-            "incoming": {
+            "n": "Node 15",
+            "d": "",
+            "i": {
                 "11": ""
             },
-            "cell_x": 3,
-            "cell_y": 5,
-            "color": "#ffffff"
+            "x": 3,
+            "y": 5,
+            "c": "#ffffff"
         },
         "16": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "11": "",
                 "79": ""
             },
-            "cell_x": 7,
-            "cell_y": 6,
-            "color": "#ffffff"
+            "x": 7,
+            "y": 6,
+            "c": "#ffffff"
         },
         "17": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "11": ""
             },
-            "cell_x": 14,
-            "cell_y": 4,
-            "color": "#ffffff"
+            "x": 14,
+            "y": 4,
+            "c": "#ffffff"
         },
         "18": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "11": ""
             },
-            "cell_x": 15,
-            "cell_y": 4,
-            "color": "#ffffff"
+            "x": 15,
+            "y": 4,
+            "c": "#ffffff"
         },
         "19": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "11": ""
             },
-            "cell_x": 18,
-            "cell_y": 4,
-            "color": "#ffffff"
+            "x": 18,
+            "y": 4,
+            "c": "#ffffff"
         },
         "20": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "11": ""
             },
-            "cell_x": 20,
-            "cell_y": 4,
-            "color": "#ffffff"
+            "x": 20,
+            "y": 4,
+            "c": "#ffffff"
         },
         "21": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "11": ""
             },
-            "cell_x": 21,
-            "cell_y": 4,
-            "color": "#ffffff"
+            "x": 21,
+            "y": 4,
+            "c": "#ffffff"
         },
         "22": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "11": ""
             },
-            "cell_x": 22,
-            "cell_y": 4,
-            "color": "#ffffff"
+            "x": 22,
+            "y": 4,
+            "c": "#ffffff"
         },
         "23": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "25": ""
             },
-            "cell_x": 13,
-            "cell_y": 13,
-            "color": "#ffffff"
+            "x": 13,
+            "y": 13,
+            "c": "#ffffff"
         },
         "24": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "27": ""
             },
-            "cell_x": 11,
-            "cell_y": 12,
-            "color": "#ffffff"
+            "x": 11,
+            "y": 12,
+            "c": "#ffffff"
         },
         "25": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "31": ""
             },
-            "cell_x": 13,
-            "cell_y": 11,
-            "color": "#ffffff"
+            "x": 13,
+            "y": 11,
+            "c": "#ffffff"
         },
         "27": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "51": "",
                 "52": "",
                 "53": ""
             },
-            "cell_x": 11,
-            "cell_y": 10,
-            "color": "#ffffff"
+            "x": 11,
+            "y": 10,
+            "c": "#ffffff"
         },
         "29": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "79": ""
             },
-            "cell_x": 10,
-            "cell_y": 6,
-            "color": "#ffffff"
+            "x": 10,
+            "y": 6,
+            "c": "#ffffff"
         },
         "31": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "17": ""
             },
-            "cell_x": 14,
-            "cell_y": 9,
-            "color": "#ffffff"
+            "x": 14,
+            "y": 9,
+            "c": "#ffffff"
         },
         "32": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "31": ""
             },
-            "cell_x": 14,
-            "cell_y": 11,
-            "color": "#ffffff"
+            "x": 14,
+            "y": 11,
+            "c": "#ffffff"
         },
         "33": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "31": ""
             },
-            "cell_x": 15,
-            "cell_y": 11,
-            "color": "#ffffff"
+            "x": 15,
+            "y": 11,
+            "c": "#ffffff"
         },
         "37": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "19": ""
             },
-            "cell_x": 17,
-            "cell_y": 7,
-            "color": "#ffffff"
+            "x": 17,
+            "y": 7,
+            "c": "#ffffff"
         },
         "38": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "19": ""
             },
-            "cell_x": 19,
-            "cell_y": 7,
-            "color": "#ffffff"
+            "x": 19,
+            "y": 7,
+            "c": "#ffffff"
         },
         "40": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "37": ""
             },
-            "cell_x": 16,
-            "cell_y": 9,
-            "color": "#ffffff"
+            "x": 16,
+            "y": 9,
+            "c": "#ffffff"
         },
         "41": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "37": ""
             },
-            "cell_x": 18,
-            "cell_y": 9,
-            "color": "#ffffff"
+            "x": 18,
+            "y": 9,
+            "c": "#ffffff"
         },
         "43": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "41": ""
             },
-            "cell_x": 17,
-            "cell_y": 12,
-            "color": "#ffffff"
+            "x": 17,
+            "y": 12,
+            "c": "#ffffff"
         },
         "44": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "41": ""
             },
-            "cell_x": 19,
-            "cell_y": 12,
-            "color": "#ffffff"
+            "x": 19,
+            "y": 12,
+            "c": "#ffffff"
         },
         "45": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "59": ""
             },
-            "cell_x": 21,
-            "cell_y": 8,
-            "color": "#ffffff"
+            "x": 21,
+            "y": 8,
+            "c": "#ffffff"
         },
         "46": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "45": ""
             },
-            "cell_x": 20,
-            "cell_y": 10,
-            "color": "#ffffff"
+            "x": 20,
+            "y": 10,
+            "c": "#ffffff"
         },
         "47": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "45": ""
             },
-            "cell_x": 21,
-            "cell_y": 10,
-            "color": "#ffffff"
+            "x": 21,
+            "y": 10,
+            "c": "#ffffff"
         },
         "48": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "40": ""
             },
-            "cell_x": 16,
-            "cell_y": 11,
-            "color": "#ffffff"
+            "x": 16,
+            "y": 11,
+            "c": "#ffffff"
         },
         "49": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "48": ""
             },
-            "cell_x": 16,
-            "cell_y": 13,
-            "color": "#ffffff"
+            "x": 16,
+            "y": 13,
+            "c": "#ffffff"
         },
         "50": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "9": ""
             },
-            "cell_x": 9,
-            "cell_y": 11,
-            "color": "#ffffff"
+            "x": 9,
+            "y": 11,
+            "c": "#ffffff"
         },
         "51": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "29": ""
             },
-            "cell_x": 11,
-            "cell_y": 8,
-            "color": "#ffffff"
+            "x": 11,
+            "y": 8,
+            "c": "#ffffff"
         },
         "52": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "29": ""
             },
-            "cell_x": 12,
-            "cell_y": 8,
-            "color": "#ffffff"
+            "x": 12,
+            "y": 8,
+            "c": "#ffffff"
         },
         "53": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "29": ""
             },
-            "cell_x": 13,
-            "cell_y": 8,
-            "color": "#ffffff"
+            "x": 13,
+            "y": 8,
+            "c": "#ffffff"
         },
         "59": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "21": ""
             },
-            "cell_x": 21,
-            "cell_y": 6,
-            "color": "#ffffff"
+            "x": 21,
+            "y": 6,
+            "c": "#ffffff"
         },
         "60": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "63": ""
             },
-            "cell_x": 6,
-            "cell_y": 9,
-            "color": "#ffffff"
+            "x": 6,
+            "y": 9,
+            "c": "#ffffff"
         },
         "61": {
-            "name": "Node 61",
-            "description": "",
-            "incoming": {
+            "n": "Node 61",
+            "d": "",
+            "i": {
                 "15": ""
             },
-            "cell_x": 1,
-            "cell_y": 8,
-            "color": "#ffffff"
+            "x": 1,
+            "y": 8,
+            "c": "#ffffff"
         },
         "63": {
-            "name": "Node 63",
-            "description": "",
-            "incoming": {
+            "n": "Node 63",
+            "d": "",
+            "i": {
                 "15": ""
             },
-            "cell_x": 3,
-            "cell_y": 7,
-            "color": "#ffffff"
+            "x": 3,
+            "y": 7,
+            "c": "#ffffff"
         },
         "65": {
-            "name": "Node 65",
-            "description": "",
-            "incoming": {
+            "n": "Node 65",
+            "d": "",
+            "i": {
                 "61": ""
             },
-            "cell_x": 0,
-            "cell_y": 11,
-            "color": "#ffffff"
+            "x": 0,
+            "y": 11,
+            "c": "#ffffff"
         },
         "66": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "61": ""
             },
-            "cell_x": 2,
-            "cell_y": 10,
-            "color": "#ffffff"
+            "x": 2,
+            "y": 10,
+            "c": "#ffffff"
         },
         "67": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "61": ""
             },
-            "cell_x": 3,
-            "cell_y": 10,
-            "color": "#ffffff"
+            "x": 3,
+            "y": 10,
+            "c": "#ffffff"
         },
         "68": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "61": ""
             },
-            "cell_x": 4,
-            "cell_y": 11,
-            "color": "#ffffff"
+            "x": 4,
+            "y": 11,
+            "c": "#ffffff"
         },
         "69": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "61": ""
             },
-            "cell_x": 5,
-            "cell_y": 11,
-            "color": "#ffffff"
+            "x": 5,
+            "y": 11,
+            "c": "#ffffff"
         },
         "71": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "66": ""
             },
-            "cell_x": 1,
-            "cell_y": 13,
-            "color": "#ffffff"
+            "x": 1,
+            "y": 13,
+            "c": "#ffffff"
         },
         "72": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "66": ""
             },
-            "cell_x": 3,
-            "cell_y": 13,
-            "color": "#ffffff"
+            "x": 3,
+            "y": 13,
+            "c": "#ffffff"
         },
         "74": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "71": ""
             },
-            "cell_x": 0,
-            "cell_y": 15,
-            "color": "#ffffff"
+            "x": 0,
+            "y": 15,
+            "c": "#ffffff"
         },
         "75": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "71": ""
             },
-            "cell_x": 2,
-            "cell_y": 15,
-            "color": "#ffffff"
+            "x": 2,
+            "y": 15,
+            "c": "#ffffff"
         },
         "79": {
-            "name": "Node 79",
-            "description": "",
-            "incoming": {},
-            "cell_x": 8,
-            "cell_y": 4,
-            "color": "#ffffff"
+            "n": "Node 79",
+            "d": "",
+            "i": {},
+            "x": 8,
+            "y": 4,
+            "c": "#ffffff"
         },
         "80": {
-            "name": "",
-            "description": "",
-            "incoming": {
+            "n": "",
+            "d": "",
+            "i": {
                 "EKeObF6": ""
             },
-            "cell_x": 8,
-            "cell_y": 2,
-            "color": "#ffffff"
+            "x": 8,
+            "y": 2,
+            "c": "#ffffff"
         },
         "81": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "22": ""
             },
-            "cell_x": 24,
-            "cell_y": 6,
-            "color": "#ffffff"
+            "x": 24,
+            "y": 6,
+            "c": "#ffffff"
         },
         "82": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "81": ""
             },
-            "cell_x": 23,
-            "cell_y": 8,
-            "color": "#ffffff"
+            "x": 23,
+            "y": 8,
+            "c": "#ffffff"
         },
         "83": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "81": ""
             },
-            "cell_x": 26,
-            "cell_y": 8,
-            "color": "#ffffff"
+            "x": 26,
+            "y": 8,
+            "c": "#ffffff"
         },
         "84": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "81": ""
             },
-            "cell_x": 27,
-            "cell_y": 8,
-            "color": "#ffffff"
+            "x": 27,
+            "y": 8,
+            "c": "#ffffff"
         },
         "87": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "82": ""
             },
-            "cell_x": 22,
-            "cell_y": 10,
-            "color": "#ffffff"
+            "x": 22,
+            "y": 10,
+            "c": "#ffffff"
         },
         "88": {
-            "name": "Node",
-            "description": "",
-            "incoming": {},
-            "cell_x": 25,
-            "cell_y": 13,
-            "color": "#ffffff"
+            "n": "Node",
+            "d": "",
+            "i": {},
+            "x": 25,
+            "y": 13,
+            "c": "#ffffff"
         },
         "90": {
-            "name": "some 1111",
-            "description": "descrp 111",
-            "incoming": {
+            "n": "some 1111",
+            "d": "descrp 111",
+            "i": {
                 "88": "",
                 "iACVkUp": ""
             },
-            "cell_x": 25,
-            "cell_y": 15,
-            "color": "#ffffff"
+            "x": 25,
+            "y": 15,
+            "c": "#ffffff"
         },
         "91": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "87": ""
             },
-            "cell_x": 23,
-            "cell_y": 12,
-            "color": "#ffffff"
+            "x": 23,
+            "y": 12,
+            "c": "#ffffff"
         },
         "92": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "iACVkUp": ""
             },
-            "cell_x": 26,
-            "cell_y": 14,
-            "color": "#ffffff"
+            "x": 26,
+            "y": 14,
+            "c": "#ffffff"
         },
         "93": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "iACVkUp": ""
             },
-            "cell_x": 27,
-            "cell_y": 14,
-            "color": "#ffffff"
+            "x": 27,
+            "y": 14,
+            "c": "#ffffff"
         },
         "94": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "iACVkUp": ""
             },
-            "cell_x": 28,
-            "cell_y": 14,
-            "color": "#ffffff"
+            "x": 28,
+            "y": 14,
+            "c": "#ffffff"
         },
         "95": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "83": ""
             },
-            "cell_x": 28,
-            "cell_y": 10,
-            "color": "#ffffff"
+            "x": 28,
+            "y": 10,
+            "c": "#ffffff"
         },
         "97": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "95": ""
             },
-            "cell_x": 29,
-            "cell_y": 12,
-            "color": "#ffffff"
+            "x": 29,
+            "y": 12,
+            "c": "#ffffff"
         },
         "98": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "95": ""
             },
-            "cell_x": 30,
-            "cell_y": 12,
-            "color": "#ffffff"
+            "x": 30,
+            "y": 12,
+            "c": "#ffffff"
         },
         "iACVkUp": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "82": ""
             },
-            "cell_x": 24,
-            "cell_y": 11,
-            "color": "#ffffff"
+            "x": 24,
+            "y": 11,
+            "c": "#ffffff"
         },
         "MXGgtjs": {
-            "name": "Node",
-            "description": "",
-            "incoming": {
+            "n": "Node",
+            "d": "",
+            "i": {
                 "95": ""
             },
-            "cell_x": 31,
-            "cell_y": 12,
-            "color": "#ffffff"
+            "x": 31,
+            "y": 12,
+            "c": "#ffffff"
         },
         "EKeObF6": {
-            "name": "Product 1",
-            "description": "commit",
-            "incoming": {},
-            "cell_x": 7,
-            "cell_y": 0,
-            "color": "green"
+            "n": "Product 1",
+            "d": "commit",
+            "i": {},
+            "x": 7,
+            "y": 0,
+            "c": "green"
         },
         "TnGUgwz": {
-            "name": "111",
-            "description": "111",
-            "incoming": {
+            "n": "111",
+            "d": "111",
+            "i": {
                 "80": ""
             },
-            "cell_x": 10,
-            "cell_y": 4,
-            "color": "#ffffff"
+            "x": 10,
+            "y": 4,
+            "c": "#ffffff"
         }
     }
 };

@@ -345,8 +345,8 @@ class RenderPipelineNode {
         this.nodeid = nodeid;
         this.name = "edit me";
         this.name_width = 0;
-        this.description = "edit me";
-        this.description_width = 0;
+        this.gXUEA61_description = "edit me";
+        this.gXUEA61_description_width = 0;
         this.max_card_width = 0;
         this.incoming = {};
         this.incoming_order = [];
@@ -362,26 +362,26 @@ class RenderPipelineNode {
 
     to_json() {
         return {
-            "name": this.name,
-            "description": this.description,
-            "incoming": this.incoming,
-            "cell_x": this.IQrRW7r_cell_x,
-            "cell_y": this.IQrRW7r_cell_y,
-            "color": this.cWIV4UF_fillColor
+            "n": this.name,
+            "d": this.gXUEA61_description,
+            "i": this.incoming,
+            "x": this.IQrRW7r_cell_x,
+            "y": this.IQrRW7r_cell_y,
+            "c": this.cWIV4UF_fillColor
         }
     }
 
     copy_from_json(_json) {
-        this.set_name(_json['name'])
-        this.set_description(_json['description'])
-        if (_json['color']) {
-            this.set_color(_json['color'])
+        this.set_name(_json['n'])
+        this.set_description(_json['d'])
+        if (_json['c']) {
+            this.set_color(_json['c'])
         }
         this.incoming = {};
-        for (var nid in _json['incoming']) {
-            this.incoming[nid] = _json['incoming'][nid];
+        for (var nid in _json['i']) {
+            this.incoming[nid] = _json['i'][nid];
         }
-        this.update_cell_xy(_json["cell_x"], _json["cell_y"])
+        this.update_cell_xy(_json["x"], _json["y"])
     }
 
     update_cell_xy(pos_x, pos_y) {
@@ -429,14 +429,14 @@ class RenderPipelineNode {
     }
 
     set_description(description) {
-        if (this.description != description) {
-            this.description = description
+        if (this.gXUEA61_description != description) {
+            this.gXUEA61_description = description
             this.need_update_meansure = true;
         }
     }
 
     get_description() {
-        return this.description;
+        return this.gXUEA61_description;
     }
 
     update_meansures(_ctx) {
@@ -445,9 +445,9 @@ class RenderPipelineNode {
             var tMeas = _ctx.measureText(this.name);
             this.max_card_width = Math.max(tMeas.width, this.max_card_width);
             this.name_width = parseInt(tMeas.width);
-            tMeas = _ctx.measureText(this.description);
+            tMeas = _ctx.measureText(this.gXUEA61_description);
             this.max_card_width = Math.max(tMeas.width, this.max_card_width);
-            this.description_width = parseInt(tMeas.width);
+            this.gXUEA61_description_width = parseInt(tMeas.width);
         }
         return this.max_card_width;
     }
@@ -533,7 +533,7 @@ class RenderPipelineNode {
         var x1_name = (this._conf.get_card_width() - this.name_width) / 2;
         _ctx.fillText('' + this.get_name(), x1 + x1_name, y1 + d);
         d += 20;
-        var x1_description = (this._conf.get_card_width() - this.description_width) / 2;
+        var x1_description = (this._conf.get_card_width() - this.gXUEA61_description_width) / 2;
         _ctx.fillText('' + this.get_description(), x1 + x1_description, y1 + d);
     }
 }
@@ -1268,11 +1268,11 @@ class RenderPipelineEditor {
                 continue;
             }
             const _node_d = {
-                "name": "edit me",
-                "description": "edit me",
-                "incoming": {},
-                "cell_x": pos_x,
-                "cell_y": pos_y
+                "n": "edit me",
+                "d": "edit me",
+                "i": {},
+                "x": pos_x,
+                "y": pos_y
             }
             var _new_node = new RenderPipelineNode(new_id, this._conf);
             _new_node.copy_from_json(_node_d);
