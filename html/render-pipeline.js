@@ -885,6 +885,9 @@ class RenderPipelineEditor {
 
             if (x0 > x1 && x0 < x2 && y0 > y1 && y0 < y2) {
                 cursor = 'pointer';
+                if (this.editor_state == PIPELINE_EDITOR_STATE_REMOVING_BLOCKS) {
+                    cursor = 'url("./images/cursor-delete-block.svg"), auto';
+                }
             }
         }
         target.style.cursor = cursor;
