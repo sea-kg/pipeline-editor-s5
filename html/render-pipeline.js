@@ -487,9 +487,19 @@ class RenderPipelineNode {
         return (idx - diff)*15;
     }
 
+    get_max_y_by_incoming(pl_data_render) {
+        var max_y = -1;
+        for (var nodeid in this.incoming) {
+            if (pl_data_render[nodeid].get_cell_y() > max_y) {
+                max_y = pl_data_render[nodeid].get_cell_y();
+            }
+        }
+        return max_y;
+    }
+
     update_incoming_sort(pl_data_render) {
         this.incoming_order = []
-        for(var nodeid in this.incoming) {
+        for (var nodeid in this.incoming) {
             this.incoming_order.push(nodeid);
         }
         this.incoming_order.sort(function(a, b) {
@@ -850,8 +860,14 @@ class RenderPipelineEditor {
                 // don't allow move to the left and top border
                 return;
             }
-            // console.log(y0);
-            if (this.pl_data_render[this.selectedBlockIdEditing].update_cell_xy(t_x, t_y)) {
+            var block = this.pl_data_render[this.selectedBlockIdEditing];
+            var max_y = block.get_max_y_by_incoming(this.pl_data_render);
+            if (max_y > -1 && t_y <= max_y+1) {
+                // don't allow move to upper then parent 
+                return;
+            }
+
+            if (block.update_cell_xy(t_x, t_y)) {
                 this.prepare_data_cards_one_cells();
                 this.update_pipeline_diagram();
             }
@@ -1235,8 +1251,6 @@ class RenderPipelineEditor {
             this.update_pipeline_diagram();
         }
     }
-
-    
 
     add_block() {
         var pos_x = this.canvas_container.scrollLeft - this.pl_padding + this._conf.get_cell_width();
