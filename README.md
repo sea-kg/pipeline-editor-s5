@@ -9,7 +9,7 @@ Pipeline Editor s5 (just ui-editor)
 ![Alt text](/contrib/screenshot-01.jpg?raw=true "Screenshot 01")
 
 
-html:
+## Integration
 
 ```html
 <div style="overflow: scroll; height: 400px; min-height: 400px;">
@@ -46,6 +46,55 @@ html:
 </script>
 ```
 
+## Integration to angular project
+
+```
+$ npm install --save pipeline-editor-s5
+```
+
+angular.json:
+```
+...
+    "scripts": [
+        ...,
+        "node_modules/pipeline-editor-s5/html/render-pipeline.js"
+    ]
+...
+```
+
+add to html-template:
+```
+...
+<div class="pipeline-viewer-container">
+    <canvas id="pipeline_viewer"></canvas>
+</div>
+...
+```
+
+add to css:
+```
+.pipeline-viewer-container {
+    display: none;
+    overflow: scroll;
+    max-height: 10px;
+    height: 10px;
+    min-height: 10px;
+}
+```
+
+add to ts file:
+```
+...
+declare var RenderPipelineEditor: any;
+...
+
+    show_data() : void {
+        this.pipelineEditorInst = new RenderPipelineEditor(
+          'pipeline_viewer'
+        );
+        this.pipelineEditorInst.set_data(this.pipelineData);
+    }
+```
 
 ## Documentation
 
