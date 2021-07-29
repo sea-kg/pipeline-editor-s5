@@ -87,9 +87,18 @@
 </div>
 
 <div class="pipeline-editor-container" id="tab_content_settings" style="display: none;">
-    Background-color: <input class="diagram-settings-input" id="settings_background_color" value=""/></br>
-    Diagram-name: <input class="diagram-settings-input" id="settings_diagram_name" value=""/></br>
-    Diagram-description: <input class="diagram-settings-input" id="settings_diagram_description" value=""/></br>
+    <h2>Diagram Settings</h2>
+    Background-color: <input type="text" class="diagram-settings-input" id="settings_background_color" value=""/></br>
+    Diagram-name: <input type="text" class="diagram-settings-input" id="settings_diagram_name" value=""/></br>
+    Diagram-description: <input type="text" class="diagram-settings-input" id="settings_diagram_description" value=""/></br>
+    
+    <h2>Other settings</h2>
+    Autosave:
+    <select  class="diagram-setting" id="settings_autosave" value="">
+        <option value="off">Off</option>
+        <option value="on">On</option>
+    </select>
+    </br>
 </div>
 
 <div class="pipeline-editor-container" id="tab_content_json" style="display: none;">

@@ -1,4 +1,6 @@
 
+window.autosave_enabled = false;
+
 function parsePageParams() {
     var loc = location.search.slice(1);
     var arr = loc.split("&");
@@ -194,7 +196,7 @@ function input_onchangediagramsettings(el) {
     render.update_pipeline_diagram();
 }
 
-function render_onchoosedelement(block_id) {
+function render_onselectedblock(block_id) {
     if (block_id) {
         document.getElementById("prop_block_id").value = block_id;
         document.getElementById("prop_name").value = render.pl_data_render[block_id].get_name();
@@ -211,6 +213,12 @@ function render_onchoosedelement(block_id) {
         document.getElementById("prop_description").setAttribute('readonly', true);
         document.getElementById("prop_color").value = "";
         document.getElementById("prop_color").setAttribute('readonly', true);
+    }
+}
+
+function render_onchanged() {
+    if (window.autosave_enabled) {
+        save_to_localstorage();
     }
 }
 
@@ -246,7 +254,8 @@ document.addEventListener("DOMContentLoaded", function() {
     resize_canvas();
     render.update_meansures();
     render.update_pipeline_diagram();
-    render_onchoosedelement(null)
+    render_onselectedblock(null);
+
 
     document.getElementById("prop_name").addEventListener('keyup', input_onchangename);
     document.getElementById("prop_description").addEventListener('keyup', input_onchangename);
@@ -257,8 +266,16 @@ document.addEventListener("DOMContentLoaded", function() {
     for(var i = 0; i < el_settings.length; i++) {
         el_settings[i].addEventListener('keyup', input_onchangediagramsettings);
     }
+    document.getElementById("settings_autosave").value = localStorage.getItem("autosave") || "off";
+    window.autosave_enabled = (document.getElementById("settings_autosave").value == "on");
+    document.getElementById("settings_autosave").onchange = function(el) {
+        var v = this.options[this.selectedIndex].value;
+        window.autosave_enabled = (v == "on");
+        localStorage.setItem("autosave", v);
+    }
 
-    render.onchoosedelement = render_onchoosedelement;
+    render.onselectedblock = render_onselectedblock;
+    render.onchanged = render_onchanged;
 });
 
 

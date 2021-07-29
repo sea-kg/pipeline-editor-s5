@@ -642,6 +642,7 @@ class RenderPipelineEditor {
 
         this.update_meansures();
         this.update_pipeline_diagram();
+        this.call_onchanged();
     }
 
     get_data() {
@@ -773,16 +774,13 @@ class RenderPipelineEditor {
                 
                 // reset selection
                 this.selectedBlockIdEditing = null;
-                if (this.onchoosedelement) {
-                    this.onchoosedelement(null);
-                }
+                this.call_onselectedblock(null);
+                this.call_onchanged();
             }
             return;
         }
+        this.call_onselectedblock(this.selectedBlock['block-id-undermouse']);
 
-        if (this.onchoosedelement) {
-            this.onchoosedelement(this.selectedBlock['block-id-undermouse']);
-        }
         if (this.selectedBlockIdEditing != this.selectedBlock['block-id-undermouse']) {
             this.selectedBlockIdEditing = this.selectedBlock['block-id-undermouse'];
             this.update_pipeline_diagram();
@@ -798,6 +796,7 @@ class RenderPipelineEditor {
             if (this.conneсtingBlocks.block_id != null) {
                 this.conneсtingBlocks.state = 'finish';
                 this.do_connection_blocks();
+                this.call_onchanged();
             }
         }
 
@@ -870,6 +869,7 @@ class RenderPipelineEditor {
             if (block.update_cell_xy(t_x, t_y)) {
                 this.prepare_data_cards_one_cells();
                 this.update_pipeline_diagram();
+                this.call_onchanged();
             }
             return;
         }
@@ -1249,6 +1249,7 @@ class RenderPipelineEditor {
             // this.prepare_data_render();
             this.update_meansures();
             this.update_pipeline_diagram();
+            this.call_onchanged();
         }
     }
 
@@ -1282,8 +1283,19 @@ class RenderPipelineEditor {
         this.selectedBlockIdEditing = new_id;
         this.update_meansures();
         this.update_pipeline_diagram();
-        if (this.onchoosedelement) {
-            this.onchoosedelement(new_id);
+        this.call_onselectedblock(new_id);
+        this.call_onchanged();
+    }
+
+    call_onselectedblock(blockid) {
+        if (this.onselectedblock) {
+            this.onselectedblock(blockid);
+        }
+    }
+
+    call_onchanged() {
+        if (this.onchanged) {
+            this.onchanged();
         }
     }
 

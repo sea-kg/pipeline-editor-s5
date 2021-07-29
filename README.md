@@ -98,6 +98,11 @@ declare var RenderPipelineEditor: any;
 
 ## Documentation
 
+### Events
+
+* `onselectedblock(blockid)` - when user selected a block
+* `onchanged()` - when changed something in scheme
+
 ### Enums
 
 Pipeline editor state:
@@ -154,6 +159,7 @@ Constructor, example:
 * `draw_grid()`
 * `draw_diagram_name()`
 * `draw_cards()`
+* `call_onselectedblock` - private method for call function `onselectedblock` (only if defined by user)
 * `correct_line(line)`
 * `check_error(line, out_nodeid, in_nodeid)`
 * `add_to_draw_connection(x0, x2, y0, y1, y2, out_nodeid, in_nodeid)`
