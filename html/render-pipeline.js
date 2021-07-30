@@ -1089,7 +1089,7 @@ class RenderPipelineEditor {
             ty = 0;
             safe_while++;
             if (safe_while > 1000) {
-                console.warn("Auto placement - while safe (y)")
+                console.warn("Auto placement - while safe (y)");
                 break;
             }
             for (var cur_nodeid in this.pl_data_render) {
@@ -1119,7 +1119,7 @@ class RenderPipelineEditor {
             tx = 0;
             safe_while_x++;
             if (safe_while_x > 1000) {
-                console.warn("Auto placement - while safe (x)")
+                console.warn("Auto placement - while safe (x)");
                 break;
             }
             for (var cur_nodeid in this.pl_data_render) {
