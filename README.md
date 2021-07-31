@@ -172,7 +172,7 @@ Constructor, example:
 * `prepare_lines_out()`
 
 
-### Class `RenderPipelineNode`
+### Class `RenderPipelineBlock`
 
 * `constructor(nodeid, _conf)`
 * `to_json()`

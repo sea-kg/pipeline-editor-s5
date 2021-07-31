@@ -344,8 +344,7 @@ class RenderPipelineConfig {
     }
 }
 
-// TODO rename to RenderPipelineBlock
-class RenderPipelineNode {
+class RenderPipelineBlock {
     constructor(nodeid, _conf) {
         this._conf = _conf;
         this.nodeid = nodeid;
@@ -628,7 +627,7 @@ class RenderPipelineEditor {
         
         this.pl_data_render = {};
         for (var node_id in data["nodes"]) {
-            var node = new RenderPipelineNode(node_id, this._conf)
+            var node = new RenderPipelineBlock(node_id, this._conf)
             node.copy_from_json(data["nodes"][node_id])
             this.pl_data_render[node_id] = node;
         }
@@ -686,6 +685,7 @@ class RenderPipelineEditor {
         this.editor_state = PIPELINE_EDITOR_STATE_REMOVING_BLOCKS;
     }
 
+    // TODO implement like a private
     canvas_onmouseover(event) {
         // var target = event.target;
         this.movingEnable = false;
@@ -693,6 +693,7 @@ class RenderPipelineEditor {
         this.update_pipeline_diagram();
     };
 
+    // TODO implement like a private
     canvas_onmouseout(event) {
         // var target = event.target;
         this.movingEnable = false;
@@ -700,6 +701,7 @@ class RenderPipelineEditor {
         this.update_pipeline_diagram()
     };
     
+    // TODO implement like a private
     canvas_onmouseup(event) {
         // var target = event.target;
         if (event.button == 1) { // scroll button
@@ -711,6 +713,7 @@ class RenderPipelineEditor {
         }
     }
 
+    // TODO implement like a private
     canvas_onmousedown(event) {
         // var target = event.target;
         if (event.button == 1) { // scroll button
@@ -1251,7 +1254,7 @@ class RenderPipelineEditor {
                 "x": pos_x,
                 "y": pos_y
             }
-            var _new_node = new RenderPipelineNode(new_id, this._conf);
+            var _new_node = new RenderPipelineBlock(new_id, this._conf);
             _new_node.copy_from_json(_node_d);
             this.pl_data_render[new_id] = _new_node;
             this.prepare_data_cards_one_cells();
