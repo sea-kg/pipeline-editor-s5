@@ -202,11 +202,12 @@ Constructor, example:
 ### Class `RenderPipelineConfig`
 
 * `constructor()`
-* `set_max_cell_xy(x,y)`
+* `set_max_cell_xy(x,y)` - set max x and y coordinates block (in cells)
 * `set_cell_size(width, height)`
 * `get_cell_width()`
 * `get_cell_height()`
-* `get_padding()`
+* `get_diagram_padding_left()` - left padding for diagram
+* `get_diagram_padding_top()` - top padding for diagram
 * `set_card_size(width, height)`
 * `get_card_width()`
 * `get_card_height()`

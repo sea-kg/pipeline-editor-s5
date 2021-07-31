@@ -285,7 +285,8 @@ class RenderPipelineConfig {
     constructor() {
         this.pl_max_cell_x = -1;
         this.pl_max_cell_y = -1;
-        this.pl_padding = 20;
+        this.AziDBtN_diagram_padding_left = 20;
+        this.AziDBtN_diagram_padding_top = 80;
         this.wZFF096_radius_for_angels = 10;
         this.GVitVNl_pl_cell_width = 170;
         this.GVitVNl_pl_cell_height = 86;
@@ -315,8 +316,12 @@ class RenderPipelineConfig {
         return this.GVitVNl_pl_cell_height;
     }
 
-    get_padding() {
-        return this.pl_padding;
+    get_diagram_padding_left() {
+        return this.AziDBtN_diagram_padding_left;
+    }
+
+    get_diagram_padding_top() {
+        return this.AziDBtN_diagram_padding_top;
     }
 
     set_card_size(width, height) {
@@ -339,6 +344,7 @@ class RenderPipelineConfig {
     }
 }
 
+// TODO rename to RenderPipelineBlock
 class RenderPipelineNode {
     constructor(nodeid, _conf) {
         this._conf = _conf;
@@ -352,11 +358,11 @@ class RenderPipelineNode {
         this.incoming_order = [];
         // this.IQrRW7r_cell_x = 0;
         // this.IQrRW7r_cell_y = 0;
-        this.update_cell_xy(0,0)
+        this.update_cell_xy(0,0);
         this.need_update_meansure = true;
-        this.dtbqA0E_nodes_in_same_cells = []
-        this.dtbqA0E_paralax_precalculated = 0
-        this.dfIxewv_outcoming = []
+        this.dtbqA0E_nodes_in_same_cells = [];
+        this.dtbqA0E_paralax_precalculated = 0;
+        this.dfIxewv_outcoming = [];
         this.cWIV4UF_fillColor = "#ffffff";
     }
 
@@ -509,8 +515,8 @@ class RenderPipelineNode {
 
     draw_card(_ctx, selectedBlockIdEditing) {
         var paralax = this.get_paralax_in_cell();
-        var x1 = this._conf.pl_padding + this.get_cell_x() * this._conf.get_cell_width() + paralax;
-        var y1 = this._conf.pl_padding + this.get_cell_y() * this._conf.get_cell_height() + paralax;
+        var x1 = this._conf.get_diagram_padding_left() + this.get_cell_x() * this._conf.get_cell_width() + paralax;
+        var y1 = this._conf.get_diagram_padding_top() + this.get_cell_y() * this._conf.get_cell_height() + paralax;
         this.hidden_x1 = x1;
         this.hidden_y1 = y1;
 
@@ -554,7 +560,6 @@ class RenderPipelineEditor {
         this.is_draw_grid = true;
         this.grid_color = "#bacaa6";
         this.pl_width = 100;
-        this.pl_padding = 20;
         this.pl_scale = 1.0;
         this.pl_data_render = {};
         this.movingEnable = false;
@@ -852,8 +857,8 @@ class RenderPipelineEditor {
         }
 
         if (this.movingEnable && this.selectedBlockIdEditing != null) {
-            var t_x = Math.floor((x0 - this.pl_padding) / this._conf.get_cell_width());
-            var t_y = Math.floor((y0 - this.pl_padding) / this._conf.get_cell_height());
+            var t_x = Math.floor((x0 - this._conf.get_diagram_padding_left()) / this._conf.get_cell_width());
+            var t_y = Math.floor((y0 - this._conf.get_diagram_padding_top()) / this._conf.get_cell_height());
             
             if (t_x < 0 || t_y < 0) {
                 // don't allow move to the left and top border
@@ -897,6 +902,8 @@ class RenderPipelineEditor {
         this.pl_scale += diff;
         var tr_x = parseInt((this.pl_width * this.pl_scale - this.pl_width)/2);
         var tr_y = parseInt((this.pl_height * this.pl_scale - this.pl_height)/2);
+        console.log("this.pl_width", this.pl_width);
+        console.log("this.pl_height", this.pl_height);
         this.canvas.style.transform = "scale(" + this.pl_scale + ") translate(" + tr_x + "px, " + tr_y + "px)"
     }
 
@@ -907,7 +914,7 @@ class RenderPipelineEditor {
     
     scale_minus(diff) {
         this.pl_scale -= diff;
-        var tr_x = parseInt((this.pl_width * this.pl_scale - this.pl_width)/2);
+        var tr_x = parseInt((this.pl_width * this.pl_scale - this.pl_width )/2);
         var tr_y = parseInt((this.pl_height * this.pl_scale - this.pl_height)/2);
         this.canvas.style.transform = "scale(" + this.pl_scale + ") translate(" + tr_x + "px, " + tr_y + "px)";
     }
@@ -935,8 +942,8 @@ class RenderPipelineEditor {
         }
 
         if (this._conf.set_max_cell_xy(new_max_cell_x, new_max_cell_y)) {
-            this.pl_width =  (this._conf.pl_max_cell_x + 1) * this._conf.get_cell_width() + 2 * this.pl_padding + 100;
-            this.pl_height = (this._conf.pl_max_cell_y + 1) * this._conf.get_cell_height() + 2 * this.pl_padding + 100;
+            this.pl_width =  (this._conf.pl_max_cell_x + 1) * this._conf.get_cell_width() + 2 * this._conf.get_diagram_padding_left() + 100;
+            this.pl_height = (this._conf.pl_max_cell_y + 1) * this._conf.get_cell_height() + 2 * this._conf.get_diagram_padding_top() + 100;
             this.canvas.width  = this.pl_width;
             this.canvas.height = this.pl_height;
             this.canvas.style.width  = this.pl_width + 'px';
@@ -945,11 +952,11 @@ class RenderPipelineEditor {
     }
 
     calcX_in_px(cell_x) {
-        return this.pl_padding + cell_x * this._conf.get_cell_width();
+        return this._conf.get_diagram_padding_left() + cell_x * this._conf.get_cell_width();
     }
     
     calcY_in_px(cell_y) {
-        return this.pl_padding + cell_y * this._conf.get_cell_height();
+        return this._conf.get_diagram_padding_top() + cell_y * this._conf.get_cell_height();
     }
 
     clear_canvas() {
@@ -966,7 +973,7 @@ class RenderPipelineEditor {
         
         this.ctx.lineWidth = 1;
         this.ctx.strokeStyle = this.grid_color;
-        for (var x = this.pl_padding; x <= this.pl_width; x = x + this._conf.get_cell_width()) {
+        for (var x = this._conf.get_diagram_padding_left(); x <= this.pl_width; x = x + this._conf.get_cell_width()) {
             var x1 = x - (this._conf.get_cell_width() - this._conf.get_card_width()) / 2;
             this.ctx.beginPath();
             this.ctx.moveTo(x1, 0);
@@ -974,7 +981,7 @@ class RenderPipelineEditor {
             this.ctx.stroke();
         }
     
-        for (var y = this.pl_padding; y <= this.pl_height; y = y + this._conf.get_cell_height()) {
+        for (var y = this._conf.get_diagram_padding_top(); y <= this.pl_height; y = y + this._conf.get_cell_height()) {
             var y1 = y - (this._conf.get_cell_height() - this._conf.get_card_height()) / 2;
             this.ctx.beginPath();
             this.ctx.moveTo(0, y1);
@@ -984,6 +991,7 @@ class RenderPipelineEditor {
     }
     
     draw_diagram_name() {
+        // TODO to config
         var font_name_size = 32;
         var font_description_size = 20;
 
@@ -991,10 +999,18 @@ class RenderPipelineEditor {
         // this.diagram_description = "test descr";
 
         this.ctx.font = font_name_size + "px Arial";
-        this.ctx.fillText('' + this.diagram_name, this.pl_padding, this.pl_padding + font_name_size);
+        this.ctx.fillText(
+            '' + this.diagram_name,
+            this._conf.get_diagram_padding_left(),
+            this._conf.get_diagram_padding_top() + font_name_size
+        );
 
         this.ctx.font = font_description_size + "px Arial";
-        this.ctx.fillText('' + this.diagram_description, this.pl_padding + 10, this.pl_padding + font_name_size + font_description_size);
+        this.ctx.fillText(
+            '' + this.diagram_description,
+            this._conf.get_diagram_padding_left() + 10,
+            this._conf.get_diagram_padding_top() + font_name_size + font_description_size
+        );
 
         this.init_font_size();
     }
@@ -1257,10 +1273,10 @@ class RenderPipelineEditor {
     }
 
     add_block() {
-        var pos_x = this.canvas_container.scrollLeft - this.pl_padding + this._conf.get_cell_width();
+        var pos_x = this.canvas_container.scrollLeft - this._conf.get_diagram_padding_left() + this._conf.get_cell_width();
         pos_x = parseInt(pos_x / this._conf.get_cell_width());
 
-        var pos_y = this.canvas_container.scrollTop - this.pl_padding + this._conf.get_cell_height()
+        var pos_y = this.canvas_container.scrollTop - this._conf.get_diagram_padding_top() + this._conf.get_cell_height()
         pos_y = parseInt(pos_y / this._conf.get_cell_height());
 
         var new_id = null;
