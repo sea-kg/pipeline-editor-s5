@@ -292,6 +292,7 @@ class RenderPipelineConfig {
         this.GVitVNl_pl_cell_height = 86;
         this.CEisN2z_pl_card_width = 159;
         this.CEisN2z_pl_card_height = 62;
+        this.vMw72tg_pl_scale_value = 1.0;
     }
 
     set_max_cell_xy(x,y) {
@@ -341,6 +342,14 @@ class RenderPipelineConfig {
 
     get_radius_for_angels() {
         return this.wZFF096_radius_for_angels;
+    }
+
+    get_scale_value() {
+        return this.vMw72tg_pl_scale_value;
+    }
+
+    set_scale_value(val) {
+        this.vMw72tg_pl_scale_value = val;
     }
 }
 
@@ -559,7 +568,6 @@ class RenderPipelineEditor {
         this.is_draw_grid = true;
         this.grid_color = "#bacaa6";
         this.pl_width = 100;
-        this.pl_scale = 1.0;
         this.pl_data_render = {};
         this.movingEnable = false;
         this.scrollMoving = false;
@@ -860,24 +868,27 @@ class RenderPipelineEditor {
     };
 
     scale_plus(diff) {
-        this.pl_scale += diff;
-        var tr_x = parseInt((this.pl_width * this.pl_scale - this.pl_width)/2);
-        var tr_y = parseInt((this.pl_height * this.pl_scale - this.pl_height)/2);
+        var new_scale = this._conf.get_scale_value() + diff;
+        this._conf.set_scale_value(new_scale);
+        var tr_x = parseInt((this.pl_width * new_scale - this.pl_width)/2);
+        var tr_y = parseInt((this.pl_height * new_scale - this.pl_height)/2);
         console.log("this.pl_width", this.pl_width);
         console.log("this.pl_height", this.pl_height);
-        this.canvas.style.transform = "scale(" + this.pl_scale + ") translate(" + tr_x + "px, " + tr_y + "px)"
+        this.canvas.style.transform = "scale(" + new_scale + ") translate(" + tr_x + "px, " + tr_y + "px)"
     }
 
     scale_reset() {
-        this.pl_scale = 1.0
-        this.canvas.style.transform = "scale(" + this.pl_scale + ")";
+        var new_scale = 1.0;
+        this._conf.set_scale_value(new_scale);
+        this.canvas.style.transform = "scale(" + new_scale + ")";
     }
     
     scale_minus(diff) {
-        this.pl_scale -= diff;
-        var tr_x = parseInt((this.pl_width * this.pl_scale - this.pl_width )/2);
-        var tr_y = parseInt((this.pl_height * this.pl_scale - this.pl_height)/2);
-        this.canvas.style.transform = "scale(" + this.pl_scale + ") translate(" + tr_x + "px, " + tr_y + "px)";
+        var new_scale = this._conf.get_scale_value() + diff;
+        this._conf.set_scale_value(new_scale);
+        var tr_x = parseInt((this.pl_width * new_scale - this.pl_width )/2);
+        var tr_y = parseInt((this.pl_height * new_scale - this.pl_height)/2);
+        this.canvas.style.transform = "scale(" + new_scale + ") translate(" + tr_x + "px, " + tr_y + "px)";
     }
 
     update_meansures() {
@@ -925,6 +936,11 @@ class RenderPipelineEditor {
         this.ctx.fillRect(0, 0, this.pl_width, this.pl_height);
         this.ctx.strokeRect(0, 0, this.pl_width, this.pl_height);
         this.ctx.fillStyle = '#FFFFFF';
+    }
+
+    draw_menu_buttons() {
+        console.log("TODO");
+
     }
 
     draw_grid() {
@@ -1205,6 +1221,7 @@ class RenderPipelineEditor {
         var start = performance.now();
         this.update_image_size();
         this.init_font_size();
+        this.draw_menu_buttons();
         this.clear_canvas();
         this.draw_grid();
         this.draw_cards();

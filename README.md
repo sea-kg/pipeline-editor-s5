@@ -210,6 +210,8 @@ Constructor, example:
 * `get_card_width()`
 * `get_card_height()`
 * `get_radius_for_angels()`
+* `get_scale_value()` - scaling value (1.0 == 100%)
+* `set_scale_value(val)` - set new scale value (1.0 == 100%)
 
 ### Class `RenderPipelineDrawedLinesCache`
 
