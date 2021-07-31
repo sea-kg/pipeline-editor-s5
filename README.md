@@ -137,10 +137,8 @@ Constructor, example:
 * `clone_object(obj)`
 * `set_data(data)` - set new data-json, 
 * `get_data()` - will return data-json
-* `extract_all_keys_from_obj(obj, keys)`
-* `replace_all_keys_in_obj(obj, replace_keys)`
-* `get_data_share()`
-* `set_data_share(data)`
+* `get_data_share()` - get_data and packed with LZString
+* `set_data_share(data)` - data-json unpacked with LZString and set_data()
 * `change_state_to_removing_blocks()`
 * `canvas_onmouseover(event)`
 * `canvas_onmouseout(event)`

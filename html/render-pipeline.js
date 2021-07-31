@@ -662,48 +662,6 @@ class RenderPipelineEditor {
         return _ret;
     }
 
-    extract_all_keys_from_obj(obj, keys) {
-        for (var k in obj) {
-            if (keys[k]) {
-                keys[k]++;
-            } else {
-                keys[k] = 1;
-            }
-            var val = obj[k];
-            if (typeof val == "object") {
-                keys = this.extract_all_keys_from_obj(val, keys);
-            } else {
-                if (keys[val]) {
-                    keys[val]++;
-                } else {
-                    keys[val] = 1;
-                }
-            }
-        }
-        return keys;
-    }
-
-    replace_all_keys_in_obj(obj, replace_keys) {
-        for (var k in obj) {
-            if (replace_keys[k]) {
-                var new_k = replace_keys[k];
-                obj[new_k] = obj[k];
-                delete obj[k];
-                k = new_k;
-            }
-
-            var val = obj[k];
-            if (typeof val == "object") {
-                obj[k] = this.replace_all_keys_in_obj(val, replace_keys);
-            } else {
-                if (replace_keys[val]) {
-                    obj[k] = replace_keys[val];
-                }
-            }
-        }
-        return obj;
-    }
-
     get_data_share() {
         if (window.LZString === undefined) {
             console.error("LZString not found. try include from here https://github.com/pieroxy/lz-string/tree/master/libs");
