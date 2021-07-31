@@ -22,24 +22,25 @@ Pipeline Editor s5 (just ui-editor)
     });
     render1.set_data({
         "title": "Some",
+        "description": "Some description",
         "nodes": {
             "aCaqNjY": {
-                "name": "One",
-                "description": "...",
-                "incoming": {},
-                "cell_x": 1,
-                "cell_y": 0,
-                "color": "#ffffff"
+                "n": "One",
+                "d": "...",
+                "i": {},
+                "x": 1,
+                "y": 0,
+                "c": "#ffffff"
             },
             "kB3Cu9b": {
-                "name": "Two",
-                "description": "...",
-                "incoming": {
+                "n": "Two",
+                "d": "...",
+                "i": {
                     "aCaqNjY": ""
                 },
-                "cell_x": 2,
-                "cell_y": 2,
-                "color": "#ffffff"
+                "x": 2,
+                "y": 2,
+                "c": "#ffffff"
             }
         }
     });
