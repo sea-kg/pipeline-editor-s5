@@ -5,6 +5,41 @@ All notable changes to pipeline-editor-s5 project will be documented in this fil
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.2.0] - 2021-07-31 (2021 Jul 31)
+
+### Fixed
+
+* Fixed #30 forbidden moving child upper than parent
+* Fixed #23 added to README integration to angular
+
+### Changed
+
+* Redesign format of json (minifier for share)
+* Fixed #4 Scaling - redesign, moved to canvas
+* Renamed RenderPipelineNode -> RenderPipelineBlock
+* Start redesign modes of editor (redesign remove blocks)
+* Redraw icons
+* Redesign padding option for #4
+* Scale value moved to RenderPipelineConfig
+* Prepare #32 - reposition nodes (auto_placement)
+* Updated html/images/share.svg
+
+### Added 
+
+* Fixed #3: autosave
+* Fixed #15, #18: share by url (`?v=data_share`)
+* Implemented get_data_share/set_data_share for url sharing
+* added `version` to RenderPipelineEditor
+* Added cursor on delete blocks
+* Prepare list of functions for documentation
+* Implemented settings title, description, background-color
+* Added lz-string for share urls
+
+### Security
+
+* Fixed lgtm alerts
+* Removed unused functions
+
 
 ## [v0.1.1] - 2021-07-13 (2021 Jul 13)
 
