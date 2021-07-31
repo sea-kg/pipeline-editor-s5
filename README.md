@@ -1,6 +1,6 @@
 # pipeline-editor-s5
 
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/sea-kg/pipeline-editor-s5.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sea-kg/pipeline-editor-s5/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/sea-kg/pipeline-editor-s5.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sea-kg/pipeline-editor-s5/context:javascript) [![npm](https://img.shields.io/npm/v/pipeline-editor-s5)](https://www.npmjs.com/package/pipeline-editor-s5)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/sea-kg/pipeline-editor-s5.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sea-kg/pipeline-editor-s5/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/sea-kg/pipeline-editor-s5.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sea-kg/pipeline-editor-s5/context:javascript) [![npm](https://img.shields.io/npm/v/pipeline-editor-s5)](https://www.npmjs.com/package/pipeline-editor-s5) [![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6InNlYS1rZyIsInJlcG8xIjoicGlwZWxpbmUtZWRpdG9yLXM1IiwiYXV0aG9ySWQiOjE1NjQxLCJpYXQiOjE2Mjc3MjIxNjV9.uq45k4n60jyxIaq3CypWoApBocaB_KQRwYbbITr-54s)](https://www.deepcode.ai/app/gh/sea-kg/pipeline-editor-s5/_/dashboard?utm_content=gh%2Fsea-kg%2Fpipeline-editor-s5)
 
 Pipeline Editor s5 (just ui-editor)
 
