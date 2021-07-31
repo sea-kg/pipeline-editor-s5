@@ -146,14 +146,12 @@ Constructor, example:
 * `canvas_onmousedown(event)`
 * `find_block_id(x0, y0)`
 * `canvas_onmousemove(event)`
-* `scale_plus(diff)`
-* `scale_reset()`
-* `scale_minus(diff)`
 * `update_meansures()` - Update meansures (like a width of blocks)
 * `update_image_size()`
 * `calcX_in_px(cell_x)`
 * `calcY_in_px(cell_y)`
 * `clear_canvas()`
+* `draw_menu_scaling_buttons()` - Draw scaling value and buttons for it changing
 * `draw_grid()`
 * `draw_diagram_name()`
 * `draw_cards()`
@@ -187,7 +185,7 @@ Constructor, example:
 * `get_name()`
 * `set_description(description)`
 * `get_description()`
-* `update_meansures(_ctx)`
+* `update_block_meansures(_ctx)`
 * `nodes_in_same_cells_reset()`
 * `nodes_in_same_cells_add(node_id)`
 * `get_paralax_in_cell()`
@@ -212,6 +210,7 @@ Constructor, example:
 * `get_radius_for_angels()`
 * `get_scale_value()` - scaling value (1.0 == 100%)
 * `set_scale_value(val)` - set new scale value (1.0 == 100%)
+* `get_font_px_suffix()` - return suffix for set font in canvas like `px monospace,monospace`
 
 ### Class `RenderPipelineDrawedLinesCache`
 

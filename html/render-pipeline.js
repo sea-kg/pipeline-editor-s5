@@ -293,6 +293,10 @@ class RenderPipelineConfig {
         this.CEisN2z_pl_card_width = 159;
         this.CEisN2z_pl_card_height = 62;
         this.vMw72tg_pl_scale_value = 1.0;
+        this.J9FYc5t_font_px_suffix = 'px monospace, monospace';
+        this.X8AwjQ9_font_size = 16;
+        this.VqiXW9t_font_name_size = 32;
+        this.j672xFe_font_description_size = 20;
     }
 
     set_max_cell_xy(x,y) {
@@ -302,11 +306,6 @@ class RenderPipelineConfig {
             return true;
         }
         return false;
-    }
-
-    set_cell_size(width, height) {
-        this.GVitVNl_pl_cell_width = width;
-        this.GVitVNl_pl_cell_height = height;
     }
 
     get_cell_width() {
@@ -351,17 +350,36 @@ class RenderPipelineConfig {
     set_scale_value(val) {
         this.vMw72tg_pl_scale_value = val;
     }
+
+    get_font_px_suffix() {
+        return this.J9FYc5t_font_px_suffix;
+    }
+
+    get_font_size() {
+        return parseInt(this.X8AwjQ9_font_size * this.vMw72tg_pl_scale_value);
+    }
+
+    get_font_name_size() {
+        return parseInt(this.VqiXW9t_font_name_size * this.vMw72tg_pl_scale_value);
+    }
+
+    get_font_description_size() {
+        return parseInt(this.j672xFe_font_description_size * this.vMw72tg_pl_scale_value);
+    }
 }
 
 class RenderPipelineBlock {
     constructor(nodeid, _conf) {
         this._conf = _conf;
         this.nodeid = nodeid;
-        this.name = "edit me";
-        this.name_width = 0;
+        this.BHvB3wA_name = "edit me";
+        this.BHvB3wA_name_width = 0;
+        this.BHvB3wA_name_height = 0;
         this.gXUEA61_description = "edit me";
         this.gXUEA61_description_width = 0;
+        this.gXUEA61_description_height = 0;
         this.max_card_width = 0;
+        this.max_card_height = 0;
         this.incoming = {};
         this.incoming_order = [];
         // this.IQrRW7r_cell_x = 0;
@@ -372,11 +390,12 @@ class RenderPipelineBlock {
         this.dtbqA0E_paralax_precalculated = 0;
         this.dfIxewv_outcoming = [];
         this.cWIV4UF_fillColor = "#ffffff";
+        this.savhVna_card_padding = 5;
     }
 
     to_json() {
         return {
-            "n": this.name,
+            "n": this.BHvB3wA_name,
             "d": this.gXUEA61_description,
             "i": this.incoming,
             "x": this.IQrRW7r_cell_x,
@@ -432,14 +451,14 @@ class RenderPipelineBlock {
     }
 
     set_name(name) {
-        if (this.name != name) {
-            this.name = name
+        if (this.BHvB3wA_name != name) {
+            this.BHvB3wA_name = name;
             this.need_update_meansure = true;
         }
     }
 
     get_name() {
-        return this.name; 
+        return this.BHvB3wA_name; 
     }
 
     set_description(description) {
@@ -453,17 +472,34 @@ class RenderPipelineBlock {
         return this.gXUEA61_description;
     }
 
-    update_meansures(_ctx) {
+    update_card_meansures(_ctx) {
         if (this.need_update_meansure) {
-            this.max_card_width = 0
-            var tMeas = _ctx.measureText(this.name);
-            this.max_card_width = Math.max(tMeas.width, this.max_card_width);
-            this.name_width = parseInt(tMeas.width);
-            tMeas = _ctx.measureText(this.gXUEA61_description);
-            this.max_card_width = Math.max(tMeas.width, this.max_card_width);
-            this.gXUEA61_description_width = parseInt(tMeas.width);
+            this.max_card_width = 0;
+            this.max_card_height = 0;
+
+            var metrics_name = _ctx.measureText(this.BHvB3wA_name);
+            this.max_card_width = Math.max(metrics_name.width, this.max_card_width);
+            this.BHvB3wA_name_width = parseInt(metrics_name.width);
+            this.BHvB3wA_name_height = metrics_name.actualBoundingBoxAscent + metrics_name.actualBoundingBoxDescent;
+            this.BHvB3wA_name_height += parseInt(this._conf.get_scale_value() * this.savhVna_card_padding);
+            // var fontHeight = metrics_name.fontBoundingBoxAscent + metrics_name.fontBoundingBoxDescent;
+            this.max_card_height += this.BHvB3wA_name_height;
+
+            if (this.gXUEA61_description !== '') {
+                var metrics_description = _ctx.measureText(this.gXUEA61_description);
+                this.max_card_width = Math.max(metrics_description.width, this.max_card_width);
+                this.gXUEA61_description_width = parseInt(metrics_description.width);
+                // var fontHeight = metrics_description.fontBoundingBoxAscent + metrics_description.fontBoundingBoxDescent;
+                this.gXUEA61_description_height = metrics_description.actualBoundingBoxAscent + metrics_description.actualBoundingBoxDescent;
+                this.gXUEA61_description_height += parseInt(this._conf.get_scale_value() * this.savhVna_card_padding);
+                this.max_card_height += this.gXUEA61_description_height;
+            }
+            this.max_card_height += parseInt(this._conf.get_scale_value() * this.savhVna_card_padding);
         }
-        return this.max_card_width;
+        return {
+            'width': this.max_card_width,
+            'height': this.max_card_height,
+        }
     }
 
     nodes_in_same_cells_reset() {
@@ -543,10 +579,10 @@ class RenderPipelineBlock {
         }
         _ctx.strokeRect(x1, y1, this._conf.get_card_width(), this._conf.get_card_height());
 
-        var d = 20;
-        var x1_name = (this._conf.get_card_width() - this.name_width) / 2;
+        var d = this.BHvB3wA_name_height;
+        var x1_name = (this._conf.get_card_width() - this.BHvB3wA_name_width) / 2;
         _ctx.fillText('' + this.get_name(), x1 + x1_name, y1 + d);
-        d += 20;
+        d += this.gXUEA61_description_height;
         var x1_description = (this._conf.get_card_width() - this.gXUEA61_description_width) / 2;
         _ctx.fillText('' + this.get_description(), x1 + x1_description, y1 + d);
     }
@@ -559,7 +595,6 @@ PIPELINE_EDITOR_STATE_ADDING_CONNECTIONS = 3;
 
 class RenderPipelineEditor {
     constructor(canvas_id, cfg) {
-        this.fontSize = 16;
         this.diagram_name = "Edit me";
         this.backgroundColor = "#F6F7F1";
         
@@ -615,10 +650,12 @@ class RenderPipelineEditor {
         this.canvas.onmousemove = function(event) {
             self.canvas_onmousemove(event);
         }
+
+        this.menu_buttons = {};
     }
 
     init_font_size() {
-        this.ctx.font = this.fontSize + "px Arial";
+        this.ctx.font = this._conf.get_font_size() + this._conf.get_font_px_suffix();
     }
 
     clone_object(obj) {
@@ -651,7 +688,7 @@ class RenderPipelineEditor {
 
         this.prepare_data_cards_one_cells();
         this.prepare_lines_out();
-
+        this._conf.set_max_cell_xy(0,0); // reset max/min
         this.update_meansures();
         this.update_pipeline_diagram();
         this.call_onchanged();
@@ -775,8 +812,22 @@ class RenderPipelineEditor {
         }
 
         if (this.selectedBlockIdEditing != null) {
-            // console.log(target);
             this.movingEnable = true;
+        }
+
+        var x0 = event.clientX - event.target.getBoundingClientRect().left;
+        var y0 = event.clientY - event.target.getBoundingClientRect().top;
+
+        if (y0 < this._conf.get_diagram_padding_top()) {
+            for (var text in this.menu_buttons) {
+                var btn = this.menu_buttons[text];
+                if (
+                    x0 >= btn.x && x0 <= btn.x + btn.w
+                    && y0 >= btn.y && y0 <= btn.y + btn.h
+                ) {
+                    this.onclick_menu_button(text);
+                }
+            }
         }
     };
 
@@ -801,6 +852,7 @@ class RenderPipelineEditor {
         // console.log(co);
         var x0 = event.clientX - co.left;
         var y0 = event.clientY - co.top;
+
         var block_id = this.find_block_id(x0, y0);
 
         this.selectedBlock['block-id-undermouse'] = block_id;
@@ -848,9 +900,38 @@ class RenderPipelineEditor {
             return;
         }
 
-        // var block_id = this.find_block_id(x0, y0);
-
         var cursor = 'default';
+
+        // menu buttons
+        if (y0 < this._conf.get_diagram_padding_top()) {
+            var need_update_highlight_btns = false;
+            for (var text in this.menu_buttons) {
+                var btn = this.menu_buttons[text];
+                if (
+                    x0 >= btn.x && x0 <= btn.x + btn.w
+                    && y0 >= btn.y && y0 <= btn.y + btn.h
+                ) {
+                    if (btn.higthlight !== true) {
+                        this.menu_buttons[text].higthlight = true;
+                        need_update_highlight_btns = true;
+                    }
+                    cursor = 'pointer';
+                } else {
+                    if (btn.higthlight === true) {
+                        this.menu_buttons[text].higthlight = false;
+                        need_update_highlight_btns = true;
+                    }
+                }
+            }
+            if (need_update_highlight_btns) {
+                this.update_pipeline_diagram();
+            }
+            target.style.cursor = cursor;
+            return;
+        }
+
+        // var block_id = this.find_block_id(x0, y0);
+        
         for (var i in this.pl_data_render) {
             var x1 = this.pl_data_render[i].hidden_x1;
             var x2 = x1 + this._conf.get_card_width();
@@ -867,40 +948,39 @@ class RenderPipelineEditor {
         target.style.cursor = cursor;
     };
 
-    scale_plus(diff) {
-        var new_scale = this._conf.get_scale_value() + diff;
-        this._conf.set_scale_value(new_scale);
-        var tr_x = parseInt((this.pl_width * new_scale - this.pl_width)/2);
-        var tr_y = parseInt((this.pl_height * new_scale - this.pl_height)/2);
-        console.log("this.pl_width", this.pl_width);
-        console.log("this.pl_height", this.pl_height);
-        this.canvas.style.transform = "scale(" + new_scale + ") translate(" + tr_x + "px, " + tr_y + "px)"
-    }
-
-    scale_reset() {
-        var new_scale = 1.0;
-        this._conf.set_scale_value(new_scale);
-        this.canvas.style.transform = "scale(" + new_scale + ")";
-    }
-    
-    scale_minus(diff) {
-        var new_scale = this._conf.get_scale_value() + diff;
-        this._conf.set_scale_value(new_scale);
-        var tr_x = parseInt((this.pl_width * new_scale - this.pl_width )/2);
-        var tr_y = parseInt((this.pl_height * new_scale - this.pl_height)/2);
-        this.canvas.style.transform = "scale(" + new_scale + ") translate(" + tr_x + "px, " + tr_y + "px)";
+    onclick_menu_button(text) {
+        if (text == '+') {
+            var new_scale = this._conf.get_scale_value() + 0.05;
+            this._conf.set_scale_value(new_scale);
+            this._conf.set_max_cell_xy(0,0); // ad-hoc
+            this.update_meansures();
+            this.update_pipeline_diagram();
+        } else if (text == '-') {
+            var new_scale = this._conf.get_scale_value() - 0.05;
+            if (new_scale < 0.05) {
+                return; // deny negative scale
+            }
+            this._conf.set_scale_value(new_scale);
+            this._conf.set_max_cell_xy(0,0); // ad-hoc
+            this.update_meansures();
+            this.update_pipeline_diagram();
+        } else {
+            console.warn("Unknown button '" + text + "'");
+        }
     }
 
     update_meansures() {
         var max_width = 0;
+        var max_height = 0;
         for (var node_id in this.pl_data_render) {
-            var _node_r = this.pl_data_render[node_id]
-            var card_width = _node_r.update_meansures(this.ctx)
-            max_width = Math.max(card_width, max_width)
+            var _node_r = this.pl_data_render[node_id];
+            var card_size = _node_r.update_card_meansures(this.ctx);
+            max_width = Math.max(card_size.width, max_width);
+            max_height = Math.max(card_size.height, max_height);
         }
         this._conf.set_card_size(
             parseInt(max_width) + 20,
-            this._conf.get_card_height()
+            max_height
         );
     }
 
@@ -914,8 +994,8 @@ class RenderPipelineEditor {
         }
 
         if (this._conf.set_max_cell_xy(new_max_cell_x, new_max_cell_y)) {
-            this.pl_width =  (this._conf.pl_max_cell_x + 1) * this._conf.get_cell_width() + 2 * this._conf.get_diagram_padding_left() + 100;
-            this.pl_height = (this._conf.pl_max_cell_y + 1) * this._conf.get_cell_height() + 2 * this._conf.get_diagram_padding_top() + 100;
+            this.pl_width =  (this._conf.pl_max_cell_x + 1) * this._conf.get_cell_width() + 2 * this._conf.get_diagram_padding_left() + 20;
+            this.pl_height = (this._conf.pl_max_cell_y + 1) * this._conf.get_cell_height() + 2 * this._conf.get_diagram_padding_top() + 20;
             this.canvas.width  = this.pl_width;
             this.canvas.height = this.pl_height;
             this.canvas.style.width  = this.pl_width + 'px';
@@ -938,9 +1018,56 @@ class RenderPipelineEditor {
         this.ctx.fillStyle = '#FFFFFF';
     }
 
-    draw_menu_buttons() {
-        console.log("TODO");
+    draw_menu_button(text, x, y, w, h) {
+        let higthlight = false;
+        if (this.menu_buttons[text] && this.menu_buttons[text].higthlight === true) {
+            higthlight = true;
+        }
+        this.ctx.strokeStyle = higthlight ? '#fff' : '#000';
+        this.ctx.fillStyle = higthlight ? '#000' : '#fff';
+        this.ctx.lineWidth = 1;
+        this.ctx.fillRect(x, y, w, h);
+        this.ctx.strokeRect(x, y, w, h);
+        this.ctx.fillStyle = higthlight ? '#fff' : '#000';
+        let metrics = this.ctx.measureText(text);
+        // let fontHeight = metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
+        let actualHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
+        this.ctx.fillText(text,
+            x + (w - metrics.width)/2,
+            y + (h + actualHeight)/2
+        );
+        this.menu_buttons[text] = {'x': x, 'y': y, 'w': w, 'h': h, 'higthlight': higthlight};
+    }
 
+    draw_menu_scaling_buttons() {
+        // scaling
+        var font_size = 16;
+        var top = 20;
+        var btn_size = font_size + 5;
+        this.ctx.lineWidth = 1;
+        this.ctx.font = font_size + this._conf.get_font_px_suffix();
+        var text_measure = this.ctx.measureText('  100%  ');
+        
+        // button +
+        this.draw_menu_button('+',
+            this._conf.get_diagram_padding_left(),
+            top, btn_size, btn_size
+        )
+
+        this.ctx.strokeStyle = "#000";
+        this.ctx.fillStyle = "#000";
+        this.ctx.fillText(
+            '  ' + parseInt(this._conf.get_scale_value()*100) + '%  ',
+            this._conf.get_diagram_padding_left() + btn_size,
+            top + btn_size
+        );
+
+        // button -
+        this.draw_menu_button('-',
+            this._conf.get_diagram_padding_left() + text_measure.width + btn_size,
+            top,
+            btn_size, btn_size
+        );
     }
 
     draw_grid() {
@@ -969,20 +1096,17 @@ class RenderPipelineEditor {
     
     draw_diagram_name() {
         // TODO to config
-        var font_name_size = 32;
-        var font_description_size = 20;
+        var font_name_size = this._conf.get_font_name_size();
+        var font_description_size = this._conf.get_font_description_size();
 
-        // this.diagram_name = "Test";
-        // this.diagram_description = "test descr";
-
-        this.ctx.font = font_name_size + "px Arial";
+        this.ctx.font = font_name_size + this._conf.get_font_px_suffix();
         this.ctx.fillText(
             '' + this.diagram_name,
             this._conf.get_diagram_padding_left(),
             this._conf.get_diagram_padding_top() + font_name_size
         );
 
-        this.ctx.font = font_description_size + "px Arial";
+        this.ctx.font = font_description_size + this._conf.get_font_px_suffix();
         this.ctx.fillText(
             '' + this.diagram_description,
             this._conf.get_diagram_padding_left() + 10,
@@ -1213,17 +1337,18 @@ class RenderPipelineEditor {
             var out_nodeid = this.connections[i0].out_nodeid;
             var in_node = this.pl_data_render[in_nodeid];
             var out_node = this.pl_data_render[out_nodeid];
-            console.log(i0 + ": " + out_node.name + " -> " + in_node.name);
+            console.log(i0 + ": " + out_node.get_name() + " -> " + in_node.get_name());
         }
     }
 
     update_pipeline_diagram() {
         var start = performance.now();
         this.update_image_size();
-        this.init_font_size();
-        this.draw_menu_buttons();
+        // this.init_font_size();
         this.clear_canvas();
         this.draw_grid();
+        this.draw_menu_scaling_buttons();
+        this.init_font_size();
         this.draw_cards();
         this.draw_connections();
         this.draw_diagram_name();
