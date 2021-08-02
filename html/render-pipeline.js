@@ -773,11 +773,19 @@ class RenderPipelineEditor {
         }
 
         if (this.editor_state == PIPELINE_EDITOR_STATE_REMOVING_BLOCKS) {
-            var nodeid = this.selectedBlock['block-id-undermouse'];
-            console.log(nodeid);
-            if (nodeid) {
+            var blockid = this.selectedBlock['block-id-undermouse'];
+            console.log("Try remove blockid = ", blockid);
+            if (blockid) {
                 this.selectedBlockIdEditing = null;
-                delete this.pl_data_render[nodeid];
+                delete this.pl_data_render[blockid];
+                for (var _nodeid in this.pl_data_render) {
+                    var _node = this.pl_data_render[_nodeid];
+                    if (_node.incoming[blockid] !== undefined) {
+                        console.log("Removing connection ", blockid, " => ", _nodeid);
+                        delete _node.incoming[blockid];
+                    }
+                }
+
                 // this.prepare_data_render();
                 this.update_meansures();
                 this.update_pipeline_diagram();
