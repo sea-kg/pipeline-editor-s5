@@ -540,6 +540,12 @@ class RenderPipelineBlock {
         return parseInt(idx * step_px - ((out_count - 1) / 2) * step_px);
     }
 
+    update_outcoming_sort(pl_data_render) {
+        this.dfIxewv_outcoming.sort(function(a, b) {
+            return pl_data_render[a].get_cell_x() - pl_data_render[b].get_cell_x();
+        })
+    }
+
     get_max_y_by_incoming(pl_data_render) {
         var max_y = -1;
         for (var nodeid in this.incoming) {
@@ -1137,6 +1143,7 @@ class RenderPipelineEditor {
             var _node = this.pl_data_render[nodeid]
             _node.draw_card(this.ctx, this.selectedBlockIdEditing, this.pl_highlightCard);
             _node.update_incoming_sort(this.pl_data_render);
+            _node.update_outcoming_sort(this.pl_data_render);
         }
     }
 
