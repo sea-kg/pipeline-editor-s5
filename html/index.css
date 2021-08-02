@@ -153,6 +153,10 @@ body {
     background-color: rgba(159,240,5,0.5);
 }
 
+.pipeline-editor-functions-btn.moving-block {
+    background-image: url("./images/moving-block.svg?v=1");
+}
+
 .pipeline-editor-functions-btn.add-block {
     background-image: url("./images/add-block.svg?v=1");
 }

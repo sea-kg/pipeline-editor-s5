@@ -597,10 +597,10 @@ class RenderPipelineBlock {
     }
 }
 
-PIPELINE_EDITOR_STATE_MOVING = 0;
-PIPELINE_EDITOR_STATE_REMOVING_BLOCKS = 1;
-PIPELINE_EDITOR_STATE_ADDING_BLOCKS = 2;
-PIPELINE_EDITOR_STATE_ADDING_CONNECTIONS = 3;
+PIPELINE_EDITOR_S5_STATE_MOVING_BLOCKS = 0;
+PIPELINE_EDITOR_S5_STATE_REMOVING_BLOCKS = 1;
+PIPELINE_EDITOR_S5_STATE_ADDING_BLOCKS = 2;
+PIPELINE_EDITOR_S5_STATE_ADDING_CONNECTIONS = 3;
 
 class RenderPipelineEditor {
     constructor(canvas_id, cfg) {
@@ -627,7 +627,7 @@ class RenderPipelineEditor {
         this.selectedBlockIdEditing = null;
         this.drawed_lines_cache = new RenderPipelineDrawedLinesCache();
         this.connections = [];
-        this.editor_state = PIPELINE_EDITOR_STATE_MOVING;
+        this.Y2kBm4L_editor_state = PIPELINE_EDITOR_S5_STATE_MOVING_BLOCKS;
         this.mode_viewer = false;
         
         if (cfg) {
@@ -635,7 +635,7 @@ class RenderPipelineEditor {
                 this.mode_viewer = true;
             }
         }
-        // this.editor_state = 'moving' or 'connecting-blocks' or 'removing-blocks'
+        // this.Y2kBm4L_editor_state = 'moving' or 'connecting-blocks' or 'removing-blocks'
 
         this.canvas = document.getElementById(canvas_id);
         this.canvas_container = this.canvas.parentElement;
@@ -661,6 +661,10 @@ class RenderPipelineEditor {
         }
 
         this.menu_buttons = {};
+    }
+
+    get_editor_state() {
+        return this.Y2kBm4L_editor_state;
     }
 
     init_font_size() {
@@ -736,7 +740,11 @@ class RenderPipelineEditor {
     }
 
     change_state_to_removing_blocks() {
-        this.editor_state = PIPELINE_EDITOR_STATE_REMOVING_BLOCKS;
+        this.Y2kBm4L_editor_state = PIPELINE_EDITOR_S5_STATE_REMOVING_BLOCKS;
+    }
+
+    change_state_to_moving_blocks() {
+        this.Y2kBm4L_editor_state = PIPELINE_EDITOR_S5_STATE_MOVING_BLOCKS;
     }
 
     // TODO implement like a private
@@ -781,7 +789,7 @@ class RenderPipelineEditor {
             return;
         }
 
-        if (this.editor_state == PIPELINE_EDITOR_STATE_REMOVING_BLOCKS) {
+        if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_REMOVING_BLOCKS) {
             var blockid = this.selectedBlock['block-id-undermouse'];
             console.log("Try remove blockid = ", blockid);
             if (blockid) {
@@ -798,7 +806,7 @@ class RenderPipelineEditor {
                 // this.prepare_data_render();
                 this.update_meansures();
                 this.update_pipeline_diagram();
-                this.editor_state = PIPELINE_EDITOR_STATE_REMOVING_BLOCKS; // continue removing blocks
+                this.Y2kBm4L_editor_state = PIPELINE_EDITOR_S5_STATE_REMOVING_BLOCKS; // continue removing blocks
                 
                 // reset selection
                 this.selectedBlockIdEditing = null;
@@ -957,7 +965,7 @@ class RenderPipelineEditor {
 
             if (x0 > x1 && x0 < x2 && y0 > y1 && y0 < y2) {
                 cursor = 'pointer';
-                if (this.editor_state == PIPELINE_EDITOR_STATE_REMOVING_BLOCKS) {
+                if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_REMOVING_BLOCKS) {
                     cursor = 'url("./images/cursor-delete-block.svg"), auto';
                 }
             }

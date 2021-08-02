@@ -106,12 +106,12 @@ declare var RenderPipelineEditor: any;
 
 ### Enums
 
-Pipeline editor state:
+PIPELINE_EDITOR_S5_STATE_*:
 
-* `PIPELINE_EDITOR_STATE_MOVING = 0;`
-* `PIPELINE_EDITOR_STATE_REMOVING_BLOCKS = 1;`
-* `PIPELINE_EDITOR_STATE_ADDING_BLOCKS = 2;`
-* `PIPELINE_EDITOR_STATE_ADDING_CONNECTIONS = 3;`
+* `PIPELINE_EDITOR_S5_STATE_MOVING_BLOCKS = 0;`
+* `PIPELINE_EDITOR_S5_STATE_REMOVING_BLOCKS = 1;`
+* `PIPELINE_EDITOR_S5_STATE_ADDING_BLOCKS = 2;`
+* `PIPELINE_EDITOR_S5_STATE_ADDING_CONNECTIONS = 3;`
 
 Line orientation:
 
@@ -134,6 +134,7 @@ Constructor, example:
 `window.render = new RenderPipelineEditor(element_id_canvas);`
 
 * `constructor(canvas_id, cfg)`
+* `get_editor_state()` - will return from enum `PIPELINE_EDITOR_S5_STATE_*`
 * `init_font_size()`
 * `clone_object(obj)`
 * `set_data(data)` - set new data-json, 

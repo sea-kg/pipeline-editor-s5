@@ -49,17 +49,35 @@ function ui_render_switch_draw_grid(el) {
     render.update_pipeline_diagram();
 }
 
-function ui_render_removing_blocks(el) {
-    
-    if (render.editor_state == PIPELINE_EDITOR_STATE_REMOVING_BLOCKS) {
-        render.change_state_to_removing_blocks();
-        el.classList.remove('pressed');
-        render.editor_state = PIPELINE_EDITOR_STATE_MOVING;
-    } else {
-        el.classList.add('pressed');
-        render.change_state_to_removing_blocks();
+function ui_render_update_states() {
+    const states_elements = {
+        "pipeline-editor-functions-btn moving-block": PIPELINE_EDITOR_S5_STATE_MOVING_BLOCKS,
+        "pipeline-editor-functions-btn remove-block": PIPELINE_EDITOR_S5_STATE_REMOVING_BLOCKS,
+        "pipeline-editor-functions-btn add-block": PIPELINE_EDITOR_S5_STATE_ADDING_BLOCKS,
+        "pipeline-editor-functions-btn connect-blocks": PIPELINE_EDITOR_S5_STATE_ADDING_CONNECTIONS,
+    };
+    for (var n in states_elements) {
+        var el = document.getElementsByClassName(n)[0];
+        if (render.get_editor_state() == states_elements[n]) {
+            el.classList.add('pressed');
+        } else {
+            el.classList.remove('pressed');
+        }
     }
-    // render.remove_block()
+}
+
+function ui_render_removing_blocks(el) {
+    if (render.get_editor_state() != PIPELINE_EDITOR_S5_STATE_REMOVING_BLOCKS) {
+        render.change_state_to_removing_blocks();
+    } else {
+        render.change_state_to_moving_blocks();
+    }
+    ui_render_update_states();
+}
+
+function ui_render_moving_blocks(el) {
+    render.change_state_to_moving_blocks();
+    ui_render_update_states();
 }
 
 function render_add_blocks(el) {
@@ -276,6 +294,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     render.onselectedblock = render_onselectedblock;
     render.onchanged = render_onchanged;
+    ui_render_update_states();
 });
 
 
