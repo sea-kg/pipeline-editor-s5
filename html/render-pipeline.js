@@ -527,14 +527,17 @@ class RenderPipelineBlock {
         this.dfIxewv_outcoming.push(nodeid)
     }
 
-    get_paralax_for_line(node_id) {
+    get_paralax_for_line(blockid) {
         if (this.dfIxewv_outcoming.length == 1) {
             return 0;
         }
-        // paralax
-        var diff = parseInt(this.dfIxewv_outcoming.length / 2);
-        var idx = this.dfIxewv_outcoming.indexOf(node_id);
-        return (idx - diff)*15;
+        let step_px = 15;
+        const out_count = this.dfIxewv_outcoming.length;
+        if ((out_count + 2) * step_px > this._conf.get_cell_width()) {
+            step_px = this._conf.get_cell_width() / (out_count + 2);
+        }
+        var idx = this.dfIxewv_outcoming.indexOf(blockid);
+        return parseInt(idx * step_px - ((out_count - 1) / 2) * step_px);
     }
 
     get_max_y_by_incoming(pl_data_render) {
@@ -1378,6 +1381,7 @@ class RenderPipelineEditor {
             this.pl_data_render[bl2].incoming[bl1] = "";
             // this.prepare_data_render();
             this.update_meansures();
+            this.prepare_lines_out();
             this.update_pipeline_diagram();
             this.call_onchanged();
         }

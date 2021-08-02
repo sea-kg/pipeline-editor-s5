@@ -148,7 +148,7 @@ function connect_blocks() {
 
 
 function resize_canvas() {
-    console.log(window.innerWidth);
+    // console.log(window.innerWidth);
 
     var canvas_cont = document.getElementById('canvas_container');
 
