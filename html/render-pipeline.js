@@ -566,6 +566,17 @@ class RenderPipelineBlock {
         })
     }
 
+    removed_block(blockid) {
+        if (this.incoming[blockid] !== undefined) {
+            console.log("Removing connection ", blockid, " => ", this.nodeid);
+            delete this.incoming[blockid];
+        }
+        var _out_inx = this.dfIxewv_outcoming.indexOf(blockid);
+        if (_out_inx !== -1) {
+            this.dfIxewv_outcoming.splice(_out_inx);
+        }
+    }
+
     draw_card(_ctx, selectedBlockIdEditing) {
         var paralax = this.get_paralax_in_cell();
         var x1 = this._conf.get_diagram_padding_left() + this.get_cell_x() * this._conf.get_cell_width() + paralax;
@@ -796,11 +807,7 @@ class RenderPipelineEditor {
                 this.selectedBlockIdEditing = null;
                 delete this.pl_data_render[blockid];
                 for (var _nodeid in this.pl_data_render) {
-                    var _node = this.pl_data_render[_nodeid];
-                    if (_node.incoming[blockid] !== undefined) {
-                        console.log("Removing connection ", blockid, " => ", _nodeid);
-                        delete _node.incoming[blockid];
-                    }
+                    this.pl_data_render[_nodeid].removed_block(blockid);
                 }
 
                 // this.prepare_data_render();
