@@ -15,7 +15,7 @@ Pipeline Editor s5 (just ui-editor)
 <div style="overflow: scroll; height: 400px; min-height: 400px;">
     <canvas id="pipeline_diagram_canvas"></canvas>
 </div>
-<script src="./render-pipeline.js?ver=1"></script>
+<script src="./pipeline-editor-s5.js?ver=1"></script>
 <script>
     window.render1 = new RenderPipelineEditor('pipeline_diagram_canvas', {
         // HERE configs
@@ -58,7 +58,7 @@ angular.json:
 ...
     "scripts": [
         ...,
-        "node_modules/pipeline-editor-s5/html/render-pipeline.js"
+        "node_modules/pipeline-editor-s5/html/pipeline-editor-s5.js"
     ]
 ...
 ```

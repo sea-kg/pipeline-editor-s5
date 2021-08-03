@@ -2,7 +2,7 @@
     "name": "pipeline-editor-s5",
     "version": "v0.2.0",
     "description": "Visaul web-editor for a pipelines",
-    "main": "html/render-pipeline.js",
+    "main": "html/pipeline-editor-s5.js",
     "repository": {
       "type": "git",
       "url": "https://github.com/sea-kg/pipeline-editor-s5.git"
