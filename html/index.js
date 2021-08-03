@@ -80,8 +80,13 @@ function ui_render_moving_blocks(el) {
     ui_render_update_states();
 }
 
-function ui_render_add_blocks(el) {
+function ui_render_adding_blocks(el) {
     render.change_state_to_adding_blocks();
+    ui_render_update_states();
+}
+
+function ui_render_connecting_blocks() {
+    render.change_state_to_adding_connections();
     ui_render_update_states();
 }
 
@@ -151,9 +156,7 @@ function sample_localstorage() {
     render.update_pipeline_diagram();
 }
 
-function connect_blocks() {
-    render.start_connect_blocks();
-}
+
 
 
 function resize_canvas() {

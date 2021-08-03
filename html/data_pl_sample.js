@@ -1,6 +1,7 @@
 var data_pl_example = {
     "title": "Data Example Diagram",
     "description": "data_pl_sample.js",
+    "background-color": "#F6F7F1",
     "nodes": {
         "1": {
             "n": "Node",
@@ -116,10 +117,11 @@ var data_pl_example = {
             "n": "Node 15",
             "d": "",
             "i": {
+                "8": "",
                 "11": ""
             },
             "x": 3,
-            "y": 5,
+            "y": 6,
             "c": "#ffffff"
         },
         "16": {
@@ -442,7 +444,7 @@ var data_pl_example = {
                 "63": ""
             },
             "x": 6,
-            "y": 9,
+            "y": 10,
             "c": "#ffffff"
         },
         "61": {
@@ -452,7 +454,7 @@ var data_pl_example = {
                 "15": ""
             },
             "x": 1,
-            "y": 8,
+            "y": 9,
             "c": "#ffffff"
         },
         "63": {
@@ -462,7 +464,7 @@ var data_pl_example = {
                 "15": ""
             },
             "x": 3,
-            "y": 7,
+            "y": 8,
             "c": "#ffffff"
         },
         "65": {
@@ -482,7 +484,7 @@ var data_pl_example = {
                 "61": ""
             },
             "x": 2,
-            "y": 10,
+            "y": 11,
             "c": "#ffffff"
         },
         "67": {
@@ -492,7 +494,7 @@ var data_pl_example = {
                 "61": ""
             },
             "x": 3,
-            "y": 10,
+            "y": 11,
             "c": "#ffffff"
         },
         "68": {
@@ -502,7 +504,7 @@ var data_pl_example = {
                 "61": ""
             },
             "x": 4,
-            "y": 11,
+            "y": 12,
             "c": "#ffffff"
         },
         "69": {
@@ -512,7 +514,7 @@ var data_pl_example = {
                 "61": ""
             },
             "x": 5,
-            "y": 11,
+            "y": 12,
             "c": "#ffffff"
         },
         "71": {

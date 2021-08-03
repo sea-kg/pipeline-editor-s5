@@ -762,6 +762,11 @@ class RenderPipelineEditor {
         this.Y2kBm4L_editor_state = PIPELINE_EDITOR_S5_STATE_ADDING_BLOCKS;
     }
 
+    change_state_to_adding_connections() {
+        this.Y2kBm4L_editor_state = PIPELINE_EDITOR_S5_STATE_ADDING_CONNECTIONS;
+        this.conneсtingBlocks.state = 'select-incoming';
+    }
+
     // TODO implement like a private
     canvas_onmouseover(event) {
         // var target = event.target;
@@ -847,17 +852,19 @@ class RenderPipelineEditor {
             this.update_pipeline_diagram();
         }
 
-        if (this.conneсtingBlocks.state == 'select-incoming') {
-            console.log(this.conneсtingBlocks);
-            if (this.conneсtingBlocks.incoming_block_id != null) {
-                this.conneсtingBlocks.state = 'select-block';
-            }
-        } else if (this.conneсtingBlocks.state == 'select-block') {
-            console.log(this.conneсtingBlocks);
-            if (this.conneсtingBlocks.block_id != null) {
-                this.conneсtingBlocks.state = 'finish';
-                this.do_connection_blocks();
-                this.call_onchanged();
+        if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_ADDING_CONNECTIONS) {
+            if (this.conneсtingBlocks.state == 'select-incoming') {
+                console.log(this.conneсtingBlocks);
+                if (this.conneсtingBlocks.incoming_block_id != null) {
+                    this.conneсtingBlocks.state = 'select-block';
+                }
+            } else if (this.conneсtingBlocks.state == 'select-block') {
+                console.log(this.conneсtingBlocks);
+                if (this.conneсtingBlocks.block_id != null) {
+                    this.conneсtingBlocks.state = 'finish';
+                    this.do_connection_blocks();
+                    this.call_onchanged();
+                }
             }
         }
 
@@ -996,6 +1003,14 @@ class RenderPipelineEditor {
         if (x0 > this._conf.get_diagram_padding_left() && y0 > this._conf.get_diagram_padding_top()) {
             if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_ADDING_BLOCKS) {
                 cursor = 'url("./images/cursor-add-block.svg") 25 25, auto';
+            } else if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_ADDING_CONNECTIONS) {
+                if (block_id != null) {
+                    if (this.conneсtingBlocks.state == 'select-incoming') {
+                        cursor = 'url("./images/cursor-connecting-blocks-first.svg") 25 25, auto';
+                    } else if (this.conneсtingBlocks.state == 'select-block') {
+                        cursor = 'url("./images/cursor-connecting-blocks-second.svg") 25 25, auto';
+                    }
+                }
             }
         }
 
@@ -1412,14 +1427,10 @@ class RenderPipelineEditor {
         console.log("perf = ", _perf, "ms, length " + this.perf.length);
     }
 
-    start_connect_blocks() {
-        this.conneсtingBlocks.state = 'select-incoming';
-    }
-
     do_connection_blocks() {
         console.log(this.conneсtingBlocks);
         if (this.conneсtingBlocks.state == 'finish') {
-            this.conneсtingBlocks.state = 'nope';
+            this.conneсtingBlocks.state = 'select-incoming';
             var bl1 = this.conneсtingBlocks.incoming_block_id;
             var bl2 = this.conneсtingBlocks.block_id;
             this.pl_data_render[bl2].incoming[bl1] = "";

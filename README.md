@@ -144,6 +144,7 @@ Constructor, example:
 * `change_state_to_removing_blocks()`
 * `change_state_to_moving_blocks()`
 * `change_state_to_adding_blocks()`
+* `change_state_to_adding_connections()`
 * `canvas_onmouseover(event)`
 * `canvas_onmouseout(event)`
 * `canvas_onmouseup(event)`
@@ -167,7 +168,6 @@ Constructor, example:
 * `draw_connections()`
 * `debug_print_connection_info(obj)`
 * `update_pipeline_diagram()`
-* `start_connect_blocks()`
 * `do_connection_blocks()`
 * `generate_new_blockid()` - will be generate uniq blockid with fixed possible collisions
 * `add_block(_block_info_json)` - add new block by example json `{"n": "edit me", "d": "edit me", "i": {}, "x": t_x, "y": t_y}`
