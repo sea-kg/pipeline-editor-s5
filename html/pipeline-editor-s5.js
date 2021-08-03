@@ -758,6 +758,10 @@ class RenderPipelineEditor {
         this.Y2kBm4L_editor_state = PIPELINE_EDITOR_S5_STATE_MOVING_BLOCKS;
     }
 
+    change_state_to_adding_blocks() {
+        this.Y2kBm4L_editor_state = PIPELINE_EDITOR_S5_STATE_ADDING_BLOCKS;
+    }
+
     // TODO implement like a private
     canvas_onmouseover(event) {
         // var target = event.target;
@@ -799,8 +803,22 @@ class RenderPipelineEditor {
             };
             return;
         }
+        var x0 = event.clientX - event.target.getBoundingClientRect().left;
+        var y0 = event.clientY - event.target.getBoundingClientRect().top;
 
-        if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_REMOVING_BLOCKS) {
+        if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_ADDING_BLOCKS) {
+            var t_x = Math.floor((x0 - this._conf.get_diagram_padding_left()) / this._conf.get_cell_width());
+            var t_y = Math.floor((y0 - this._conf.get_diagram_padding_top()) / this._conf.get_cell_height());
+            if (t_x >= 0 && t_y >= 0) {
+                this.add_block({
+                    "n": "edit me",
+                    "d": "edit me",
+                    "i": {},
+                    "x": t_x,
+                    "y": t_y
+                });
+            }
+        } else if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_REMOVING_BLOCKS) {
             var blockid = this.selectedBlock['block-id-undermouse'];
             console.log("Try remove blockid = ", blockid);
             if (blockid) {
@@ -846,9 +864,6 @@ class RenderPipelineEditor {
         if (this.selectedBlockIdEditing != null) {
             this.movingEnable = true;
         }
-
-        var x0 = event.clientX - event.target.getBoundingClientRect().left;
-        var y0 = event.clientY - event.target.getBoundingClientRect().top;
 
         if (y0 < this._conf.get_diagram_padding_top()) {
             for (var text in this.menu_buttons) {
@@ -973,10 +988,17 @@ class RenderPipelineEditor {
             if (x0 > x1 && x0 < x2 && y0 > y1 && y0 < y2) {
                 cursor = 'pointer';
                 if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_REMOVING_BLOCKS) {
-                    cursor = 'url("./images/cursor-delete-block.svg"), auto';
+                    cursor = 'url("./images/cursor-delete-block.svg") 25 25, auto';
                 }
             }
         }
+
+        if (x0 > this._conf.get_diagram_padding_left() && y0 > this._conf.get_diagram_padding_top()) {
+            if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_ADDING_BLOCKS) {
+                cursor = 'url("./images/cursor-add-block.svg") 25 25, auto';
+            }
+        }
+
         target.style.cursor = cursor;
     };
 
@@ -1409,13 +1431,7 @@ class RenderPipelineEditor {
         }
     }
 
-    add_block() {
-        var pos_x = this.canvas_container.scrollLeft - this._conf.get_diagram_padding_left() + this._conf.get_cell_width();
-        pos_x = parseInt(pos_x / this._conf.get_cell_width());
-
-        var pos_y = this.canvas_container.scrollTop - this._conf.get_diagram_padding_top() + this._conf.get_cell_height()
-        pos_y = parseInt(pos_y / this._conf.get_cell_height());
-
+    generate_new_blockid() {
         var new_id = null;
         while (new_id == null) {
             new_id = JWwfsRY_random_makeid();
@@ -1423,18 +1439,16 @@ class RenderPipelineEditor {
                 new_id = null;
                 continue;
             }
-            const _node_d = {
-                "n": "edit me",
-                "d": "edit me",
-                "i": {},
-                "x": pos_x,
-                "y": pos_y
-            }
-            var _new_node = new RenderPipelineBlock(new_id, this._conf);
-            _new_node.copy_from_json(_node_d);
-            this.pl_data_render[new_id] = _new_node;
-            this.prepare_data_cards_one_cells();
         }
+        return new_id;
+    }
+
+    add_block(_block_info_json) {
+        var new_id = this.generate_new_blockid();
+        var _new_node = new RenderPipelineBlock(new_id, this._conf);
+        _new_node.copy_from_json(_block_info_json);
+        this.pl_data_render[new_id] = _new_node;
+        this.prepare_data_cards_one_cells();
 
         this.selectedBlockIdEditing = new_id;
         this.update_meansures();

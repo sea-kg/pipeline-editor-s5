@@ -80,18 +80,9 @@ function ui_render_moving_blocks(el) {
     ui_render_update_states();
 }
 
-function render_add_blocks(el) {
-    console.log(el);
-    // if (el.classList.contains("pressed")) {
-    //     el.classList.remove("pressed");
-    //     // TODO switch mode none
-    //     // render.add_block();
-    // } else {
-    //     el.classList.add("pressed");
-    //     // TODO switch mode additing blocks
-    //     render.add_block();
-    // }
-    render.add_block();
+function ui_render_add_blocks(el) {
+    render.change_state_to_adding_blocks();
+    ui_render_update_states();
 }
 
 function make_share_url(el) {

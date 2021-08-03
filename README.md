@@ -142,6 +142,8 @@ Constructor, example:
 * `get_data_share()` - get_data and packed with LZString
 * `set_data_share(data)` - data-json unpacked with LZString and set_data()
 * `change_state_to_removing_blocks()`
+* `change_state_to_moving_blocks()`
+* `change_state_to_adding_blocks()`
 * `canvas_onmouseover(event)`
 * `canvas_onmouseout(event)`
 * `canvas_onmouseup(event)`
@@ -167,10 +169,10 @@ Constructor, example:
 * `update_pipeline_diagram()`
 * `start_connect_blocks()`
 * `do_connection_blocks()`
-* `add_block()`
+* `generate_new_blockid()` - will be generate uniq blockid with fixed possible collisions
+* `add_block(_block_info_json)` - add new block by example json `{"n": "edit me", "d": "edit me", "i": {}, "x": t_x, "y": t_y}`
 * `prepare_data_cards_one_cells()`
 * `prepare_lines_out()`
-
 
 ### Class `RenderPipelineBlock`
 
