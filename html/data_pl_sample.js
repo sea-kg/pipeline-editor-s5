@@ -740,7 +740,7 @@ var data_pl_example = {
             "i": {},
             "x": 7,
             "y": 0,
-            "c": "green"
+            "c": "#4be919"
         },
         "TnGUgwz": {
             "n": "111",

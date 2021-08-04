@@ -165,7 +165,7 @@ function resize_canvas() {
     var canvas_cont = document.getElementById('canvas_container');
 
     var left_panel = 60;
-    var right_panel = 150;
+    var right_panel = 120;
     var paddings = 120;
     var height_padding = 150;
     if (render.mode_viewer) {

@@ -1,5 +1,5 @@
 body {
-    background: #666;
+    background: #efefef;
     max-height: 100%;
     height: 100%;
     margin: 0px;
@@ -7,15 +7,15 @@ body {
 }
 
 .pipeline-editor-container {
-    padding: 20px;
-    border: 1px solid rgba(159,240,5,0.5);
-    height: calc(100% - 100px);
-    background: #999;
+    padding: 10px;
+    border-top: 1px solid #d2d3d2;
+    height: 100%;
+    background: #efefef;
     z-index: 100;
     position: fixed;
     top: 50px;
-    left: 5px;
-    width: calc(100% - 55px);
+    left: 0px;
+    width: calc(100% - 20px);
 }
 
 .pipeline-editor-panel-buttons {
@@ -24,7 +24,7 @@ body {
 }
 
 .pipeline-editor-canvas-container {
-    border: 1px solid rgba(159,240,5,0.5);
+    border: 1px solid #d2d3d2;
     width: 100px;
     height: 100px;
     overflow: scroll;
@@ -41,11 +41,11 @@ body {
 
 .pipeline-editor-tab {
     display: inline-block;
-    background: #aa66aa;
+    background: #ccc;
     padding: 10px;
-    border-top: 1px solid rgba(159,240,5,0.5);
-    border-left: 1px solid rgba(159,240,5,0.5);
-    border-right: 1px solid rgba(159,240,5,0.5);
+    border-top: 1px solid #d2d3d2;
+    border-left: 1px solid #d2d3d2;
+    border-right: 1px solid #d2d3d2;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     vertical-align: bottom;
@@ -54,7 +54,7 @@ body {
 
 .pipeline-editor-tab.active {
     margin-bottom: -1px;
-    background: #999;
+    background: #efefef;
 }
 
 .json-content {
