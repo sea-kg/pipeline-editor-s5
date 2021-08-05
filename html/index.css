@@ -134,6 +134,7 @@ body {
 .pipeline-editor-functions-btn {
     display: block;
     background-position: 0px 0px;
+    background-image: url("./images/menu-states.svg?v=1");
     width: 50px;
     height: 50px;
     cursor: pointer;
@@ -141,11 +142,11 @@ body {
 }
 
 .pipeline-editor-functions-btn.pressed {
-    background-position: 50px 0px;
+    background-position-x: 50px;
 }
 
 .pipeline-editor-functions-btn:active:hover {
-    background-position: 50px 0px;
+    background-position-x: 50px;
 }
 
 .pipeline-editor-functions-btn:hover {
@@ -154,11 +155,11 @@ body {
 }
 
 .pipeline-editor-functions-btn.moving-block {
-    background-image: url("./images/moving-block.svg?v=1");
+    background-position-y: 50px;
 }
 
 .pipeline-editor-functions-btn.add-block {
-    background-image: url("./images/add-block.svg?v=1");
+    background-position-y: 250px;
 }
 
 .pipeline-editor-functions-btn.scale-minus {
@@ -174,33 +175,33 @@ body {
 }
 
 .pipeline-editor-functions-btn.connect-blocks {
-    background-image: url("./images/connect-blocks.svg");
+    background-position-y: 300px;
 }
 
 .pipeline-editor-functions-btn.grid {
-    background-image: url("./images/grid.svg");
+    background-position-y: 100px;
 }
 
 .pipeline-editor-functions-btn.storage-save-to {
-    background-image: url("./images/storage-save-to.svg");
+    background-position-y: 350px;
 }
 
 .pipeline-editor-functions-btn.storage-clear {
-    background-image: url("./images/storage-clear.svg");
+    background-position-y: 400px;
 }
 
 .pipeline-editor-functions-btn.storage-sample {
-    background-image: url("./images/storage-sample.svg");
+    background-position-y: 450px;
 }
 
 .pipeline-editor-functions-btn.remove-block {
-    background-image: url("./images/remove-block.svg");
+    background-position-y: 200px;
 }
 
 .pipeline-editor-functions-btn.share {
-    background-image: url("./images/share.svg");
+    background-position-y: 150px;
 }
 
 .pipeline-editor-functions-btn.auto-placement {
-    background-image: url("./images/auto-placement.svg");
+    background-position-y: 500px;
 }
