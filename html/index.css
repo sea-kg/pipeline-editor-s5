@@ -205,3 +205,29 @@ body {
 .pipeline-editor-functions-btn.auto-placement {
     background-position-y: 500px;
 }
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+  
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 220px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 2001;
+    left: 50px;
+    top: 10px
+}
+  
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
