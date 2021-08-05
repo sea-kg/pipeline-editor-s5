@@ -653,7 +653,6 @@ class RenderPipelineEditor {
                 this.mode_viewer = true;
             }
         }
-        // this.Y2kBm4L_editor_state = 'moving' or 'connecting-blocks' or 'removing-blocks'
 
         this.canvas = document.getElementById(canvas_id);
         this.canvas_container = this.canvas.parentElement;
@@ -808,6 +807,19 @@ class RenderPipelineEditor {
         // var target = event.target;
         var x0 = event.clientX - event.target.getBoundingClientRect().left;
         var y0 = event.clientY - event.target.getBoundingClientRect().top;
+
+        if (y0 < this._conf.get_diagram_padding_top()) {
+            for (var text in this.menu_buttons) {
+                var btn = this.menu_buttons[text];
+                if (
+                    x0 >= btn.x && x0 <= btn.x + btn.w
+                    && y0 >= btn.y && y0 <= btn.y + btn.h
+                ) {
+                    this.onclick_menu_button(text);
+                }
+            }
+        }
+       
         var blockid = this.selectedBlock['block-id-undermouse']
         if (blockid == null) {
             // moving workspace
@@ -887,17 +899,7 @@ class RenderPipelineEditor {
             this.movingEnable = true;
         }
 
-        if (y0 < this._conf.get_diagram_padding_top()) {
-            for (var text in this.menu_buttons) {
-                var btn = this.menu_buttons[text];
-                if (
-                    x0 >= btn.x && x0 <= btn.x + btn.w
-                    && y0 >= btn.y && y0 <= btn.y + btn.h
-                ) {
-                    this.onclick_menu_button(text);
-                }
-            }
-        }
+        
     };
 
     find_block_id(x0, y0) {
