@@ -9,7 +9,7 @@ body {
 .pipeline-editor-container {
     padding: 10px;
     border-top: 1px solid #d2d3d2;
-    height: 100%;
+    height: calc(100% - 60px);
     background: #efefef;
     z-index: 100;
     position: fixed;
@@ -24,7 +24,7 @@ body {
 }
 
 .pipeline-editor-canvas-container {
-    border: 1px solid #d2d3d2;
+    border: 1px solid black;
     width: 100px;
     height: 100px;
     overflow: scroll;
@@ -35,7 +35,7 @@ body {
     z-index: 1000;
     position: fixed;
     top: 10px;
-    left: 70px;
+    left: 10px;
     height: 40px;
 }
 

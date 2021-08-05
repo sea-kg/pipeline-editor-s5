@@ -625,8 +625,8 @@ class RenderPipelineEditor {
         this.pl_width = 100;
         this.pl_data_render = {};
         this.movingEnable = false;
-        this.scrollMoving = false;
-        this.scrollMovingPos = {};
+        this.gRS6joc_workspace_moving = false;
+        this.gRS6joc_workspace_moving_pos = {};
         this.perf = [];
         this.diagram_description = "";
         this.conneсtingBlocks = {
@@ -771,7 +771,7 @@ class RenderPipelineEditor {
     canvas_onmouseover(event) {
         // var target = event.target;
         this.movingEnable = false;
-        this.scrollMoving = false;
+        this.gRS6joc_workspace_moving = false;
         this.update_pipeline_diagram();
     };
 
@@ -779,17 +779,18 @@ class RenderPipelineEditor {
     canvas_onmouseout(event) {
         // var target = event.target;
         this.movingEnable = false;
-        this.scrollMoving = false;
+        this.gRS6joc_workspace_moving = false;
         this.update_pipeline_diagram()
     };
     
     // TODO implement like a private
     canvas_onmouseup(event) {
         // var target = event.target;
-        if (event.button == 1) { // scroll button
-            this.scrollMoving = false;
+        if (this.gRS6joc_workspace_moving) {
+            this.gRS6joc_workspace_moving = false;
             return;
         }
+
         if (this.movingEnable) {
             this.movingEnable = false;
         }
@@ -798,18 +799,25 @@ class RenderPipelineEditor {
     // TODO implement like a private
     canvas_onmousedown(event) {
         // var target = event.target;
-        if (event.button == 1) { // scroll button
-            this.scrollMoving = true;
-            this.scrollMovingPos = {
+        var x0 = event.clientX - event.target.getBoundingClientRect().left;
+        var y0 = event.clientY - event.target.getBoundingClientRect().top;
+        var blockid = this.selectedBlock['block-id-undermouse']
+        if (blockid == null) {
+            // moving workspace
+            this.gRS6joc_workspace_moving = true;
+            this.gRS6joc_workspace_moving_pos = {
                 left: this.canvas_container.scrollLeft,
                 top: this.canvas_container.scrollTop,
                 x: event.clientX,
                 y: event.clientY,
             };
+            this.selectedBlockIdEditing = null;
+            this.update_pipeline_diagram();
+            this.call_onselectedblock(null);
+            this.call_onchanged();
             return;
         }
-        var x0 = event.clientX - event.target.getBoundingClientRect().left;
-        var y0 = event.clientY - event.target.getBoundingClientRect().top;
+        console.log("blockid = ", blockid);
 
         if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_ADDING_BLOCKS) {
             var t_x = Math.floor((x0 - this._conf.get_diagram_padding_left()) / this._conf.get_cell_width());
@@ -921,13 +929,13 @@ class RenderPipelineEditor {
             // console.log(this.conneсtingBlocks)
         }
 
-        if (this.scrollMoving) {
-            const dx = event.clientX - this.scrollMovingPos.x;
-            const dy = event.clientY - this.scrollMovingPos.y;
+        if (this.gRS6joc_workspace_moving) {
+            const dx = event.clientX - this.gRS6joc_workspace_moving_pos.x;
+            const dy = event.clientY - this.gRS6joc_workspace_moving_pos.y;
 
             // Scroll the element
-            this.canvas_container.scrollTop = this.scrollMovingPos.top - dy;
-            this.canvas_container.scrollLeft = this.scrollMovingPos.left - dx;
+            this.canvas_container.scrollTop = this.gRS6joc_workspace_moving_pos.top - dy;
+            this.canvas_container.scrollLeft = this.gRS6joc_workspace_moving_pos.left - dx;
             return;
         }
 
@@ -1082,6 +1090,7 @@ class RenderPipelineEditor {
 
     clear_canvas() {
         this.ctx.fillStyle = this.backgroundColor;
+        this.ctx.strokeStyle = this.backgroundColor;
         this.ctx.fillRect(0, 0, this.pl_width, this.pl_height);
         this.ctx.strokeRect(0, 0, this.pl_width, this.pl_height);
         this.ctx.fillStyle = '#FFFFFF';
