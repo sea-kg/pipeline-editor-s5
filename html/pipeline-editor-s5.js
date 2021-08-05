@@ -577,7 +577,7 @@ class RenderPipelineBlock {
         }
     }
 
-    draw_card(_ctx, selectedBlockIdEditing) {
+    draw_block(_ctx, selectedBlockIdEditing) {
         var paralax = this.get_paralax_in_cell();
         var x1 = this._conf.get_diagram_padding_left() + this.get_cell_x() * this._conf.get_cell_width() + paralax;
         var y1 = this._conf.get_diagram_padding_top() + this.get_cell_y() * this._conf.get_cell_height() + paralax;
@@ -599,12 +599,19 @@ class RenderPipelineBlock {
         }
         _ctx.strokeRect(x1, y1, this._conf.get_card_width(), this._conf.get_card_height());
 
-        var d = this.BHvB3wA_name_height;
-        var x1_name = (this._conf.get_card_width() - this.BHvB3wA_name_width) / 2;
-        _ctx.fillText('' + this.get_name(), x1 + x1_name, y1 + d);
-        d += this.gXUEA61_description_height;
-        var x1_description = (this._conf.get_card_width() - this.gXUEA61_description_width) / 2;
-        _ctx.fillText('' + this.get_description(), x1 + x1_description, y1 + d);
+        if (this.gXUEA61_description_height > 0) {
+            var d = this.BHvB3wA_name_height;
+            var x1_name = (this._conf.get_card_width() - this.BHvB3wA_name_width) / 2;
+            _ctx.fillText('' + this.get_name(), x1 + x1_name, y1 + d);
+            d += this.gXUEA61_description_height;
+            var x1_description = (this._conf.get_card_width() - this.gXUEA61_description_width) / 2;
+            _ctx.fillText('' + this.get_description(), x1 + x1_description, y1 + d);
+        } else {
+            var x1_name = (this._conf.get_card_width() - this.BHvB3wA_name_width) / 2;
+            var y1_name = (this._conf.get_card_height() - this.BHvB3wA_name_height);
+            _ctx.fillText('' + this.get_name(), x1 + x1_name, y1 + y1_name);
+        }
+
     }
 }
 
@@ -1194,7 +1201,7 @@ class RenderPipelineEditor {
         this.init_font_size();
     }
 
-    draw_cards() {
+    draw_blocks() {
         this.ctx.strokeStyle = "black";
         this.ctx.fillStyle = "black";
         // ctx.fillRect(10, 10, 100, 100);
@@ -1202,7 +1209,7 @@ class RenderPipelineEditor {
 
         for (var nodeid in this.pl_data_render) {
             var _node = this.pl_data_render[nodeid]
-            _node.draw_card(this.ctx, this.selectedBlockIdEditing, this.pl_highlightCard);
+            _node.draw_block(this.ctx, this.selectedBlockIdEditing, this.pl_highlightCard);
             _node.update_incoming_sort(this.pl_data_render);
             _node.update_outcoming_sort(this.pl_data_render);
         }
@@ -1428,7 +1435,7 @@ class RenderPipelineEditor {
         this.draw_grid();
         this.draw_menu_scaling_buttons();
         this.init_font_size();
-        this.draw_cards();
+        this.draw_blocks();
         this.draw_connections();
         this.draw_diagram_name();
         var _perf = performance.now() - start;

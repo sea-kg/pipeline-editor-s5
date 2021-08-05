@@ -159,7 +159,7 @@ Constructor, example:
 * `draw_menu_scaling_buttons()` - Draw scaling value and buttons for it changing
 * `draw_grid()`
 * `draw_diagram_name()`
-* `draw_cards()`
+* `draw_blocks()`
 * `call_onselectedblock` - private method for call function `onselectedblock` (only if defined by user)
 * `correct_line(line)`
 * `check_error(line, out_nodeid, in_nodeid)`
@@ -197,7 +197,7 @@ Constructor, example:
 * `outcoming_add(nodeid)`
 * `get_paralax_for_line(node_id)`
 * `update_incoming_sort(pl_data_render)`
-* `draw_card(_ctx, selectedBlockIdEditing)`
+* `draw_block(_ctx, selectedBlockIdEditing)`
 
 ### Class `RenderPipelineConfig`
 
