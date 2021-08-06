@@ -1117,12 +1117,26 @@ class RenderPipelineEditor {
         this.ctx.strokeRect(x, y, w, h);
         this.ctx.fillStyle = higthlight ? '#fff' : '#000';
         let metrics = this.ctx.measureText(text);
-        // let fontHeight = metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
-        let actualHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
-        this.ctx.fillText(text,
-            x + (w - metrics.width)/2,
-            y + (h + actualHeight)/2
-        );
+        if (text === '-') {
+            this.ctx.beginPath();
+            this.ctx.moveTo(x + w/4, y + h/2);
+            this.ctx.lineTo(x + 3*(w/4), y + h/2);
+            this.ctx.stroke();
+        } else if (text === '+') {
+            this.ctx.beginPath();
+            this.ctx.moveTo(x + w/4, y + h/2);
+            this.ctx.lineTo(x + 3*w/4, y + h/2);
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.moveTo(x + w/2, y + h/4);
+            this.ctx.lineTo(x + w/2, y + 3*h/4);
+            this.ctx.stroke();
+        } else {
+            this.ctx.fillText(text,
+                parseInt(x + (w - metrics.width)/2),
+                parseInt(y + h - 5)
+            );
+        }
         this.menu_buttons[text] = {'x': x, 'y': y, 'w': w, 'h': h, 'higthlight': higthlight};
     }
 
@@ -1134,7 +1148,8 @@ class RenderPipelineEditor {
         this.ctx.lineWidth = 1;
         this.ctx.font = font_size + this._conf.get_font_px_suffix();
         var text_measure = this.ctx.measureText('  100%  ');
-        
+        let actualHeight = text_measure.actualBoundingBoxAscent + text_measure.actualBoundingBoxDescent;
+
         // button +
         this.draw_menu_button('+',
             this._conf.get_diagram_padding_left(),
@@ -1146,7 +1161,7 @@ class RenderPipelineEditor {
         this.ctx.fillText(
             '  ' + parseInt(this._conf.get_scale_value()*100) + '%  ',
             this._conf.get_diagram_padding_left() + btn_size,
-            top + btn_size
+            top + (btn_size - actualHeight)/2 + actualHeight
         );
 
         // button -
