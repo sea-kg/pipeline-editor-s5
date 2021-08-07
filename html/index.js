@@ -1,22 +1,26 @@
 
 window.autosave_enabled = false;
 
-function parsePageParams() {
-    var loc = location.search.slice(1);
-    var arr = loc.split("&");
+function parse_page_params() {
+    var get_params = window.location.search;
+    if (get_params.length > 0) {
+        get_params = get_params.slice(1);
+    }
+    get_params = get_params.split("&");
     var result = {};
-    var regex = new RegExp("(.*)=([^&#]*)");
-    for(var i = 0; i < arr.length; i++){
-        if(arr[i].trim() != ""){
-            var p = regex.exec(arr[i].trim());
+    var _regex_param = new RegExp("(.*)=([^&#]*)");
+    for(var i = 0; i < get_params.length; i++){
+        if(get_params[i].trim() != ""){
+            var param = _regex_param.exec(get_params[i].trim());
             // console.log("results: " + JSON.stringify(p));
-            if(p == null)
-                result[decodeURIComponent(arr[i].trim().replace(/\+/g, " "))] = '';
-            else
-                result[decodeURIComponent(p[1].replace(/\+/g, " "))] = decodeURIComponent(p[2].replace(/\+/g, " "));
+            if (param == null) {
+                result[decodeURIComponent(get_params[i].trim().replace(/\+/g, " "))] = '';
+            } else {
+                result[decodeURIComponent(param[1].replace(/\+/g, " "))] = decodeURIComponent(param[2].replace(/\+/g, " "));
+            }
         }
     }
-    console.log(JSON.stringify(result));
+    // console.log(JSON.stringify(result));
     return result;
 }
 
@@ -233,7 +237,7 @@ function render_onchanged() {
 
 document.addEventListener("DOMContentLoaded", function() {
     var _data = {};
-    var _params = parsePageParams();
+    var _params = parse_page_params();
     if (_params["v"] !== undefined) {
         // view mode
         window.render = new RenderPipelineEditor('pipeline_diagram_canvas', {
