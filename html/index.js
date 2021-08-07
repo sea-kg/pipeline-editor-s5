@@ -232,7 +232,7 @@ function render_onchanged() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    var _data = {}
+    var _data = {};
     var _params = parsePageParams();
     if (_params["v"] !== undefined) {
         // view mode
@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function() {
         render.is_draw_grid = false;
     } else {
         // editor mode
-        var _data = localStorage.getItem('_data')
+        var _data = localStorage.getItem('_data');
         if (_data) {
             _data = JSON.parse(_data);
         } else {
@@ -281,7 +281,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var v = this.options[this.selectedIndex].value;
         window.autosave_enabled = (v == "on");
         localStorage.setItem("autosave", v);
-    }
+    };
 
     render.onselectedblock = render_onselectedblock;
     render.onchanged = render_onchanged;

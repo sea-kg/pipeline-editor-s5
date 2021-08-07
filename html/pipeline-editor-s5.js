@@ -499,7 +499,7 @@ class RenderPipelineBlock {
         return {
             'width': this.max_card_width,
             'height': this.max_card_height,
-        }
+        };
     }
 
     nodes_in_same_cells_reset() {
@@ -820,7 +820,7 @@ class RenderPipelineEditor {
             }
         }
        
-        var blockid = this.selectedBlock['block-id-undermouse']
+        var blockid = this.selectedBlock['block-id-undermouse'];
 
         if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_MOVING_BLOCKS) {
             if (blockid == null) {
@@ -1137,7 +1137,7 @@ class RenderPipelineEditor {
                 parseInt(y + h - 5)
             );
         }
-        this.menu_buttons[text] = {'x': x, 'y': y, 'w': w, 'h': h, 'higthlight': higthlight};
+        this.menu_buttons[text] = { 'x': x, 'y': y, 'w': w, 'h': h, 'higthlight': higthlight };
     }
 
     draw_menu_scaling_buttons() {
@@ -1154,7 +1154,7 @@ class RenderPipelineEditor {
         this.draw_menu_button('+',
             this._conf.get_diagram_padding_left(),
             top, btn_size, btn_size
-        )
+        );
 
         this.ctx.strokeStyle = "#000";
         this.ctx.fillStyle = "#000";
