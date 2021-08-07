@@ -5,6 +5,37 @@ All notable changes to pipeline-editor-s5 project will be documented in this fil
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [v0.2.1] - 2021-08-07 (2021 Aug 7)
+
+
+### Fixed
+
+* Fixed #43 centering in scaling buttons
+* Fixed paddings
+* Fixed #39 centering name if block has not description
+* Fixed #36 after delete block also delete connections
+
+
+### Added
+
+* Added hints to menu buttons
+* Attached deepcode.ai
+
+### Changed
+
+* Redesign color for menu buttons
+* Fixed #37 changed behaviour moving workspace
+* Updated screenshot
+* updated data_pl_sample.js
+* Fixed #2 edition states complited
+* Renamed render-pipeline.js to pipeline-editor-s5
+
+### Security
+
+* Attached deepcode.ai
+* Fixed lgtm alerts
+
 ## [v0.2.0] - 2021-07-31 (2021 Jul 31)
 
 ### Fixed

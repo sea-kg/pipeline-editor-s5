@@ -624,7 +624,7 @@ class RenderPipelineEditor {
     constructor(canvas_id, cfg) {
         this.diagram_name = "Edit me";
         this.backgroundColor = "#F6F7F1";
-        this.version = "v0.2.0";
+        this.version = "v0.2.1";
         this._conf = new RenderPipelineConfig()
         this.pl_height = 100;
         this.is_draw_grid = true;
