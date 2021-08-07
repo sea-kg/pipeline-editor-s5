@@ -821,24 +821,24 @@ class RenderPipelineEditor {
         }
        
         var blockid = this.selectedBlock['block-id-undermouse']
-        if (blockid == null) {
-            // moving workspace
-            this.gRS6joc_workspace_moving = true;
-            this.gRS6joc_workspace_moving_pos = {
-                left: this.canvas_container.scrollLeft,
-                top: this.canvas_container.scrollTop,
-                x: event.clientX,
-                y: event.clientY,
-            };
-            this.selectedBlockIdEditing = null;
-            this.update_pipeline_diagram();
-            this.call_onselectedblock(null);
-            this.call_onchanged();
-            return;
-        }
-        console.log("blockid = ", blockid);
 
-        if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_ADDING_BLOCKS) {
+        if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_MOVING_BLOCKS) {
+            if (blockid == null) {
+                // moving workspace
+                this.gRS6joc_workspace_moving = true;
+                this.gRS6joc_workspace_moving_pos = {
+                    left: this.canvas_container.scrollLeft,
+                    top: this.canvas_container.scrollTop,
+                    x: event.clientX,
+                    y: event.clientY,
+                };
+                this.selectedBlockIdEditing = null;
+                this.update_pipeline_diagram();
+                this.call_onselectedblock(null);
+                this.call_onchanged();
+                return;
+            }
+        } else if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_ADDING_BLOCKS) {
             var t_x = Math.floor((x0 - this._conf.get_diagram_padding_left()) / this._conf.get_cell_width());
             var t_y = Math.floor((y0 - this._conf.get_diagram_padding_top()) / this._conf.get_cell_height());
             if (t_x >= 0 && t_y >= 0) {

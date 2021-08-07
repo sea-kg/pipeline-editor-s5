@@ -156,9 +156,6 @@ function sample_localstorage() {
     render.update_pipeline_diagram();
 }
 
-
-
-
 function resize_canvas() {
     // console.log(window.innerWidth);
 
