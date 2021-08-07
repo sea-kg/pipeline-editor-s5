@@ -10,15 +10,15 @@ function JWwfsRY_random_makeid() {
    return result;
 };
 
-RPL_LINE_ORIENT_NONE = 0;
-RPL_LINE_ORIENT_VERTICAL = 1;
-RPL_LINE_ORIENT_HORIZONTAL = 2;
-RPL_LINE_ORIENT_POINT = 3;
+PIPELINE_EDITOR_S5_LINE_ORIENT_NONE = 0;
+PIPELINE_EDITOR_S5_LINE_ORIENT_VERTICAL = 1;
+PIPELINE_EDITOR_S5_LINE_ORIENT_HORIZONTAL = 2;
+PIPELINE_EDITOR_S5_LINE_ORIENT_POINT = 3;
 
-RPL_LINE_ANGEL_END_LEFT = 0;
-RPL_LINE_ANGEL_END_RIGHT = 1;
-RPL_LINE_ANGEL_RIGHT_DOWN = 2;
-RPL_LINE_ANGEL_LEFT_DOWN = 3;
+PIPELINE_EDITOR_S5_LINE_ANGEL_END_LEFT = 0;
+PIPELINE_EDITOR_S5_LINE_ANGEL_END_RIGHT = 1;
+PIPELINE_EDITOR_S5_LINE_ANGEL_RIGHT_DOWN = 2;
+PIPELINE_EDITOR_S5_LINE_ANGEL_LEFT_DOWN = 3;
 
 class RenderPipelineLine {
     constructor(x0, y0, x1, y1) {
@@ -30,14 +30,14 @@ class RenderPipelineLine {
         this.ymax = Math.max(this.y0, this.y1);
         this.xmin = Math.min(this.x0, this.x1);
         this.xmax = Math.max(this.x0, this.x1);
-        this.orientation = RPL_LINE_ORIENT_NONE;
+        this.orientation = PIPELINE_EDITOR_S5_LINE_ORIENT_NONE;
         this.error = null;
         if (x0 == x1 && y0 != y1) {
-            this.orientation = RPL_LINE_ORIENT_VERTICAL;
+            this.orientation = PIPELINE_EDITOR_S5_LINE_ORIENT_VERTICAL;
         } else if (y0 == y1 && x0 != x1) {
-            this.orientation = RPL_LINE_ORIENT_HORIZONTAL;
+            this.orientation = PIPELINE_EDITOR_S5_LINE_ORIENT_HORIZONTAL;
         } else if (y0 == y1 && x0 == x1) {
-            this.orientation = RPL_LINE_ORIENT_POINT;
+            this.orientation = PIPELINE_EDITOR_S5_LINE_ORIENT_POINT;
         }
         if (this.orientation == '') {
             this.error = "Expected horizontal or vertical line";
@@ -73,7 +73,7 @@ class RenderPipelineLine {
         if (this.orientation != line.orientation) {
             return false;
         }
-        if (this.orientation == RPL_LINE_ORIENT_VERTICAL) {
+        if (this.orientation == PIPELINE_EDITOR_S5_LINE_ORIENT_VERTICAL) {
             return (line.x0 == this.x0)
                 && (
                     (line.y0 > this.ymin && line.y0 < this.ymax)
@@ -81,7 +81,7 @@ class RenderPipelineLine {
                 )
             ;
         }
-        if (this.orientation == RPL_LINE_ORIENT_HORIZONTAL) {
+        if (this.orientation == PIPELINE_EDITOR_S5_LINE_ORIENT_HORIZONTAL) {
             return (line.y0 == this.y0)
                 && (
                     (line.x0 > this.xmin && line.x0 < this.xmax)
@@ -119,22 +119,22 @@ class RenderPipelineLine {
         var angle_end = 0;
         var kx = 1;
         var ky = 1;
-        if (angle == RPL_LINE_ANGEL_END_LEFT) {
+        if (angle == PIPELINE_EDITOR_S5_LINE_ANGEL_END_LEFT) {
             angle_start = 0;
             angle_end = Math.PI / 2;
             kx = -1;
             ky = -1;
-        } else if (angle == RPL_LINE_ANGEL_END_RIGHT) {
+        } else if (angle == PIPELINE_EDITOR_S5_LINE_ANGEL_END_RIGHT) {
             angle_start = Math.PI / 2;
             angle_end = Math.PI;
             kx = 1;
             ky = -1;
-        } else if (angle == RPL_LINE_ANGEL_LEFT_DOWN) {
+        } else if (angle == PIPELINE_EDITOR_S5_LINE_ANGEL_LEFT_DOWN) {
             angle_start = Math.PI;
             angle_end = - Math.PI / 2;
             kx = 1;
             ky = 1;
-        } else if (angle == RPL_LINE_ANGEL_RIGHT_DOWN) {
+        } else if (angle == PIPELINE_EDITOR_S5_LINE_ANGEL_RIGHT_DOWN) {
             angle_start = 1.5 * Math.PI;
             angle_end = 2 * Math.PI;
             kx = -1;
@@ -191,13 +191,13 @@ class RenderPipelineConnection {
             this.line1.draw_arc(
                 _ctx,
                 this._conf.get_radius_for_angels(),
-                RPL_LINE_ANGEL_END_LEFT
+                PIPELINE_EDITOR_S5_LINE_ANGEL_END_LEFT
             );
             
             this.line2.draw_arc(
                 _ctx,
                 this._conf.get_radius_for_angels(),
-                RPL_LINE_ANGEL_LEFT_DOWN
+                PIPELINE_EDITOR_S5_LINE_ANGEL_LEFT_DOWN
             );
         } else {
             _x0 = this.line1.x0 + this._conf.get_radius_for_angels();
@@ -206,13 +206,13 @@ class RenderPipelineConnection {
             this.line1.draw_arc(
                 _ctx,
                 this._conf.get_radius_for_angels(),
-                RPL_LINE_ANGEL_END_RIGHT
+                PIPELINE_EDITOR_S5_LINE_ANGEL_END_RIGHT
             );
 
             this.line2.draw_arc(
                 _ctx,
                 this._conf.get_radius_for_angels(),
-                RPL_LINE_ANGEL_RIGHT_DOWN
+                PIPELINE_EDITOR_S5_LINE_ANGEL_RIGHT_DOWN
             );
         }
         
@@ -236,12 +236,12 @@ class RenderPipelineDrawedLinesCache {
     }
 
     add(line) {
-        if (line.orientation == RPL_LINE_ORIENT_VERTICAL) {
+        if (line.orientation == PIPELINE_EDITOR_S5_LINE_ORIENT_VERTICAL) {
             if (this.vertical_lines[line.x0] === undefined) {
                 this.vertical_lines[line.x0] = [];
             }
             this.vertical_lines[line.x0].push(line);
-        } else if (line.orientation == RPL_LINE_ORIENT_HORIZONTAL) {
+        } else if (line.orientation == PIPELINE_EDITOR_S5_LINE_ORIENT_HORIZONTAL) {
             if (this.horizontal_lines[line.y0] === undefined) {
                 this.horizontal_lines[line.y0] = [];
             }
@@ -250,7 +250,7 @@ class RenderPipelineDrawedLinesCache {
     }
 
     has_collision(line) {
-        if (line.orientation = RPL_LINE_ORIENT_HORIZONTAL) {
+        if (line.orientation = PIPELINE_EDITOR_S5_LINE_ORIENT_HORIZONTAL) {
             if (this.horizontal_lines[line.y0]) {
                 for (var l in this.horizontal_lines[line.y0]) {
                     var _line = this.horizontal_lines[line.y0][l];
@@ -260,7 +260,7 @@ class RenderPipelineDrawedLinesCache {
                 }
             }
 
-        } else if (line.orientation = RPL_LINE_ORIENT_VERTICAL) {
+        } else if (line.orientation = PIPELINE_EDITOR_S5_LINE_ORIENT_VERTICAL) {
             if (this.vertical_lines[line.x0]) {
                 for (var l in this.vertical_lines[line.x0]) {
                     var _line = this.horizontal_lines[line.x0][l];
@@ -1241,10 +1241,10 @@ class RenderPipelineEditor {
             protection_while++;
             if (this.drawed_lines_cache.has_collision(line)) {
                 has_collision = true;
-                if (line.orientation = RPL_LINE_ORIENT_HORIZONTAL) {
+                if (line.orientation = PIPELINE_EDITOR_S5_LINE_ORIENT_HORIZONTAL) {
                     line.set_y0(line.y0 - step_size);
                     line.set_y1(line.y1 - step_size);
-                } else if (line.orientation = RPL_LINE_ORIENT_VERTICAL) {
+                } else if (line.orientation = PIPELINE_EDITOR_S5_LINE_ORIENT_VERTICAL) {
                     line.set_x0(line.x0 + step_size);
                     line.set_x1(line.x1 + step_size);
                 } else {
