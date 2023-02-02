@@ -178,6 +178,10 @@ body {
     background-position-y: 300px;
 }
 
+.pipeline-editor-functions-btn.disconnect-blocks {
+    background-position-y: 550px;
+}
+
 .pipeline-editor-functions-btn.grid {
     background-position-y: 100px;
 }

@@ -21,11 +21,12 @@ PIPELINE_EDITOR_S5_LINE_ANGEL_RIGHT_DOWN = 2;
 PIPELINE_EDITOR_S5_LINE_ANGEL_LEFT_DOWN = 3;
 
 class RenderPipelineLine {
-    constructor(x0, y0, x1, y1) {
+    constructor(x0, y0, x1, y1, color) {
         this.x0 = x0;
         this.y0 = y0;
         this.x1 = x1;
         this.y1 = y1;
+        this.color = color;
         this.ymin = Math.min(this.y0, this.y1);
         this.ymax = Math.max(this.y0, this.y1);
         this.xmin = Math.min(this.x0, this.x1);
@@ -93,12 +94,16 @@ class RenderPipelineLine {
     }
 
     draw_out_circle(_ctx, radius) {
+        _ctx.fillStyle = this.color;
+        _ctx.strokeStyle = this.color;
         _ctx.beginPath();
         _ctx.arc(this.x0, this.y0, radius, 0, Math.PI);
         _ctx.fill();
     }
 
     draw_line(_ctx) {
+        _ctx.fillStyle = this.color;
+        _ctx.strokeStyle = this.color;
         _ctx.beginPath();
         _ctx.moveTo(this.x0, this.y0);
         _ctx.lineTo(this.x1, this.y1);
@@ -106,6 +111,8 @@ class RenderPipelineLine {
     }
 
     draw_arrow(_ctx, radius) {
+        _ctx.fillStyle = this.color;
+        _ctx.strokeStyle = this.color;
         _ctx.beginPath();
         _ctx.moveTo(this.x1 - radius, this.y1 - radius*2);
         _ctx.lineTo(this.x1 + radius, this.y1 - radius*2);
@@ -115,6 +122,8 @@ class RenderPipelineLine {
     }
 
     draw_arc(_ctx, radius, angle) {
+        _ctx.fillStyle = this.color;
+        _ctx.strokeStyle = this.color;
         var angle_start = 0;
         var angle_end = 0;
         var kx = 1;
@@ -619,6 +628,7 @@ PIPELINE_EDITOR_S5_STATE_MOVING_BLOCKS = 0;
 PIPELINE_EDITOR_S5_STATE_REMOVING_BLOCKS = 1;
 PIPELINE_EDITOR_S5_STATE_ADDING_BLOCKS = 2;
 PIPELINE_EDITOR_S5_STATE_ADDING_CONNECTIONS = 3;
+PIPELINE_EDITOR_S5_STATE_REMOVING_CONNECTIONS = 4;
 
 class RenderPipelineEditor {
     constructor(canvas_id, cfg) {
@@ -636,6 +646,8 @@ class RenderPipelineEditor {
         this.gRS6joc_workspace_moving_pos = {};
         this.perf = [];
         this.diagram_description = "";
+        this.connection_highlight_out_nodeid = "";
+        this.connection_highlight_in_nodeid = "";
         this.conneсtingBlocks = {
             'state': 'nope',
         };
@@ -773,6 +785,10 @@ class RenderPipelineEditor {
         this.conneсtingBlocks.state = 'select-incoming';
     }
 
+    change_state_to_removing_connections() {
+        this.Y2kBm4L_editor_state = PIPELINE_EDITOR_S5_STATE_REMOVING_CONNECTIONS;
+    }
+
     // TODO implement like a private
     canvas_onmouseover(event) {
         // var target = event.target;
@@ -819,10 +835,13 @@ class RenderPipelineEditor {
                 }
             }
         }
-       
-        var blockid = this.selectedBlock['block-id-undermouse'];
 
-        if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_MOVING_BLOCKS) {
+        var blockid = this.selectedBlock['block-id-undermouse'];
+        
+        if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_REMOVING_CONNECTIONS) {
+            this.remove_connection_blocks();
+            return;
+        } else if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_MOVING_BLOCKS) {
             if (blockid == null) {
                 // moving workspace
                 this.gRS6joc_workspace_moving = true;
@@ -916,6 +935,44 @@ class RenderPipelineEditor {
         return found_val;
     }
 
+    find_connection(x0, y0) {
+        for (var i in this.connections) {
+            var conn = this.connections[i];
+            var padding = 5;
+
+            var x1_min = Math.min(conn.line1.x0, conn.line1.x1) - padding;
+            var x1_max = Math.max(conn.line1.x0, conn.line1.x1) + padding;
+            var y1_min = Math.min(conn.line1.y0, conn.line1.y1) - padding;
+            var y1_max = Math.max(conn.line1.y0, conn.line1.y1) + padding;
+            
+            var x2_min = Math.min(conn.line2.x0, conn.line2.x1) - padding;
+            var x2_max = Math.max(conn.line2.x0, conn.line2.x1) + padding;
+            var y2_min = Math.min(conn.line2.y0, conn.line2.y1) - padding;
+            var y2_max = Math.max(conn.line2.y0, conn.line2.y1) + padding;
+
+            var x3_min = Math.min(conn.line3.x0, conn.line3.x1) - padding;
+            var x3_max = Math.max(conn.line3.x0, conn.line3.x1) + padding;
+            var y3_min = Math.min(conn.line3.y0, conn.line3.y1) - padding;
+            var y3_max = Math.max(conn.line3.y0, conn.line3.y1) + padding;
+
+            // TODO redesign to has_point
+            if (
+                   (x1_min < x0 && x0 < x1_max && y1_min < y0 && y0 < y1_max)
+                || (x2_min < x0 && x0 < x2_max && y2_min < y0 && y0 < y2_max)
+                || (x3_min < x0 && x0 < x3_max && y3_min < y0 && y0 < y3_max)
+            ) {
+                this.connection_highlight_out_nodeid = conn.out_nodeid;
+                this.connection_highlight_in_nodeid = conn.in_nodeid;
+                return true;
+                // console.log("conn.out_nodeid = ", , "conn.in_nodeid = ", )
+                // conn.set_highlight(true);
+            }
+        }
+        this.connection_highlight_out_nodeid = "";
+        this.connection_highlight_in_nodeid = "";
+        return false;
+    }
+
     canvas_onmousemove(event) {
         var target = event.target;
         // console.log(event);
@@ -923,9 +980,26 @@ class RenderPipelineEditor {
         // console.log(co);
         var x0 = event.clientX - co.left;
         var y0 = event.clientY - co.top;
+        
 
+        // mode for delete connections
+        if (this.Y2kBm4L_editor_state == PIPELINE_EDITOR_S5_STATE_REMOVING_CONNECTIONS) {
+            var prev_value_out = this.connection_highlight_out_nodeid;
+            var prev_value_in = this.connection_highlight_in_nodeid;
+            if (this.find_connection(x0, y0)) {
+                console.log("this.connection_highlight_out_nodeid = ", this.connection_highlight_out_nodeid);
+                this.update_pipeline_diagram();
+                target.style.cursor = 'url("./images/cursor-disconnect-blocks.svg") 25 25, auto';
+                return;
+            }
+            if (prev_value_out != this.connection_highlight_out_nodeid || prev_value_in != this.connection_highlight_in_nodeid) {
+                this.update_pipeline_diagram();
+                target.style.cursor = 'default';
+                return;
+            }
+        }
+        
         var block_id = this.find_block_id(x0, y0);
-
         this.selectedBlock['block-id-undermouse'] = block_id;
 
         if (this.conneсtingBlocks.state == 'select-incoming') {
@@ -1267,18 +1341,26 @@ class RenderPipelineEditor {
     }
 
     add_to_draw_connection(x0, x2, y0, y1, y2, out_nodeid, in_nodeid) {
+        var color = "black";
+        if (
+            this.connection_highlight_out_nodeid == out_nodeid
+            && this.connection_highlight_in_nodeid == in_nodeid
+        ) {
+            color = "red";
+        }
+
         this.ctx.strokeStyle = "black";
         this.ctx.lineWidth = 2;
 
-        var line1 = new RenderPipelineLine(x0, y0, x0, y1);
+        var line1 = new RenderPipelineLine(x0, y0, x0, y1, color);
         this.check_error(line1, out_nodeid, in_nodeid);
 
-        var line2 = new RenderPipelineLine(x0, line1.y1, x2, line1.y1);
+        var line2 = new RenderPipelineLine(x0, line1.y1, x2, line1.y1, color);
         this.check_error(line2, out_nodeid, in_nodeid);
         line2 = this.correct_line(line2);
         line1.y1 = line2.y0;
 
-        var line3 = new RenderPipelineLine(x2, line2.y1, x2, y2);
+        var line3 = new RenderPipelineLine(x2, line2.y1, x2, y2, color);
         this.check_error(line3, out_nodeid, in_nodeid);
         
         this.drawed_lines_cache.add(line1);
@@ -1468,6 +1550,21 @@ class RenderPipelineEditor {
             var bl2 = this.conneсtingBlocks.block_id;
             this.pl_data_render[bl2].incoming[bl1] = "";
             // this.prepare_data_render();
+            this.update_meansures();
+            this.prepare_lines_out();
+            this.update_pipeline_diagram();
+            this.call_onchanged();
+        }
+    }
+
+    remove_connection_blocks() {
+        if (this.connection_highlight_out_nodeid != "" && this.connection_highlight_in_nodeid != "") {
+            var bl1 = this.connection_highlight_out_nodeid;
+            var bl2 = this.connection_highlight_in_nodeid;
+            this.connection_highlight_out_nodeid = "";
+            this.connection_highlight_in_nodeid = "";
+            console.log(this.pl_data_render[bl2].incoming);
+            delete this.pl_data_render[bl2].incoming[bl1];
             this.update_meansures();
             this.prepare_lines_out();
             this.update_pipeline_diagram();

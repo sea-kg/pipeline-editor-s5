@@ -59,6 +59,7 @@ function ui_render_update_states() {
         "pipeline-editor-functions-btn remove-block": PIPELINE_EDITOR_S5_STATE_REMOVING_BLOCKS,
         "pipeline-editor-functions-btn add-block": PIPELINE_EDITOR_S5_STATE_ADDING_BLOCKS,
         "pipeline-editor-functions-btn connect-blocks": PIPELINE_EDITOR_S5_STATE_ADDING_CONNECTIONS,
+        "pipeline-editor-functions-btn disconnect-blocks": PIPELINE_EDITOR_S5_STATE_REMOVING_CONNECTIONS,
     };
     for (var n in states_elements) {
         var el = document.getElementsByClassName(n)[0];
@@ -91,6 +92,11 @@ function ui_render_adding_blocks(el) {
 
 function ui_render_connecting_blocks() {
     render.change_state_to_adding_connections();
+    ui_render_update_states();
+}
+
+function ui_render_disconnect_blocks() {
+    render.change_state_to_removing_connections();
     ui_render_update_states();
 }
 
